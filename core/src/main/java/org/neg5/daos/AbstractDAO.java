@@ -18,6 +18,10 @@ public abstract class AbstractDAO<T> {
         return (T) getSession().save(entity);
     }
 
+    public void flush() {
+        getSession().flush();
+    }
+
     protected Class<T> getPersistentClass() {
         return persistentClass;
     }
