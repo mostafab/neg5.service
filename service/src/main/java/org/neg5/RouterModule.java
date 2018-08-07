@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 import org.neg5.routers.Router;
 import org.neg5.routers.SystemStatusRouter;
+import org.neg5.routers.TournamentRouter;
 
 public class RouterModule extends AbstractModule {
 
@@ -12,5 +13,6 @@ public class RouterModule extends AbstractModule {
         Multibinder<Router> multibinder = Multibinder.newSetBinder(binder(), Router.class);
 
         multibinder.addBinding().to(SystemStatusRouter.class);
+        multibinder.addBinding().to(TournamentRouter.class);
     }
 }
