@@ -3,6 +3,7 @@ package org.neg5.routers;
 import com.google.inject.Inject;
 import org.neg5.transformers.JsonTransformer;
 import org.neg5.transformers.JsonTransformerProvider;
+
 import spark.Route;
 import spark.Spark;
 
@@ -15,11 +16,18 @@ public abstract class AbstractJsonRouter implements Router {
     private JsonTransformerProvider jsonTransformerProvider;
 
     protected void get(String path, Route route) {
-        Spark.get(path, route, getJsonTransformer());
+        Spark.get(path, enrichRoute(route), getJsonTransformer());
     }
 
     protected JsonTransformer getJsonTransformer() {
         return jsonTransformerProvider.get();
+    }
+
+    private Route enrichRoute(Route handler) {
+        return (request, response) -> {
+            response.type("application/json");
+            return handler.handle(request, response);
+        };
     }
 
 }

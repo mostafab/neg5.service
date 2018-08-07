@@ -9,6 +9,6 @@ public class SystemStatusRouter implements Router {
 
     @Override
     public void registerRoutes() {
-        get("/system-status", (request, response) ->  "Status: OK");
+        get("neg5-api/system-status", (request, response) ->  "Status: OK");
     }
 }
