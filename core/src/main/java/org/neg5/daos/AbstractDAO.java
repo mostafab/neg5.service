@@ -1,32 +1,38 @@
 package org.neg5.daos;
 
-import org.hibernate.Session;
+import com.google.inject.Inject;
+import org.neg5.db.PersistenceManager;
+
+import javax.persistence.EntityManager;
 
 public abstract class AbstractDAO<T> {
 
     private Class<T> persistentClass;
+
+    @Inject
+    private PersistenceManager persistenceManager;
 
     protected AbstractDAO(Class<T> persistentClass) {
         this.persistentClass = persistentClass;
     }
 
     public T get(String id) {
-        return getSession().get(persistentClass, id);
+        return getEntityManager().find(persistentClass, id);
     }
 
     public T save(T entity) {
-        return (T) getSession().save(entity);
+        return getEntityManager().merge(entity);
     }
 
     public void flush() {
-        getSession().flush();
+        getEntityManager().flush();
     }
 
     protected Class<T> getPersistentClass() {
         return persistentClass;
     }
 
-    protected Session getSession() {
-        return null;
+    protected EntityManager getEntityManager() {
+        return persistenceManager.getEntityManager();
     }
 }
