@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
 public class PersistenceManager {
 
     private EntityManagerFactory entityManagerFactory;
-    private ThreadLocal<EntityManager> entityManagerThreadLocal = new ThreadLocal<EntityManager>();
+    private ThreadLocal<EntityManager> entityManagerThreadLocal = new ThreadLocal<>();
 
     private static final String ENTITY_MANAGER_UNIT = "persistence";
 

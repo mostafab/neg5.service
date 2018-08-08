@@ -4,10 +4,14 @@ import com.google.inject.Inject;
 import org.neg5.db.PersistenceManager;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public abstract class AbstractDAO<T> {
 
     private Class<T> persistentClass;
+
+    private static final String FIND_ALL_BY_TOURNAMENT_ID_QUERY
+            = "SELECT ent from %s ent where ent.tournament.id = :tournamentId";
 
     @Inject
     private PersistenceManager persistenceManager;
@@ -26,6 +30,13 @@ public abstract class AbstractDAO<T> {
 
     public void flush() {
         getEntityManager().flush();
+    }
+
+    public List<T> findAllByTournamentId(String tournamentId) {
+        String query = String.format(FIND_ALL_BY_TOURNAMENT_ID_QUERY, persistentClass.getSimpleName());
+        return getEntityManager().createQuery(query, persistentClass)
+                .setParameter("tournamentId", tournamentId)
+                .getResultList();
     }
 
     protected Class<T> getPersistentClass() {

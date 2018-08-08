@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 
 import org.neg5.db.PersistenceManager;
 
+import javax.persistence.EntityTransaction;
+
 import static spark.Spark.after;
 import static spark.Spark.before;
 
@@ -18,7 +20,10 @@ public class JPATransactionHandlerFilter implements RequestFilter {
         });
 
         after((request, response) -> {
-            persistenceManager.getEntityManager().getTransaction().commit();
+            EntityTransaction transaction = persistenceManager.getEntityManager().getTransaction();
+            if (transaction.isActive()) {
+                transaction.commit();
+            }
             persistenceManager.close();
         });
     }
