@@ -28,6 +28,7 @@ public class PersistenceManager {
     public void close() {
         EntityManager manager = entityManagerThreadLocal.get();
         if (manager != null) {
+            manager.clear();
             manager.close();
             entityManagerThreadLocal.remove();
         }

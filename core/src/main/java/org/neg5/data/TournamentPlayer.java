@@ -11,14 +11,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tournament_team")
+@Table(name = "tournament_player")
 @DynamicUpdate
-public class TournamentTeam extends AbstractDataObject<TournamentTeam> implements SpecificTournamentEntity {
+public class TournamentPlayer extends AbstractDataObject<TournamentPlayer> implements SpecificTournamentEntity {
 
     private String id;
-
     private String name;
+    private TournamentTeam team;
     private Tournament tournament;
+
+    private Account addedBy;
 
     @Id
     public String getId() {
@@ -39,6 +41,17 @@ public class TournamentTeam extends AbstractDataObject<TournamentTeam> implement
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    public TournamentTeam getTeam() {
+        return team;
+    }
+
+    public void setTeam(TournamentTeam team) {
+        this.team = team;
+    }
+
+    @Override
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tournament_id")
     public Tournament getTournament() {
         return tournament;
@@ -46,5 +59,15 @@ public class TournamentTeam extends AbstractDataObject<TournamentTeam> implement
 
     public void setTournament(Tournament tournament) {
         this.tournament = tournament;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "added_by")
+    public Account getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(Account addedBy) {
+        this.addedBy = addedBy;
     }
 }

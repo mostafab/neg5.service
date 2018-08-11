@@ -1,6 +1,7 @@
 package org.neg5.daos;
 
 import com.google.inject.Inject;
+import org.neg5.data.SpecificTournamentEntity;
 import org.neg5.db.PersistenceManager;
 
 import javax.persistence.EntityManager;
@@ -12,6 +13,8 @@ public abstract class AbstractDAO<T> {
 
     private static final String FIND_ALL_BY_TOURNAMENT_ID_QUERY
             = "SELECT ent from %s ent where ent.tournament.id = :tournamentId";
+
+    private static final String TOURNAMENT_ID_PARAM = "tournamentId";
 
     @Inject
     private PersistenceManager persistenceManager;
@@ -33,9 +36,10 @@ public abstract class AbstractDAO<T> {
     }
 
     public List<T> findAllByTournamentId(String tournamentId) {
+        validateFindByTournamentId();
         String query = String.format(FIND_ALL_BY_TOURNAMENT_ID_QUERY, persistentClass.getSimpleName());
         return getEntityManager().createQuery(query, persistentClass)
-                .setParameter("tournamentId", tournamentId)
+                .setParameter(TOURNAMENT_ID_PARAM, tournamentId)
                 .getResultList();
     }
 
@@ -45,5 +49,12 @@ public abstract class AbstractDAO<T> {
 
     protected EntityManager getEntityManager() {
         return persistenceManager.getEntityManager();
+    }
+
+    private void validateFindByTournamentId() {
+        if (!SpecificTournamentEntity.class.isAssignableFrom(persistentClass)) {
+            throw new IllegalArgumentException("Class "
+                    + persistentClass.getName() + " does not implement " + SpecificTournamentEntity.class);
+        }
     }
 }
