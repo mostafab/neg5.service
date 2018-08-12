@@ -1,5 +1,7 @@
 package org.neg5.db;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.inject.Singleton;
 
 import javax.persistence.EntityManager;
@@ -14,23 +16,25 @@ public class PersistenceManager {
 
     private static final String ENTITY_MANAGER_UNIT = "persistence";
 
-    public EntityManager getEntityManager() {
-        if (entityManagerFactory == null) {
-            entityManagerFactory = Persistence.createEntityManagerFactory(ENTITY_MANAGER_UNIT);
-        }
-        EntityManager em = entityManagerThreadLocal.get();
-        if (em == null) {
-            entityManagerThreadLocal.set(entityManagerFactory.createEntityManager());
-        }
-        return entityManagerThreadLocal.get();
-    }
+    @Autowired private EntityManager entityManager;
 
-    public void close() {
-        EntityManager manager = entityManagerThreadLocal.get();
-        if (manager != null) {
-            manager.clear();
-            manager.close();
-            entityManagerThreadLocal.remove();
-        }
-    }
+//    public EntityManager getEntityManager() {
+//        if (entityManagerFactory == null) {
+//            entityManagerFactory = Persistence.createEntityManagerFactory(ENTITY_MANAGER_UNIT);
+//        }
+//        EntityManager em = entityManagerThreadLocal.get();
+//        if (em == null) {
+//            entityManagerThreadLocal.set(entityManagerFactory.createEntityManager());
+//        }
+//        return entityManagerThreadLocal.get();
+//    }
+//
+//    public void close() {
+//        EntityManager manager = entityManagerThreadLocal.get();
+//        if (manager != null) {
+//            manager.clear();
+//            manager.close();
+//            entityManagerThreadLocal.remove();
+//        }
+//    }
 }

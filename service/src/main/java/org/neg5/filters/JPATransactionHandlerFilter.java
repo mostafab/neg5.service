@@ -15,16 +15,16 @@ public class JPATransactionHandlerFilter implements RequestFilter {
 
     @Override
     public void registerFilter() {
-        before((request, response) -> {
-           persistenceManager.getEntityManager().getTransaction().begin();
-        });
-
-        after((request, response) -> {
-            EntityTransaction transaction = persistenceManager.getEntityManager().getTransaction();
-            if (transaction.isActive()) {
-                transaction.commit();
-            }
-            persistenceManager.close();
-        });
+//        before((request, response) -> {
+//           persistenceManager.getEntityManager().getTransaction().begin();
+//        });
+//
+//        after((request, response) -> {
+//            EntityTransaction transaction = persistenceManager.getEntityManager().getTransaction();
+//            if (transaction.isActive()) {
+//                transaction.commit();
+//            }
+//            persistenceManager.close();
+//        });
     }
 }
