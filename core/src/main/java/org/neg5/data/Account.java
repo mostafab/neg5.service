@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "account")
@@ -20,6 +21,12 @@ public class Account extends AbstractDataObject<Account> {
 
     private Boolean hidden;
     private String mongoId;
+
+    @Override
+    @Transient
+    public String getId() {
+        return username;
+    }
 
     @Id
     @Column(name = "username")

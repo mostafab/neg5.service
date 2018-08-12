@@ -5,13 +5,13 @@ import com.google.inject.Injector;
 
 public class Main {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Exception {
         Injector injector = Guice.createInjector(
+                new TransactionModule(),
                 new RouterModule(),
                 new FilterModule()
         );
-
-        Bootstrapper bootstrapper = injector.getInstance(Bootstrapper.class);
-        bootstrapper.bootstrap();
+        Neg5App app = injector.getInstance(Neg5App.class);
+        app.init();
     }
 }

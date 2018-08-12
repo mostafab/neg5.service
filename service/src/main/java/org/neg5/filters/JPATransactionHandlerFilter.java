@@ -9,6 +9,7 @@ import javax.persistence.EntityTransaction;
 import static spark.Spark.after;
 import static spark.Spark.before;
 
+@Deprecated
 public class JPATransactionHandlerFilter implements RequestFilter {
 
     @Inject private PersistenceManager persistenceManager;

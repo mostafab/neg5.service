@@ -6,6 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public abstract class AbstractDataObject<T> {
 
+    public abstract String getId();
+
     public T copyOf() {
         try {
             T that = (T) this.getClass().newInstance();
