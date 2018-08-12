@@ -16,7 +16,7 @@ public class PersistenceManager {
 
     private static final String ENTITY_MANAGER_UNIT = "persistence";
 
-    @Autowired private EntityManager entityManager;
+//    @Autowired private EntityManager entityManager;
 
 //    public EntityManager getEntityManager() {
 //        if (entityManagerFactory == null) {
