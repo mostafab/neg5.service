@@ -37,6 +37,7 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
     private Date lastUpdatedAt;
 
     private List<MatchTeam> teams;
+    private List<MatchPlayer> players;
 
     @Id
     public String getId() {
@@ -156,5 +157,14 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
 
     public void setTeams(List<MatchTeam> teams) {
         this.teams = teams;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "matchPlayerId.match")
+    public List<MatchPlayer> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<MatchPlayer> players) {
+        this.players = players;
     }
 }

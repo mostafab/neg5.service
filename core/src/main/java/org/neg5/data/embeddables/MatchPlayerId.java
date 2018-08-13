@@ -2,7 +2,7 @@ package org.neg5.data.embeddables;
 
 import org.neg5.data.Tournament;
 import org.neg5.data.TournamentMatch;
-import org.neg5.data.TournamentTeam;
+import org.neg5.data.TournamentPlayer;
 
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
@@ -11,20 +11,20 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Embeddable
-public class MatchTeamId implements Serializable {
+public class MatchPlayerId implements Serializable {
 
-    private TournamentTeam team;
+    private TournamentPlayer player;
     private TournamentMatch match;
     private Tournament tournament;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    public TournamentTeam getTeam() {
-        return team;
+    @JoinColumn(name = "player_id")
+    public TournamentPlayer getPlayer() {
+        return player;
     }
 
-    public void setTeam(TournamentTeam team) {
-        this.team = team;
+    public void setPlayer(TournamentPlayer player) {
+        this.player = player;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,17 +52,18 @@ public class MatchTeamId implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null || !(obj instanceof MatchTeamId)) {
+        if (obj == null || !(obj instanceof MatchPlayerId)) {
             return false;
         }
-        MatchTeamId that = (MatchTeamId) obj;
-        return that.getTeam().getId().equals(team.getId())
+        MatchPlayerId that = (MatchPlayerId) obj;
+        return that.getPlayer().getId().equals(player.getId())
                 && that.getTournament().getId().equals(tournament.getId())
                 && that.getMatch().getId().equals(match.getId());
     }
 
+
     /**
-     * TODO come back and implement this
+     * TODO come back and implement
      * @return a hash code
      */
     @Override

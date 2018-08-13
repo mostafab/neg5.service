@@ -1,5 +1,7 @@
 package org.neg5;
 
+import java.util.List;
+
 public class MatchTeamDTO {
 
     private String matchId;
@@ -8,6 +10,8 @@ public class MatchTeamDTO {
     private Integer score;
     private Integer bouncebackPoints;
     private Integer overtimeTossupsGotten;
+
+    private List<MatchPlayerDTO> players;
 
     public String getMatchId() {
         return matchId;
@@ -47,5 +51,13 @@ public class MatchTeamDTO {
 
     public void setOvertimeTossupsGotten(Integer overtimeTossupsGotten) {
         this.overtimeTossupsGotten = overtimeTossupsGotten;
+    }
+
+    public List<MatchPlayerDTO> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<MatchPlayerDTO> players) {
+        this.players = players;
     }
 }
