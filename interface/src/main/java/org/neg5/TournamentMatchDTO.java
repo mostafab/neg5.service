@@ -1,5 +1,7 @@
 package org.neg5;
 
+import java.util.List;
+
 public class TournamentMatchDTO {
 
     private String id;
@@ -16,6 +18,8 @@ public class TournamentMatchDTO {
     private String serialId;
 
     private String addedBy;
+
+    private List<MatchTeamDTO> teams;
 
     public String getId() {
         return id;
@@ -95,5 +99,13 @@ public class TournamentMatchDTO {
 
     public void setAddedBy(String addedBy) {
         this.addedBy = addedBy;
+    }
+
+    public List<MatchTeamDTO> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<MatchTeamDTO> teams) {
+        this.teams = teams;
     }
 }

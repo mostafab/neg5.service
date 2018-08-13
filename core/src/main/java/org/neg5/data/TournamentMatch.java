@@ -8,8 +8,10 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tournament_match")
@@ -24,7 +26,7 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
     private String moderator;
 
     private String packet;
-    private Long tossupsHeard;
+    private Integer tossupsHeard;
 
     private String notes;
     private String serialId;
@@ -33,6 +35,8 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
 
     private Date addedAt;
     private Date lastUpdatedAt;
+
+    private List<MatchTeam> teams;
 
     @Id
     public String getId() {
@@ -91,11 +95,11 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
     }
 
     @Column(name = "tossups_heard")
-    public Long getTossupsHeard() {
+    public Integer getTossupsHeard() {
         return tossupsHeard;
     }
 
-    public void setTossupsHeard(Long tossupsHeard) {
+    public void setTossupsHeard(Integer tossupsHeard) {
         this.tossupsHeard = tossupsHeard;
     }
 
@@ -143,5 +147,14 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
 
     public void setLastUpdatedAt(Date lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "matchTeamId.match")
+    public List<MatchTeam> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<MatchTeam> teams) {
+        this.teams = teams;
     }
 }
