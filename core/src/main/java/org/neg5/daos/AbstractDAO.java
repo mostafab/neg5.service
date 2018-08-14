@@ -1,9 +1,9 @@
 package org.neg5.daos;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import org.neg5.data.AbstractDataObject;
 import org.neg5.data.SpecificTournamentEntity;
+import org.neg5.db.PersistenceManager;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -17,7 +17,7 @@ public abstract class AbstractDAO<T extends AbstractDataObject> {
 
     private static final String TOURNAMENT_ID_PARAM = "tournamentId";
 
-    @Inject private Provider<EntityManager> entityManager;
+    @Inject private PersistenceManager persistenceManager;
 
     protected AbstractDAO(Class<T> persistentClass) {
         this.persistentClass = persistentClass;
@@ -48,7 +48,7 @@ public abstract class AbstractDAO<T extends AbstractDataObject> {
     }
 
     protected EntityManager getEntityManager() {
-        return entityManager.get();
+        return persistenceManager.getEntityManager();
     }
 
     private void validateFindByTournamentId() {

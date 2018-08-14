@@ -17,7 +17,6 @@ public class Neg5App implements SparkApplication {
 
     @Inject private Set<Router> routers;
     @Inject private Set<RequestFilter> filters;
-    @Inject private PersistService persistService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Neg5App.class);
 
@@ -29,7 +28,6 @@ public class Neg5App implements SparkApplication {
     private void bootstrap() {
         initRoutes();
         initFilters();
-        persistService.start();
     }
 
     private void initRoutes() {

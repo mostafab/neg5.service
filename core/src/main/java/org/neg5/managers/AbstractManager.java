@@ -1,6 +1,6 @@
 package org.neg5.managers;
 
-import com.google.inject.persist.Transactional;
+import org.neg5.core.TransactionalSimple;
 import org.neg5.daos.AbstractDAO;
 
 import org.neg5.data.AbstractDataObject;
@@ -16,7 +16,7 @@ public abstract class AbstractManager<T extends AbstractDataObject<T>, DTO> {
 
     protected abstract AbstractObjectMapper<T, DTO> getMapper();
 
-    @Transactional
+    @TransactionalSimple
     public DTO get(String id) {
         T entity = getDAO().get(id);
         if (entity == null) {
@@ -25,7 +25,7 @@ public abstract class AbstractManager<T extends AbstractDataObject<T>, DTO> {
         return getMapper().toDTO(entity.copyOf());
     }
 
-    @Transactional
+    @TransactionalSimple
     public List<DTO> findAllByTournamentId(String tournamentId) {
         return getDAO().findAllByTournamentId(tournamentId)
                 .stream()

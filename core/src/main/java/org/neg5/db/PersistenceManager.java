@@ -5,9 +5,9 @@ import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.EntityTransaction;
 
 @Singleton
-@Deprecated
 public class PersistenceManager {
 
     private EntityManagerFactory entityManagerFactory;
@@ -24,6 +24,31 @@ public class PersistenceManager {
             entityManagerThreadLocal.set(entityManagerFactory.createEntityManager());
         }
         return entityManagerThreadLocal.get();
+    }
+
+    public EntityTransaction getTransaction() {
+        return getEntityManager().getTransaction();
+    }
+
+    public void begin() {
+        EntityTransaction transaction = getEntityManager().getTransaction();
+        if (!transaction.isActive()) {
+            transaction.begin();
+        }
+    }
+
+    public void commit() {
+        EntityTransaction transaction = getEntityManager().getTransaction();
+        if (transaction.isActive()) {
+            transaction.commit();
+        }
+    }
+
+    public void rollback() {
+        EntityTransaction transaction = getEntityManager().getTransaction();
+        if (transaction.isActive()) {
+            transaction.rollback();
+        }
     }
 
     public void close() {
