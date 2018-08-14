@@ -1,16 +1,15 @@
 package org.neg5.transformers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.inject.Inject;
+import org.neg5.core.GsonProvider;
 import spark.ResponseTransformer;
 
 public class JsonTransformer implements ResponseTransformer {
 
-    private Gson gson = new GsonBuilder()
-            .create();
+    @Inject private GsonProvider gsonProvider;
 
     @Override
     public String render(Object o) {
-        return gson.toJson(o);
+        return gsonProvider.get().toJson(o);
     }
 }

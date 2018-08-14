@@ -1,6 +1,6 @@
 package org.neg5.db;
 
-import javax.inject.Singleton;
+import com.google.inject.Singleton;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,12 +13,13 @@ public class PersistenceManager {
     private EntityManagerFactory entityManagerFactory;
     private ThreadLocal<EntityManager> entityManagerThreadLocal = new ThreadLocal<>();
 
-    private static final String ENTITY_MANAGER_UNIT = "persistence";
+    private static final String ENTITY_MANAGER_UNIT = "org.neg5.data";
+
+    protected PersistenceManager() {
+        entityManagerFactory = Persistence.createEntityManagerFactory(ENTITY_MANAGER_UNIT);
+    }
 
     public EntityManager getEntityManager() {
-        if (entityManagerFactory == null) {
-            entityManagerFactory = Persistence.createEntityManagerFactory(ENTITY_MANAGER_UNIT);
-        }
         EntityManager em = entityManagerThreadLocal.get();
         if (em == null) {
             entityManagerThreadLocal.set(entityManagerFactory.createEntityManager());

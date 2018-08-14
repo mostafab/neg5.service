@@ -2,13 +2,13 @@ package org.neg5;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import org.neg5.module.JpaConfigurationModule;
+import org.neg5.module.DataAccessModule;
 
 public class Main {
 
     public static void main(String args[]) throws Exception {
         Injector injector = Guice.createInjector(
-                new JpaConfigurationModule(),
+                new DataAccessModule(),
                 new RouterModule(),
                 new FilterModule()
         );

@@ -6,7 +6,7 @@ import org.neg5.db.PersistenceManager;
 
 import static spark.Spark.afterAfter;
 
-public class JPATransactionHandlerFilter implements RequestFilter {
+public class PersistenceHandlerFilter implements RequestFilter {
 
     @Inject private PersistenceManager persistenceManager;
 
