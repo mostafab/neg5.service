@@ -24,7 +24,7 @@ public abstract class AbstractDAO<T extends AbstractDataObject> {
     }
 
     public T get(String id) {
-        return getEntityManager().find(persistentClass, id);
+        return getEntityManager().find(getPersistentClass(), id);
     }
 
     public T save(T entity) {

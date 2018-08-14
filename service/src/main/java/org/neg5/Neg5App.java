@@ -3,11 +3,14 @@ package org.neg5;
 import com.google.inject.Inject;
 import com.google.inject.persist.PersistService;
 import org.neg5.filters.RequestFilter;
+import org.neg5.module.JpaConfigurationModule;
 import org.neg5.routers.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.servlet.SparkApplication;
 
+import javax.inject.Named;
+import javax.sql.DataSource;
 import java.util.Set;
 
 public class Neg5App implements SparkApplication {

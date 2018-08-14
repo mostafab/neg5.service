@@ -2,6 +2,7 @@ package org.neg5;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.neg5.module.JpaConfigurationModule;
 
 public class Main {
 

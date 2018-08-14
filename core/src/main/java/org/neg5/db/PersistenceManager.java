@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 @Singleton
+@Deprecated
 public class PersistenceManager {
 
     private EntityManagerFactory entityManagerFactory;
