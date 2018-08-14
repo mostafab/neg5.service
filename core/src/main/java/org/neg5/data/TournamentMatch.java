@@ -38,6 +38,7 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
 
     private List<MatchTeam> teams;
     private List<MatchPlayer> players;
+    private List<MatchPlayerAnswer> playerAnswers;
 
     @Id
     public String getId() {
@@ -159,12 +160,21 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
         this.teams = teams;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "matchPlayerId.match")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "matchPlayerId.match")
     public List<MatchPlayer> getPlayers() {
         return players;
     }
 
     public void setPlayers(List<MatchPlayer> players) {
         this.players = players;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "matchPlayerAnswerId.match")
+    public List<MatchPlayerAnswer> getPlayerAnswers() {
+        return playerAnswers;
+    }
+
+    public void setPlayerAnswers(List<MatchPlayerAnswer> playerAnswers) {
+        this.playerAnswers = playerAnswers;
     }
 }

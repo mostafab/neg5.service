@@ -1,11 +1,15 @@
 package org.neg5;
 
+import java.util.List;
+
 public class MatchPlayerDTO {
 
     private String playerId;
     private String matchId;
 
     private Integer tossupsHeard;
+
+    private List<MatchPlayerAnswerDTO> answers;
 
     public String getPlayerId() {
         return playerId;
@@ -29,5 +33,13 @@ public class MatchPlayerDTO {
 
     public void setTossupsHeard(Integer tossupsHeard) {
         this.tossupsHeard = tossupsHeard;
+    }
+
+    public List<MatchPlayerAnswerDTO> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<MatchPlayerAnswerDTO> answers) {
+        this.answers = answers;
     }
 }

@@ -6,6 +6,7 @@ import org.neg5.data.embeddables.MatchPlayerId;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+
 import javax.persistence.Table;
 
 @Table(name = "player_plays_in_tournament_match")
