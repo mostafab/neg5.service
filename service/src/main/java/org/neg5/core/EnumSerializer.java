@@ -2,7 +2,7 @@ package org.neg5.core;
 
 import org.neg5.enums.Identifiable;
 
-import java.util.Arrays;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -17,8 +17,11 @@ public class EnumSerializer {
     private static final String ID_TO_OBJ_KEY = "idToObj";
     private static final String PREFIX = "g_";
 
-    public <T extends Enum<T>> void addEnums(Class<T>... enumClazzes) {
-        this.enumClazzes.addAll(Arrays.asList(enumClazzes));
+    private static final String ENUMS_VALUE_NAME = "$VALUES";
+
+    public <T extends Enum<T> & Identifiable> EnumSerializer add(Class<T> enumClazz) {
+        this.enumClazzes.add(enumClazz);
+        return this;
     }
 
     @SuppressWarnings("unchecked")
@@ -33,16 +36,27 @@ public class EnumSerializer {
     }
 
     private <T extends Enum<T>> Map<String, ?> buildValue(Class<T> enumClazz) {
-        Map<String, Object> enumMap = new HashMap<>();
-        Map<String, Object> idToEnumMap = new HashMap<>();
-        Arrays.stream(enumClazz.getEnumConstants()).forEach(enumValue -> {
-            if (enumValue instanceof Identifiable) {
-                Identifiable identifiable = (Identifiable) enumValue;
-                enumMap.put(enumValue.name(), identifiable.getId());
-                idToEnumMap.put(identifiable.getId().toString(), new HashMap());
+        try {
+            Map<String, Object> enumMap = new HashMap<>();
+            Map<String, Object> idToEnumMap = new HashMap<>();
+            for (T enumValue : enumClazz.getEnumConstants()) {
+                if (enumValue instanceof Identifiable) {
+                    Identifiable identifiable = (Identifiable) enumValue;
+                    enumMap.put(enumValue.name(), identifiable.getId());
+                    Map<String, Object> fields = new HashMap<>();
+                    for (Field field : enumValue.getClass().getDeclaredFields()) {
+                        if (!field.isEnumConstant() && !ENUMS_VALUE_NAME.equals(field.getName())) {
+                            field.setAccessible(true);
+                            fields.put(field.getName(), field.get(enumValue));
+                        }
+                    }
+                    idToEnumMap.put(identifiable.getId().toString(), fields);
+                }
             }
-        });
-        enumMap.put(ID_TO_OBJ_KEY, idToEnumMap);
-        return enumMap;
+            enumMap.put(ID_TO_OBJ_KEY, idToEnumMap);
+            return enumMap;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

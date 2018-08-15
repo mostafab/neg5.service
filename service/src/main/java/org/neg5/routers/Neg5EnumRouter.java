@@ -20,8 +20,7 @@ public class Neg5EnumRouter extends AbstractJsonRouter {
     }
 
     private void addEnums() {
-        enumSerializer.addEnums(
-                TossupAnswerType.class
-        );
+        enumSerializer
+                .add(TossupAnswerType.class);
     }
 }
