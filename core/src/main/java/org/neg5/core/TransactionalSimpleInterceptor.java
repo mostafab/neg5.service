@@ -31,7 +31,7 @@ public class TransactionalSimpleInterceptor implements MethodInterceptor {
     }
 
     private boolean getOpenedByUs() {
-        EntityTransaction transaction = persistenceManager.getTransaction();
+        EntityTransaction transaction = persistenceManager.getCurrentTransaction();
         boolean openedByUs = false;
         if (!transaction.isActive()) {
             openedByUs = true;

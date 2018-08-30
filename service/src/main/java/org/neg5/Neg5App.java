@@ -20,10 +20,6 @@ public class Neg5App implements SparkApplication {
 
     @Override
     public synchronized void init() {
-        bootstrap();
-    }
-
-    private void bootstrap() {
         port(1337);
         initRoutes();
         initFilters();
