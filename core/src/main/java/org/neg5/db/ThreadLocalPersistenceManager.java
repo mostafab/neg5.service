@@ -1,11 +1,18 @@
 package org.neg5.db;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import org.hibernate.cfg.AvailableSettings;
+import org.neg5.module.DataAccessModule;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.EntityTransaction;
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 @Singleton
 public class ThreadLocalPersistenceManager implements PersistenceManager {
@@ -15,8 +22,14 @@ public class ThreadLocalPersistenceManager implements PersistenceManager {
 
     private static final String ENTITY_MANAGER_UNIT = "org.neg5.data";
 
-    protected ThreadLocalPersistenceManager() {
-        entityManagerFactory = Persistence.createEntityManagerFactory(ENTITY_MANAGER_UNIT);
+    private DataSource dataSource;
+
+    @Inject
+    protected ThreadLocalPersistenceManager(@Named(DataAccessModule.DATA_SOURCE_PROP_NAME) DataSource dataSource) {
+        this.dataSource = dataSource;
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(AvailableSettings.DATASOURCE, dataSource);
+        entityManagerFactory = Persistence.createEntityManagerFactory(ENTITY_MANAGER_UNIT, properties);
     }
 
     @Override
