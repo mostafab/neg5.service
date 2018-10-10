@@ -6,6 +6,7 @@ import org.neg5.routers.Neg5EnumRouter;
 import org.neg5.routers.Router;
 import org.neg5.routers.SystemStatusRouter;
 import org.neg5.routers.TournamentRouter;
+import org.neg5.routers.TournamentStatsRouter;
 
 public class RouterModule extends AbstractModule {
 
@@ -16,5 +17,6 @@ public class RouterModule extends AbstractModule {
         multibinder.addBinding().to(SystemStatusRouter.class);
         multibinder.addBinding().to(TournamentRouter.class);
         multibinder.addBinding().to(Neg5EnumRouter.class);
+        multibinder.addBinding().to(TournamentStatsRouter.class);
     }
 }

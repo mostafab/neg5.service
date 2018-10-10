@@ -7,26 +7,23 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.Set;
 
 @Entity
-@Table(name = "tournament_team")
+@Table(name = "tournament_division")
 @DynamicUpdate
-public class TournamentTeam extends AbstractDataObject<TournamentTeam> implements SpecificTournamentEntity {
+public class TournamentDivision extends AbstractDataObject<TournamentDivision> implements SpecificTournamentEntity {
 
     private String id;
-
     private String name;
+
     private Tournament tournament;
+    private TournamentPhase phase;
 
-    private Set<TournamentDivision> divisions;
-
-    @Id
     @Override
+    @Id
     public String getId() {
         return id;
     }
@@ -44,9 +41,9 @@ public class TournamentTeam extends AbstractDataObject<TournamentTeam> implement
         this.name = name;
     }
 
+    @Override
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tournament_id")
-    @Override
     public Tournament getTournament() {
         return tournament;
     }
@@ -55,17 +52,13 @@ public class TournamentTeam extends AbstractDataObject<TournamentTeam> implement
         this.tournament = tournament;
     }
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "tournament_team_in_division",
-            joinColumns = @JoinColumn(name = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "division_id")
-    )
-    public Set<TournamentDivision> getDivisions() {
-        return divisions;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phase_id")
+    public TournamentPhase getPhase() {
+        return phase;
     }
 
-    public void setDivisions(Set<TournamentDivision> divisions) {
-        this.divisions = divisions;
+    public void setPhase(TournamentPhase phase) {
+        this.phase = phase;
     }
 }

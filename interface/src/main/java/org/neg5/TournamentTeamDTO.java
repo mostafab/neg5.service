@@ -1,10 +1,14 @@
 package org.neg5;
 
+import java.util.Set;
+
 public class TournamentTeamDTO {
 
     private String id;
     private String name;
     private String tournamentId;
+
+    private Set<String> divisions;
 
     public String getId() {
         return id;
@@ -28,5 +32,13 @@ public class TournamentTeamDTO {
 
     public void setTournamentId(String tournamentId) {
         this.tournamentId = tournamentId;
+    }
+
+    public Set<String> getDivisions() {
+        return divisions;
+    }
+
+    public void setDivisions(Set<String> divisions) {
+        this.divisions = divisions;
     }
 }

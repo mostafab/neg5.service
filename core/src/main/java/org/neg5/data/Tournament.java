@@ -8,8 +8,10 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "tournament")
@@ -24,7 +26,8 @@ public class Tournament extends AbstractDataObject<Tournament> {
     private String questionSet;
     private String comments;
 
-    private Account director;
+    private Set<TournamentPhase> phases;
+    private Set<TournamentDivision> divisions;
 
     @Id
     public String getId() {
@@ -80,13 +83,21 @@ public class Tournament extends AbstractDataObject<Tournament> {
         this.comments = comments;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "director_id")
-    public Account getDirector() {
-        return director;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tournament")
+    public Set<TournamentPhase> getPhases() {
+        return phases;
     }
 
-    public void setDirector(Account director) {
-        this.director = director;
+    public void setPhases(Set<TournamentPhase> phases) {
+        this.phases = phases;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tournament")
+    public Set<TournamentDivision> getDivisions() {
+        return divisions;
+    }
+
+    public void setDivisions(Set<TournamentDivision> divisions) {
+        this.divisions = divisions;
     }
 }

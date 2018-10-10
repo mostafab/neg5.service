@@ -8,11 +8,4 @@ public class TournamentMapper extends AbstractObjectMapper<Tournament, Tournamen
     protected TournamentMapper() {
         super(Tournament.class, TournamentDTO.class);
     }
-
-    @Override
-    protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
-           mapper.map(src -> src.getDirector().getUsername(), TournamentDTO::setDirectorId);
-        });
-    }
 }

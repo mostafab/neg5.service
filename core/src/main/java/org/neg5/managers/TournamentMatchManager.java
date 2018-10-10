@@ -6,6 +6,9 @@ import org.neg5.daos.TournamentMatchDAO;
 import org.neg5.data.TournamentMatch;
 import org.neg5.mappers.TournamentMatchMapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class TournamentMatchManager extends AbstractManager<TournamentMatch, TournamentMatchDTO> {
 
     @Inject private TournamentMatchMapper tournamentMatchMapper;
@@ -19,5 +22,11 @@ public class TournamentMatchManager extends AbstractManager<TournamentMatch, Tou
     @Override
     protected TournamentMatchDAO getDAO() {
         return tournamentMatchDAO;
+    }
+
+    public List<TournamentMatchDTO> findAllByTournamentAndPhase(String tournamentId, String phaseId) {
+        return findAllByTournamentId(tournamentId).stream()
+                .filter(match -> phaseId == null || match.getPhases().contains(phaseId))
+                .collect(Collectors.toList());
     }
 }
