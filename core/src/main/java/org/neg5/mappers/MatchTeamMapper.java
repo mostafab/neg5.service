@@ -6,9 +6,10 @@ import org.neg5.MatchTeamDTO;
 import org.neg5.data.MatchPlayer;
 import org.neg5.data.MatchTeam;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MatchTeamMapper extends AbstractObjectMapper<MatchTeam, MatchTeamDTO> {
@@ -22,8 +23,8 @@ public class MatchTeamMapper extends AbstractObjectMapper<MatchTeam, MatchTeamDT
     @Override
     public MatchTeamDTO toDTO(MatchTeam matchTeam) {
         MatchTeamDTO dto = super.toDTO(matchTeam);
-        List<MatchPlayer> players = Optional.ofNullable(matchTeam.getMatchTeamId().getMatch().getPlayers())
-                .orElse(new ArrayList<>());
+        Set<MatchPlayer> players = Optional.ofNullable(matchTeam.getMatchTeamId().getMatch().getPlayers())
+                .orElse(new HashSet<>());
         List<MatchPlayerDTO> playersOnTeam = players.stream()
                 .filter(p -> p.getMatchPlayerId().getPlayer().getTeam().getId().equals(dto.getTeamId()))
                 .map(matchPlayerMapper::toDTO)

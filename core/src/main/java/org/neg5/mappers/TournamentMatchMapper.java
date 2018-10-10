@@ -3,6 +3,7 @@ package org.neg5.mappers;
 import com.google.inject.Inject;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.data.TournamentMatch;
+import org.neg5.data.TournamentPhase;
 
 import java.util.stream.Collectors;
 
@@ -17,7 +18,9 @@ public class TournamentMatchMapper extends AbstractObjectMapper<TournamentMatch,
     @Override
     public TournamentMatchDTO toDTO(TournamentMatch tournamentMatch) {
         TournamentMatchDTO dto = super.toDTO(tournamentMatch);
-        dto.setTeams(tournamentMatch.getTeams().stream().map(matchTeamMapper::toDTO).collect(Collectors.toList()));
+        dto.setTeams(tournamentMatch.getTeams().stream().map(matchTeamMapper::toDTO).collect(Collectors.toSet()));
+        dto.setPhases(tournamentMatch.getPhases().stream()
+                .map(TournamentPhase::getId).collect(Collectors.toSet()));
 
         return dto;
     }
@@ -26,7 +29,6 @@ public class TournamentMatchMapper extends AbstractObjectMapper<TournamentMatch,
     protected void addMappings() {
         getTypeMap().addMappings(mapper -> {
             mapper.map(match -> match.getTournament().getId(), TournamentMatchDTO::setTournamentId);
-            mapper.map(match -> match.getAddedBy().getUsername(), TournamentMatchDTO::setAddedBy);
         });
     }
 }

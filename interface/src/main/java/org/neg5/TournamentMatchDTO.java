@@ -1,6 +1,6 @@
 package org.neg5;
 
-import java.util.List;
+import java.util.Set;
 
 public class TournamentMatchDTO {
 
@@ -19,7 +19,9 @@ public class TournamentMatchDTO {
 
     private String addedBy;
 
-    private List<MatchTeamDTO> teams;
+    private Set<MatchTeamDTO> teams;
+
+    private Set<String> phases;
 
     public String getId() {
         return id;
@@ -93,19 +95,19 @@ public class TournamentMatchDTO {
         this.serialId = serialId;
     }
 
-    public String getAddedBy() {
-        return addedBy;
-    }
-
-    public void setAddedBy(String addedBy) {
-        this.addedBy = addedBy;
-    }
-
-    public List<MatchTeamDTO> getTeams() {
+    public Set<MatchTeamDTO> getTeams() {
         return teams;
     }
 
-    public void setTeams(List<MatchTeamDTO> teams) {
+    public void setTeams(Set<MatchTeamDTO> teams) {
         this.teams = teams;
+    }
+
+    public Set<String> getPhases() {
+        return phases;
+    }
+
+    public void setPhases(Set<String> phases) {
+        this.phases = phases;
     }
 }

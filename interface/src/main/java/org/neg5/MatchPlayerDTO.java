@@ -1,6 +1,6 @@
 package org.neg5;
 
-import java.util.List;
+import java.util.Set;
 
 public class MatchPlayerDTO {
 
@@ -9,7 +9,7 @@ public class MatchPlayerDTO {
 
     private Integer tossupsHeard;
 
-    private List<MatchPlayerAnswerDTO> answers;
+    private Set<MatchPlayerAnswerDTO> answers;
 
     public String getPlayerId() {
         return playerId;
@@ -35,11 +35,11 @@ public class MatchPlayerDTO {
         this.tossupsHeard = tossupsHeard;
     }
 
-    public List<MatchPlayerAnswerDTO> getAnswers() {
+    public Set<MatchPlayerAnswerDTO> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<MatchPlayerAnswerDTO> answers) {
+    public void setAnswers(Set<MatchPlayerAnswerDTO> answers) {
         this.answers = answers;
     }
 }

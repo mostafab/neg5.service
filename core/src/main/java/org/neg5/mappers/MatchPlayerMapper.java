@@ -1,11 +1,9 @@
 package org.neg5.mappers;
 
 import com.google.inject.Inject;
-import org.neg5.MatchPlayerAnswerDTO;
 import org.neg5.MatchPlayerDTO;
 import org.neg5.data.MatchPlayer;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class MatchPlayerMapper extends AbstractObjectMapper<MatchPlayer, MatchPlayerDTO> {
@@ -19,12 +17,8 @@ public class MatchPlayerMapper extends AbstractObjectMapper<MatchPlayer, MatchPl
     @Override
     public MatchPlayerDTO toDTO(MatchPlayer matchPlayer) {
         MatchPlayerDTO dto = super.toDTO(matchPlayer);
-        List<MatchPlayerAnswerDTO> playerAnswers = matchPlayer.getMatchPlayerId().getMatch().getPlayerAnswers()
-                .stream()
-                .filter(answer -> answer.getMatchPlayerAnswerId().getPlayer().getId().equals(dto.getPlayerId()))
-                .map(matchPlayerAnswerMapper::toDTO)
-                .collect(Collectors.toList());
-        dto.setAnswers(playerAnswers);
+        dto.setAnswers(matchPlayer.getAnswers().stream()
+            .map(answer -> matchPlayerAnswerMapper.toDTO(answer)).collect(Collectors.toSet()));
         return dto;
     }
 
