@@ -1,11 +1,27 @@
 package org.neg5.mappers;
 
+import com.google.inject.Inject;
 import org.neg5.TournamentDTO;
 import org.neg5.data.Tournament;
 
+import java.util.stream.Collectors;
+
 public class TournamentMapper extends AbstractObjectMapper<Tournament, TournamentDTO> {
+
+    @Inject private TournamentPhaseMapper tournamentPhaseMapper;
+    @Inject private TournamentDivisionMapper tournamentDivisionMapper;
 
     protected TournamentMapper() {
         super(Tournament.class, TournamentDTO.class);
+    }
+
+    @Override
+    public TournamentDTO toDTO(Tournament tournament) {
+        TournamentDTO dto = super.toDTO(tournament);
+        dto.setPhases(tournament.getPhases().stream()
+            .map(tournamentPhaseMapper::toDTO).collect(Collectors.toSet()));
+        dto.setDivisions(tournament.getDivisions().stream()
+            .map(tournamentDivisionMapper::toDTO).collect(Collectors.toSet()));
+        return dto;
     }
 }

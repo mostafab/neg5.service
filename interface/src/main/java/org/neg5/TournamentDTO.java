@@ -1,6 +1,7 @@
 package org.neg5;
 
 import java.util.Date;
+import java.util.Set;
 
 public class TournamentDTO {
 
@@ -12,7 +13,8 @@ public class TournamentDTO {
     private String questionSet;
     private String comments;
 
-    private String directorId;
+    private Set<TournamentPhaseDTO> phases;
+    private Set<TournamentDivisionDTO> divisions;
 
     public String getId() {
         return id;
@@ -62,11 +64,19 @@ public class TournamentDTO {
         this.comments = comments;
     }
 
-    public String getDirectorId() {
-        return directorId;
+    public Set<TournamentPhaseDTO> getPhases() {
+        return phases;
     }
 
-    public void setDirectorId(String directorId) {
-        this.directorId = directorId;
+    public void setPhases(Set<TournamentPhaseDTO> phases) {
+        this.phases = phases;
+    }
+
+    public Set<TournamentDivisionDTO> getDivisions() {
+        return divisions;
+    }
+
+    public void setDivisions(Set<TournamentDivisionDTO> divisions) {
+        this.divisions = divisions;
     }
 }
