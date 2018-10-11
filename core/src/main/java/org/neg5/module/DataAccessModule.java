@@ -31,9 +31,9 @@ public class DataAccessModule extends AbstractModule {
             @Named(SystemPropertiesModule.SYSTEM_PROPS_NAME) SystemProperties properties
     ) {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUsername(properties.get(USERNAME_PROP));
-        dataSource.setPassword(properties.get(PASSWORD_PROP));
-        dataSource.setUrl(properties.get(JDBC_URL_PROP));
+        dataSource.setUsername(properties.getString(USERNAME_PROP));
+        dataSource.setPassword(properties.getString(PASSWORD_PROP));
+        dataSource.setUrl(properties.getString(JDBC_URL_PROP));
         dataSource.setDriverClassName(DRIVER_CLASS_NAME);
         return dataSource;
     }

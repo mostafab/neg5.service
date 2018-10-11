@@ -10,6 +10,7 @@ public class TournamentMapper extends AbstractObjectMapper<Tournament, Tournamen
 
     @Inject private TournamentPhaseMapper tournamentPhaseMapper;
     @Inject private TournamentDivisionMapper tournamentDivisionMapper;
+    @Inject private TournamentTossupValueMapper tournamentTossupValueMapper;
 
     protected TournamentMapper() {
         super(Tournament.class, TournamentDTO.class);
@@ -22,6 +23,8 @@ public class TournamentMapper extends AbstractObjectMapper<Tournament, Tournamen
             .map(tournamentPhaseMapper::toDTO).collect(Collectors.toSet()));
         dto.setDivisions(tournament.getDivisions().stream()
             .map(tournamentDivisionMapper::toDTO).collect(Collectors.toSet()));
+        dto.setTossupValues(tournament.getTossupValues().stream()
+            .map(tournamentTossupValueMapper::toDTO).collect(Collectors.toSet()));
         return dto;
     }
 }

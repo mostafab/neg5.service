@@ -13,8 +13,13 @@ public class TournamentDTO {
     private String questionSet;
     private String comments;
 
+    private Boolean usesBouncebacks;
+    private Long bonusPointValue;
+    private Long partsPerBonus;
+
     private Set<TournamentPhaseDTO> phases;
     private Set<TournamentDivisionDTO> divisions;
+    private Set<TournamentTossupValueDTO> tossupValues;
 
     public String getId() {
         return id;
@@ -78,5 +83,37 @@ public class TournamentDTO {
 
     public void setDivisions(Set<TournamentDivisionDTO> divisions) {
         this.divisions = divisions;
+    }
+
+    public Boolean getUsesBouncebacks() {
+        return usesBouncebacks;
+    }
+
+    public void setUsesBouncebacks(Boolean usesBouncebacks) {
+        this.usesBouncebacks = usesBouncebacks;
+    }
+
+    public Long getBonusPointValue() {
+        return bonusPointValue;
+    }
+
+    public void setBonusPointValue(Long bonusPointValue) {
+        this.bonusPointValue = bonusPointValue;
+    }
+
+    public Long getPartsPerBonus() {
+        return partsPerBonus;
+    }
+
+    public void setPartsPerBonus(Long partsPerBonus) {
+        this.partsPerBonus = partsPerBonus;
+    }
+
+    public Set<TournamentTossupValueDTO> getTossupValues() {
+        return tossupValues;
+    }
+
+    public void setTossupValues(Set<TournamentTossupValueDTO> tossupValues) {
+        this.tossupValues = tossupValues;
     }
 }

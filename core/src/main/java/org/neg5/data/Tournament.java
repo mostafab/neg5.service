@@ -28,6 +28,11 @@ public class Tournament extends AbstractDataObject<Tournament> {
 
     private Set<TournamentPhase> phases;
     private Set<TournamentDivision> divisions;
+    private Set<TournamentTossupValue> tossupValues;
+
+    private Boolean usesBouncebacks;
+    private Long bonusPointValue;
+    private Long partsPerBonus;
 
     @Id
     public String getId() {
@@ -99,5 +104,41 @@ public class Tournament extends AbstractDataObject<Tournament> {
 
     public void setDivisions(Set<TournamentDivision> divisions) {
         this.divisions = divisions;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tournamentTossupValueId.tournament")
+    public Set<TournamentTossupValue> getTossupValues() {
+        return tossupValues;
+    }
+
+    public void setTossupValues(Set<TournamentTossupValue> tossupValues) {
+        this.tossupValues = tossupValues;
+    }
+
+    @Column(name = "bouncebacks")
+    public Boolean getUsesBouncebacks() {
+        return usesBouncebacks;
+    }
+
+    public void setUsesBouncebacks(Boolean usesBouncebacks) {
+        this.usesBouncebacks = usesBouncebacks;
+    }
+
+    @Column(name = "bonus_point_value")
+    public Long getBonusPointValue() {
+        return bonusPointValue;
+    }
+
+    public void setBonusPointValue(Long bonusPointValue) {
+        this.bonusPointValue = bonusPointValue;
+    }
+
+    @Column(name = "parts_per_bonus")
+    public Long getPartsPerBonus() {
+        return partsPerBonus;
+    }
+
+    public void setPartsPerBonus(Long partsPerBonus) {
+        this.partsPerBonus = partsPerBonus;
     }
 }
