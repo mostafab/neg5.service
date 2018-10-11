@@ -10,9 +10,9 @@ public interface SystemProperties {
     String getString(String key);
 
     /**
-     * Get a property by key and return it as a long
+     * Get a property by key and return it as an int
      * @param key the key
-     * @return value of key as a long
+     * @return value of key as an int
      */
-    Long getLong(String key);
+    Integer getInt(String key);
 }

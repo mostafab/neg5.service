@@ -21,10 +21,10 @@ public final class EnvironmentBackedSystemVariables implements SystemProperties 
     }
 
     @Override
-    public Long getLong(String key) {
+    public Integer getInt(String key) {
         if (!properties.containsKey(key)) {
             return null;
         }
-        return Long.parseLong(properties.get(key));
+        return Integer.parseInt(properties.get(key));
     }
 }
