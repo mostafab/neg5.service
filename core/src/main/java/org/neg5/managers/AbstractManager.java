@@ -20,7 +20,8 @@ public abstract class AbstractManager<T extends AbstractDataObject<T>, DTO> {
     public DTO get(String id) {
         T entity = getDAO().get(id);
         if (entity == null) {
-            throw new NoResultException("No result found for entity with id " + id);
+            String clazzName = getDAO().getPersistentClass().getSimpleName();
+            throw new NoResultException("No result found for entity " + clazzName + " with id " + id);
         }
         return getMapper().toDTO(entity.copyOf());
     }

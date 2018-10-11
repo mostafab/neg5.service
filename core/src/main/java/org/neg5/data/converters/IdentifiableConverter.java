@@ -32,6 +32,9 @@ public abstract class IdentifiableConverter<EnumType extends Enum<EnumType> & Id
 
     @Override
     public EnumType convertToEntityAttribute(ColumnType s) {
+        if (s == null) {
+            return null;
+        }
         return Optional.ofNullable(enumValuesById.get(s))
                 .orElseThrow(() -> new RuntimeException("Unknown enum value " + s + " for enum " + enumTypeClass));
     }

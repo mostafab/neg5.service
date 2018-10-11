@@ -43,7 +43,7 @@ public abstract class AbstractDAO<T extends AbstractDataObject> {
                 .getResultList();
     }
 
-    protected Class<T> getPersistentClass() {
+    public Class<T> getPersistentClass() {
         return persistentClass;
     }
 
