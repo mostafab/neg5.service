@@ -10,7 +10,9 @@ public class TeamStandingStatsDTO {
     private BigDecimal pointsPerGame;
     private BigDecimal pointsAgainstPerGame;
     private BigDecimal marginOfVictory;
+    private BigDecimal pointsPerTossupHeard;
 
+    private int tossupsHeard;
     private TeamRecordDTO record;
 
     private Map<Integer, Long> tossupAnswerCounts;
@@ -55,11 +57,27 @@ public class TeamStandingStatsDTO {
         this.marginOfVictory = marginOfVictory;
     }
 
+    public int getTossupsHeard() {
+        return tossupsHeard;
+    }
+
+    public void setTossupsHeard(int tossupsHeard) {
+        this.tossupsHeard = tossupsHeard;
+    }
+
     public TeamRecordDTO getRecord() {
         return record;
     }
 
     public void setRecord(TeamRecordDTO record) {
         this.record = record;
+    }
+
+    public BigDecimal getPointsPerTossupHeard() {
+        return pointsPerTossupHeard;
+    }
+
+    public void setPointsPerTossupHeard(BigDecimal pointsPerTossupHeard) {
+        this.pointsPerTossupHeard = pointsPerTossupHeard;
     }
 }

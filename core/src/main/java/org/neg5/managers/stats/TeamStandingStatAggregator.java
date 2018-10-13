@@ -8,18 +8,16 @@ import org.neg5.TournamentMatchDTO;
 import java.math.BigDecimal;
 import java.util.stream.DoubleStream;
 
-public class TeamStandingStatAggregator {
+class TeamStandingStatAggregator implements StatAggregator {
 
     private final String teamId;
-
-    private int numMatches;
 
     private final DoubleStream.Builder pointsPerGameBuilder;
     private final DoubleStream.Builder pointsAgainstPerGameBuilder;
 
+    private int numMatches;
     private int tossupsHeard;
-
-    private TeamRecordDTO teamRecord;
+    private final TeamRecordDTO teamRecord;
 
     private boolean aggregated;
 
@@ -32,32 +30,36 @@ public class TeamStandingStatAggregator {
         teamRecord = new TeamRecordDTO();
     }
 
-    void accept(TournamentMatchDTO match) {
+    @Override
+    public void accept(TournamentMatchDTO match) {
         if (aggregated) {
             throw new IllegalStateException("Already called aggregate on team " + teamId);
         }
+
         TeamsWrapper teams = getTeams(match);
         pointsPerGameBuilder.accept(teams.thisTeam.getScore());
         pointsAgainstPerGameBuilder.accept(teams.otherTeam.getScore());
 
         tossupsHeard += match.getTossupsHeard();
         numMatches++;
+
         updateTeamRecord(teams);
     }
 
-    TeamStandingStatsDTO aggregate() {
+    public TeamStandingStatsDTO collect() {
 
         finalizeRecord();
         TeamStandingStatsDTO stats = new TeamStandingStatsDTO();
         stats.setRecord(teamRecord);
+        stats.setTossupsHeard(tossupsHeard);
 
         double ppg = pointsPerGameBuilder.build().average().orElse(0);
         stats.setPointsPerGame(new BigDecimal(ppg).setScale(2, BigDecimal.ROUND_HALF_UP));
-
         double papg = pointsAgainstPerGameBuilder.build().average().orElse(0);
         stats.setPointsAgainstPerGame(new BigDecimal(papg).setScale(2, BigDecimal.ROUND_HALF_UP));
-
         stats.setMarginOfVictory(stats.getPointsPerGame().subtract(stats.getPointsAgainstPerGame()));
+
+        stats.setPointsPerTossupHeard(calculatePointsPerTossupHeard(stats.getPointsPerGame()));
 
         aggregated = true;
 
@@ -95,6 +97,10 @@ public class TeamStandingStatAggregator {
                         new IllegalArgumentException("Cannot find non-team " + teamId + " in match " + match.getId()));
 
         return new TeamsWrapper(thisTeam, otherTeam);
+    }
+
+    private BigDecimal calculatePointsPerTossupHeard(BigDecimal pointsPerGame) {
+        return StatsUtilities.calculatePointsPerTossupsHeard(tossupsHeard, numMatches, pointsPerGame);
     }
 
     private final class TeamsWrapper {

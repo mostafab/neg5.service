@@ -43,7 +43,7 @@ public class TeamStandingsStatsManager {
     private TeamStandingStatsDTO computeStandingsForTeam(String teamId, List<TournamentMatchDTO> matches) {
         TeamStandingStatAggregator aggregator = new TeamStandingStatAggregator(teamId);
         matches.forEach(aggregator::accept);
-        return aggregator.aggregate();
+        return aggregator.collect();
     }
 
     private Map<String, List<TournamentMatchDTO>> groupTeamsByMatches(List<TournamentMatchDTO> matches) {
@@ -59,38 +59,5 @@ public class TeamStandingsStatsManager {
             });
         });
         return matchesByTeamId;
-    }
-
-    private TeamRecordDTO getRecord(String teamId, List<TournamentMatchDTO> matches) {
-        TeamRecordDTO record = new TeamRecordDTO();
-        matches.forEach(match -> {
-            Optional<MatchTeamDTO> thisTeam = match.getTeams().stream()
-                    .filter(team -> team.getTeamId().equals(teamId)).findFirst();
-            Optional<MatchTeamDTO> otherTeam = match.getTeams().stream()
-                    .filter(team -> !team.getTeamId().equals(teamId)).findFirst();
-
-            if (thisTeam.isPresent() && otherTeam.isPresent()) {
-                MatchTeamDTO team = thisTeam.get();
-                MatchTeamDTO other = otherTeam.get();
-
-                if (team.getScore() > other.getScore()) {
-                    record.setWins(record.getWins() + 1);
-                } else if (team.getScore() < other.getScore()) {
-                    record.setLosses(record.getLosses() + 1);
-                } else {
-                    record.setTies(record.getTies() + 1);
-                }
-            }
-        });
-
-        double totalMatches = record.getWins() + record.getLosses() + record.getTies();
-
-        if (totalMatches == 0) {
-            record.setWinPercentage(new BigDecimal(0));
-            return record;
-        }
-        double wins = record.getWins();
-        record.setWinPercentage(new BigDecimal(wins / totalMatches).setScale(3, BigDecimal.ROUND_HALF_EVEN));
-        return record;
     }
 }
