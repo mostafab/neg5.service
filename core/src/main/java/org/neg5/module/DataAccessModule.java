@@ -3,7 +3,7 @@ package org.neg5.module;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
-import org.apache.commons.dbcp.BasicDataSource;
+import com.zaxxer.hikari.HikariDataSource;
 import org.neg5.core.TransactionalSimpleModule;
 import org.neg5.db.PersistenceManager;
 import org.neg5.db.ThreadLocalPersistenceManager;
@@ -30,10 +30,10 @@ public class DataAccessModule extends AbstractModule {
     protected DataSource provideDataSource(
             @Named(SystemPropertiesModule.SYSTEM_PROPS_NAME) SystemProperties properties
     ) {
-        BasicDataSource dataSource = new BasicDataSource();
+        HikariDataSource dataSource = new HikariDataSource();
         dataSource.setUsername(properties.getString(USERNAME_PROP));
         dataSource.setPassword(properties.getString(PASSWORD_PROP));
-        dataSource.setUrl(properties.getString(JDBC_URL_PROP));
+        dataSource.setJdbcUrl(properties.getString(JDBC_URL_PROP));
         dataSource.setDriverClassName(DRIVER_CLASS_NAME);
         return dataSource;
     }
