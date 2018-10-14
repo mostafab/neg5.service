@@ -1,12 +1,16 @@
 package org.neg5.data;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Date;
 import java.util.Set;
@@ -27,6 +31,8 @@ public class Tournament extends AbstractDataObject<Tournament> {
     private Set<TournamentPhase> phases;
     private Set<TournamentDivision> divisions;
     private Set<TournamentTossupValue> tossupValues;
+
+    private TournamentPhase currentPhase;
 
     private Boolean usesBouncebacks;
     private Long bonusPointValue;
@@ -111,6 +117,17 @@ public class Tournament extends AbstractDataObject<Tournament> {
 
     public void setTossupValues(Set<TournamentTossupValue> tossupValues) {
         this.tossupValues = tossupValues;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "active_phase_id")
+    @NotFound(action = NotFoundAction.IGNORE)
+    public TournamentPhase getCurrentPhase() {
+        return currentPhase;
+    }
+
+    public void setCurrentPhase(TournamentPhase activePhase) {
+        this.currentPhase = currentPhase;
     }
 
     @Column(name = "bouncebacks")

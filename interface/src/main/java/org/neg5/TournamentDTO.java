@@ -17,6 +17,8 @@ public class TournamentDTO {
     private Long bonusPointValue;
     private Long partsPerBonus;
 
+    private String currentPhaseId;
+
     private Set<TournamentPhaseDTO> phases;
     private Set<TournamentDivisionDTO> divisions;
     private Set<TournamentTossupValueDTO> tossupValues;
@@ -115,5 +117,13 @@ public class TournamentDTO {
 
     public void setTossupValues(Set<TournamentTossupValueDTO> tossupValues) {
         this.tossupValues = tossupValues;
+    }
+
+    public String getCurrentPhaseId() {
+        return currentPhaseId;
+    }
+
+    public void setCurrentPhaseId(String currentPhaseId) {
+        this.currentPhaseId = currentPhaseId;
     }
 }
