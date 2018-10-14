@@ -19,6 +19,9 @@ public class TeamStandingStatsDTO {
 
     private Set<AnswersDTO> tossupAnswerCounts;
 
+    private BigDecimal powersToNegRatio;
+    private BigDecimal getsToNegRatio;
+
     public String getTeamId() {
         return teamId;
     }
@@ -89,5 +92,21 @@ public class TeamStandingStatsDTO {
 
     public void setPointsPerBonus(BigDecimal pointsPerBonus) {
         this.pointsPerBonus = pointsPerBonus;
+    }
+
+    public BigDecimal getPowersToNegRatio() {
+        return powersToNegRatio;
+    }
+
+    public void setPowersToNegRatio(BigDecimal powersToNegRatio) {
+        this.powersToNegRatio = powersToNegRatio;
+    }
+
+    public BigDecimal getGetsToNegRatio() {
+        return getsToNegRatio;
+    }
+
+    public void setGetsToNegRatio(BigDecimal getsToNegRatio) {
+        this.getsToNegRatio = getsToNegRatio;
     }
 }
