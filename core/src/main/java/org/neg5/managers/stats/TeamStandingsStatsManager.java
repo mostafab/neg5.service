@@ -2,6 +2,7 @@ package org.neg5.managers.stats;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.neg5.MatchTeamDTO;
 import org.neg5.TeamStandingStatsDTO;
 import org.neg5.TeamStandingsStatsDTO;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Singleton
 public class TeamStandingsStatsManager {
 
     @Inject private TournamentMatchManager tournamentMatchManager;
