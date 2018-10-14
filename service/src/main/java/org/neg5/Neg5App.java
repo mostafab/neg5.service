@@ -23,12 +23,14 @@ public class Neg5App implements SparkApplication {
     @Named(SystemPropertiesModule.SYSTEM_PROPS_NAME)
     private SystemProperties systemProperties;
 
-    private static final String PORT_PROP_NAME = "neg5.port";
+    private static final int DEFAULT_PORT = 1337;
+    private static final String PORT_PROP_NAME = "PORT";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Neg5App.class);
 
     @Override
     public synchronized void init() {
-        port(systemProperties.getInt(PORT_PROP_NAME));
+        port(getPort());
         initRoutes();
         initFilters();
     }
@@ -45,5 +47,12 @@ public class Neg5App implements SparkApplication {
             filter.registerFilter();
             LOGGER.info("Registered filters in {}", filter.getClass());
         });
+    }
+
+    private Integer getPort() {
+        if (systemProperties.getInt(PORT_PROP_NAME) != null) {
+            return systemProperties.getInt(PORT_PROP_NAME);
+        }
+        return DEFAULT_PORT;
     }
 }
