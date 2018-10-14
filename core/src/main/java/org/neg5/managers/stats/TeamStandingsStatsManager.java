@@ -3,18 +3,16 @@ package org.neg5.managers.stats;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.neg5.MatchTeamDTO;
-import org.neg5.TeamRecordDTO;
 import org.neg5.TeamStandingStatsDTO;
 import org.neg5.TeamStandingsStatsDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.managers.TournamentManager;
 import org.neg5.managers.TournamentMatchManager;
+import org.neg5.managers.stats.aggregators.TeamStandingStatAggregator;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

@@ -2,6 +2,7 @@ package org.neg5;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Set;
 
 public class TeamStandingStatsDTO {
 
@@ -15,7 +16,7 @@ public class TeamStandingStatsDTO {
     private int tossupsHeard;
     private TeamRecordDTO record;
 
-    private Map<Integer, Long> tossupAnswerCounts;
+    private Set<AnswersDTO> tossupAnswerCounts;
 
     public String getTeamId() {
         return teamId;
@@ -41,11 +42,11 @@ public class TeamStandingStatsDTO {
         this.pointsAgainstPerGame = pointsAgainstPerGame;
     }
 
-    public Map<Integer, Long> getTossupAnswerCounts() {
+    public Set<AnswersDTO> getTossupAnswerCounts() {
         return tossupAnswerCounts;
     }
 
-    public void setTossupAnswerCounts(Map<Integer, Long> tossupAnswerCounts) {
+    public void setTossupAnswerCounts(Set<AnswersDTO> tossupAnswerCounts) {
         this.tossupAnswerCounts = tossupAnswerCounts;
     }
 
