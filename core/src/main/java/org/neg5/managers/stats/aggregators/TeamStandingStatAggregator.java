@@ -16,6 +16,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+/**
+ * Aggregator for a {@link TeamStandingStatsDTO}
+ */
 public class TeamStandingStatAggregator implements StatAggregator<TeamStandingStatsDTO> {
 
     private final String teamId;
@@ -82,7 +85,7 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
         stats.setPointsAgainstPerGame(new BigDecimal(papg).setScale(ROUNDING_SCALE, BigDecimal.ROUND_HALF_UP));
 
         stats.setMarginOfVictory(stats.getPointsPerGame().subtract(stats.getPointsAgainstPerGame()));
-
+        stats.setPointsPerBonus(calculatePointsPerBonus(stats.getPointsPerGame()));
         stats.setPointsPerTossupHeard(calculatePointsPerTossupHeard(stats.getPointsPerGame()));
         stats.setTossupAnswerCounts(convertAnswersCounts());
 
@@ -120,6 +123,7 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
                     AnswersDTO answers = new AnswersDTO();
                     answers.setValue(playerAnswer.getTossupValue());
                     answers.setTotal(playerAnswer.getNumberGotten());
+                    answers.setAnswerType(playerAnswer.getAnswerType());
                     return answers;
                 })
                 .collect(Collectors.toSet());
@@ -163,6 +167,10 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
 
     private BigDecimal calculatePointsPerTossupHeard(BigDecimal pointsPerGame) {
         return StatsUtilities.calculatePointsPerTossupsHeard(tossupsHeard, numMatches, pointsPerGame);
+    }
+
+    private BigDecimal calculatePointsPerBonus(BigDecimal pointsPerGame) {
+        return StatsUtilities.calculatePointsPerBonus(answers, pointsPerGame, numMatches);
     }
 
     private final class TeamsWrapper {

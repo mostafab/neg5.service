@@ -1,11 +1,14 @@
 package org.neg5;
 
+import org.neg5.enums.TossupAnswerType;
+
 public class MatchPlayerAnswerDTO {
 
     private String playerId;
     private String matchId;
     private Integer tossupValue;
     private Integer numberGotten;
+    private TossupAnswerType answerType;
 
     public String getPlayerId() {
         return playerId;
@@ -37,5 +40,13 @@ public class MatchPlayerAnswerDTO {
 
     public void setNumberGotten(Integer numberGotten) {
         this.numberGotten = numberGotten;
+    }
+
+    public TossupAnswerType getAnswerType() {
+        return answerType;
+    }
+
+    public void setAnswerType(TossupAnswerType answerType) {
+        this.answerType = answerType;
     }
 }
