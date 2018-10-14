@@ -10,6 +10,7 @@ import org.neg5.managers.stats.StatsUtilities;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
 
     private final TeamRecordDTO teamRecord;
     private final Map<Integer, Integer> tossupTotalCounts;
+    private final Set<AnswersDTO> answers;
 
     private static final int ROUNDING_SCALE = 2;
     private static final int WIN_RECORD_ROUNDING_SCALE = 3;
@@ -41,6 +43,7 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
 
         teamRecord = new TeamRecordDTO();
         tossupTotalCounts = new HashMap<>();
+        answers = new HashSet<>();
     }
 
     @Override
@@ -58,10 +61,14 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
 
         updateTeamRecord(teams);
         updateTossupTotalCounts(teams);
+        updateAnswers(teams);
     }
 
     @Override
     public TeamStandingStatsDTO collect() {
+        if (aggregated) {
+            throw new IllegalStateException("Already called aggregate on team " + teamId);
+        }
 
         finalizeRecord();
         TeamStandingStatsDTO stats = new TeamStandingStatsDTO();
@@ -104,6 +111,19 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
                     (tossupValue, count) -> count + answer.getNumberGotten());
             tossupTotalCounts.putIfAbsent(answer.getTossupValue(), answer.getNumberGotten());
         });
+    }
+
+    private void updateAnswers(TeamsWrapper wrapper) {
+        Set<AnswersDTO> matchAnswers = wrapper.thisTeam.getPlayers().stream()
+                .flatMap(player -> player.getAnswers().stream())
+                .map(playerAnswer -> {
+                    AnswersDTO answers = new AnswersDTO();
+                    answers.setValue(playerAnswer.getTossupValue());
+                    answers.setTotal(playerAnswer.getNumberGotten());
+                    return answers;
+                })
+                .collect(Collectors.toSet());
+        answers.addAll(matchAnswers);
     }
 
     private void finalizeRecord() {

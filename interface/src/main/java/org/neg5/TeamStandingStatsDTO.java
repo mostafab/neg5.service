@@ -12,6 +12,7 @@ public class TeamStandingStatsDTO {
     private BigDecimal pointsAgainstPerGame;
     private BigDecimal marginOfVictory;
     private BigDecimal pointsPerTossupHeard;
+    private BigDecimal pointsPerBonus;
 
     private int tossupsHeard;
     private TeamRecordDTO record;
@@ -80,5 +81,13 @@ public class TeamStandingStatsDTO {
 
     public void setPointsPerTossupHeard(BigDecimal pointsPerTossupHeard) {
         this.pointsPerTossupHeard = pointsPerTossupHeard;
+    }
+
+    public BigDecimal getPointsPerBonus() {
+        return pointsPerBonus;
+    }
+
+    public void setPointsPerBonus(BigDecimal pointsPerBonus) {
+        this.pointsPerBonus = pointsPerBonus;
     }
 }
