@@ -129,7 +129,7 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
         this.teams = teams;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "matchPlayerId.match")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "matchPlayerId.match")
     public Set<MatchPlayer> getPlayers() {
         return players;
     }
