@@ -20,8 +20,6 @@ public class TournamentPlayer extends AbstractDataObject<TournamentPlayer> imple
     private TournamentTeam team;
     private Tournament tournament;
 
-    private Account addedBy;
-
     @Id
     public String getId() {
         return id;
@@ -59,15 +57,5 @@ public class TournamentPlayer extends AbstractDataObject<TournamentPlayer> imple
 
     public void setTournament(Tournament tournament) {
         this.tournament = tournament;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "added_by")
-    public Account getAddedBy() {
-        return addedBy;
-    }
-
-    public void setAddedBy(Account addedBy) {
-        this.addedBy = addedBy;
     }
 }

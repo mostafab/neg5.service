@@ -32,11 +32,6 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
     private String notes;
     private String serialId;
 
-    private Account addedBy;
-
-    private Date addedAt;
-    private Date lastUpdatedAt;
-
     private Set<MatchTeam> teams;
     private Set<MatchPlayer> players;
 
@@ -123,34 +118,6 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
 
     public void setSerialId(String serialId) {
         this.serialId = serialId;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "added_by")
-    public Account getAddedBy() {
-        return addedBy;
-    }
-
-    public void setAddedBy(Account addedBy) {
-        this.addedBy = addedBy;
-    }
-
-    @Column(name = "added_at")
-    public Date getAddedAt() {
-        return addedAt;
-    }
-
-    public void setAddedAt(Date addedAt) {
-        this.addedAt = addedAt;
-    }
-
-    @Column(name = "last_updated_at")
-    public Date getLastUpdatedAt() {
-        return lastUpdatedAt;
-    }
-
-    public void setLastUpdatedAt(Date lastUpdatedAt) {
-        this.lastUpdatedAt = lastUpdatedAt;
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "matchTeamId.match")
