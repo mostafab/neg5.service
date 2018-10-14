@@ -59,4 +59,19 @@ public class MatchPlayerAnswerId implements Serializable {
     public void setTossupValue(Integer tossupValue) {
         this.tossupValue = tossupValue;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || !(obj instanceof MatchPlayerAnswerId)) {
+            return false;
+        }
+        MatchPlayerAnswerId that = (MatchPlayerAnswerId) obj;
+        return that.getPlayer().getId().equals(player.getId())
+                && that.getTournament().getId().equals(tournament.getId())
+                && that.getMatch().getId().equals(match.getId())
+                && that.getTossupValue().equals(tossupValue);
+    }
 }

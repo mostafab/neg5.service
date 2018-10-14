@@ -33,4 +33,17 @@ public class TournamentTossupValueId implements Serializable {
     public void setValue(Integer value) {
         this.value = value;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || !(obj instanceof TournamentTossupValueId)) {
+            return false;
+        }
+        TournamentTossupValueId that = (TournamentTossupValueId) obj;
+        return that.getTournament().getId().equals(tournament.getId())
+                && that.getValue().equals(value);
+    }
 }
