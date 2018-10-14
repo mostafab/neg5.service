@@ -1,10 +1,8 @@
 package org.neg5;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import org.neg5.filters.RequestFilter;
 import org.neg5.module.SystemProperties;
-import org.neg5.module.SystemPropertiesModule;
 import org.neg5.routers.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +17,7 @@ public class Neg5App implements SparkApplication {
     @Inject private Set<Router> routers;
     @Inject private Set<RequestFilter> filters;
 
-    @Inject
-    @Named(SystemPropertiesModule.SYSTEM_PROPS_NAME)
-    private SystemProperties systemProperties;
+    @Inject private SystemProperties systemProperties;
 
     private static final int DEFAULT_PORT = 1337;
     private static final String PORT_PROP_NAME = "PORT";

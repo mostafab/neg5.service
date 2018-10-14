@@ -27,9 +27,7 @@ public class DataAccessModule extends AbstractModule {
 
     @Provides
     @Named(DATA_SOURCE_PROP_NAME)
-    protected DataSource provideDataSource(
-            @Named(SystemPropertiesModule.SYSTEM_PROPS_NAME) SystemProperties properties
-    ) {
+    protected DataSource provideDataSource(SystemProperties properties) {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setUsername(properties.getString(USERNAME_PROP));
         dataSource.setPassword(properties.getString(PASSWORD_PROP));
