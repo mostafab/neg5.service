@@ -178,8 +178,8 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
 
     private final class TeamsWrapper {
 
-        MatchTeamDTO thisTeam;
-        MatchTeamDTO otherTeam;
+        private final MatchTeamDTO thisTeam;
+        private final MatchTeamDTO otherTeam;
 
         private TeamsWrapper(MatchTeamDTO thisTeam, MatchTeamDTO otherTeam) {
             this.thisTeam = thisTeam;
