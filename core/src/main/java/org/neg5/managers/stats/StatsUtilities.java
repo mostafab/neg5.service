@@ -4,9 +4,11 @@ import org.neg5.AnswersDTO;
 import org.neg5.enums.TossupAnswerType;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Common utility stats functions
@@ -16,6 +18,21 @@ public final class StatsUtilities {
     private static final int ROUNDING_SCALE = 2;
 
     /**
+     * Calculates points per game
+     * @param totalPoints total points scored
+     * @param numMatches number of matches
+     * @return points per game
+     */
+    public static BigDecimal getPointsPerGame(double totalPoints,
+                                              double numMatches) {
+        if (numMatches == 0) {
+            return new BigDecimal(0);
+        }
+        return new BigDecimal(totalPoints).divide(new BigDecimal(numMatches),
+                ROUNDING_SCALE, BigDecimal.ROUND_HALF_EVEN);
+    }
+
+    /**
      * Calculate points per tossup heard
      * @param tossupsHeard tossups heard
      * @param numMatches number of matches
@@ -23,8 +40,8 @@ public final class StatsUtilities {
      * @return a BigDecimal representation of points per tossup heard, rounded to 2 decimal places.
      */
     public static BigDecimal calculatePointsPerTossupsHeard(int tossupsHeard,
-                                                     int numMatches,
-                                                     BigDecimal pointsPerGame) {
+                                                            double numMatches,
+                                                            BigDecimal pointsPerGame) {
         if (tossupsHeard == 0) {
             return new BigDecimal(0);
         }
@@ -98,6 +115,47 @@ public final class StatsUtilities {
             return new BigDecimal(0);
         }
         return new BigDecimal(gets).divide(new BigDecimal(negs), ROUNDING_SCALE, BigDecimal.ROUND_HALF_EVEN);
+    }
+
+    /**
+     * Calculate the percentage of a match a player played
+     * @param tossupsHeard number of tossups the player heard
+     * @param totalTossups number of tossups the match had overall
+     * @return percentage of match played
+     */
+    public static BigDecimal calculatePercentGamePlayed(int tossupsHeard, int totalTossups) {
+        if (totalTossups == 0) {
+            return new BigDecimal(0);
+        }
+        return new BigDecimal(tossupsHeard).divide(new BigDecimal(totalTossups), ROUNDING_SCALE,
+                RoundingMode.HALF_EVEN);
+    }
+
+    /**
+     * Get total number of points from a set of answers
+     * @param answers answers
+     * @return total points
+     */
+    public static Double getTotalPoints(Set<AnswersDTO> answers) {
+        return answers.stream()
+                .mapToDouble(answer -> answer.getTotal() * answer.getValue())
+                .sum();
+    }
+
+    /**
+     * Convert a map of tossup values and their counts to an array of answers
+     * @param tossupTotalCounts map of tossup value -> count
+     * @return set of answers
+     */
+    public static Set<AnswersDTO> convertAnswersCounts(Map<Integer, Integer> tossupTotalCounts) {
+        return tossupTotalCounts.entrySet().stream()
+                .map(entry -> {
+                    AnswersDTO answers = new AnswersDTO();
+                    answers.setTotal(entry.getValue());
+                    answers.setValue(entry.getKey());
+                    return answers;
+                })
+                .collect(Collectors.toSet());
     }
 
     private static Map<TossupAnswerType, Integer> buildAnswerTypeCountsMap(Set<AnswersDTO> answers) {

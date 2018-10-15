@@ -90,7 +90,7 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
         stats.setMarginOfVictory(stats.getPointsPerGame().subtract(stats.getPointsAgainstPerGame()));
         stats.setPointsPerBonus(calculatePointsPerBonus(stats.getPointsPerGame()));
         stats.setPointsPerTossupHeard(calculatePointsPerTossupHeard(stats.getPointsPerGame()));
-        stats.setTossupAnswerCounts(convertAnswersCounts());
+        stats.setTossupAnswerCounts(StatsUtilities.convertAnswersCounts(tossupTotalCounts));
 
         stats.setPowersToNegRatio(StatsUtilities.calculatePowerToNegRatio(answers));
         stats.setGetsToNegRatio(StatsUtilities.calculateGetsToNegRatio(answers));
@@ -165,17 +165,6 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
                         new IllegalArgumentException("Cannot find non-team " + teamId + " in match " + match.getId()));
 
         return new TeamsWrapper(thisTeam, otherTeam);
-    }
-
-    private Set<AnswersDTO> convertAnswersCounts() {
-        return tossupTotalCounts.entrySet().stream()
-                .map(entry -> {
-                    AnswersDTO answers = new AnswersDTO();
-                    answers.setTotal(entry.getValue());
-                    answers.setValue(entry.getKey());
-                    return answers;
-                })
-                .collect(Collectors.toSet());
     }
 
     private BigDecimal calculatePointsPerTossupHeard(BigDecimal pointsPerGame) {

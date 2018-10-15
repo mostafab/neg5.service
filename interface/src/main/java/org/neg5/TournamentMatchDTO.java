@@ -12,12 +12,10 @@ public class TournamentMatchDTO {
     private String moderator;
 
     private String packet;
-    private Long tossupsHeard;
+    private Integer tossupsHeard;
 
     private String notes;
     private String serialId;
-
-    private String addedBy;
 
     private Set<MatchTeamDTO> teams;
 
@@ -71,11 +69,11 @@ public class TournamentMatchDTO {
         this.packet = packet;
     }
 
-    public Long getTossupsHeard() {
+    public Integer getTossupsHeard() {
         return tossupsHeard;
     }
 
-    public void setTossupsHeard(Long tossupsHeard) {
+    public void setTossupsHeard(Integer tossupsHeard) {
         this.tossupsHeard = tossupsHeard;
     }
 

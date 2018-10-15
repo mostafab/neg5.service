@@ -25,7 +25,7 @@ public class IndividualStandingsStatsManager {
         Map<String, List<TournamentMatchDTO>> matchesByPlayers = tournamentPlayerManager
                 .groupPlayersByMatches(tournamentId, phaseId);
 
-        stats.setTeamStandings(
+        stats.setPlayerStandings(
                 matchesByPlayers.entrySet().stream()
                         .map(entry -> computeStandingsForPlayer(entry.getKey(), entry.getValue()))
                         .collect(Collectors.toList())

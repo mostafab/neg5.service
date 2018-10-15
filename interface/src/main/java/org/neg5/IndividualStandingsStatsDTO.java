@@ -4,13 +4,13 @@ import java.util.List;
 
 public class IndividualStandingsStatsDTO extends BaseAggregateStatsDTO {
 
-    private List<IndividualStandingStatDTO> teamStandings;
+    private List<IndividualStandingStatDTO> playerStandings;
 
-    public List<IndividualStandingStatDTO> getTeamStandings() {
-        return teamStandings;
+    public List<IndividualStandingStatDTO> getPlayerStandings() {
+        return playerStandings;
     }
 
-    public void setTeamStandings(List<IndividualStandingStatDTO> teamStandings) {
-        this.teamStandings = teamStandings;
+    public void setPlayerStandings(List<IndividualStandingStatDTO> playerStandings) {
+        this.playerStandings = playerStandings;
     }
 }

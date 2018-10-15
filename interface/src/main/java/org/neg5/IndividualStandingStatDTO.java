@@ -10,7 +10,7 @@ public class IndividualStandingStatDTO {
     private BigDecimal gamesPlayed;
     private Set<AnswersDTO> tossupAnswerCounts;
     private int tossupsHeard;
-    private int totalPoints;
+    private double totalPoints;
 
     private BigDecimal pointsPerTossupHeard;
     private BigDecimal pointsPerGame;
@@ -50,11 +50,11 @@ public class IndividualStandingStatDTO {
         this.tossupsHeard = tossupsHeard;
     }
 
-    public int getTotalPoints() {
+    public double getTotalPoints() {
         return totalPoints;
     }
 
-    public void setTotalPoints(int totalPoints) {
+    public void setTotalPoints(double totalPoints) {
         this.totalPoints = totalPoints;
     }
 
