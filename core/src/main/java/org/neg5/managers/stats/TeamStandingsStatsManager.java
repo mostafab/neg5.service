@@ -7,7 +7,6 @@ import org.neg5.MatchTeamDTO;
 import org.neg5.TeamStandingStatsDTO;
 import org.neg5.TeamStandingsStatsDTO;
 import org.neg5.TournamentMatchDTO;
-import org.neg5.managers.TournamentManager;
 import org.neg5.managers.TournamentMatchManager;
 import org.neg5.managers.stats.aggregators.TeamStandingStatAggregator;
 
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 public class TeamStandingsStatsManager {
 
     @Inject private TournamentMatchManager tournamentMatchManager;
-    @Inject private TournamentManager tournamentManager;
 
     public TeamStandingsStatsDTO calculate(String tournamentId, String phaseId) {
         List<TournamentMatchDTO> matches = tournamentMatchManager.findAllByTournamentAndPhase(tournamentId, phaseId);

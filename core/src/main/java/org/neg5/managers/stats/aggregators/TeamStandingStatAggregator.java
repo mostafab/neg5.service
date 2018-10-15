@@ -28,6 +28,8 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
 
     private int numMatches;
     private int tossupsHeard;
+    private int bouncebackPoints;
+    private int overtimeTossupsGotten;
 
     private final TeamRecordDTO teamRecord;
     private final Map<Integer, Integer> tossupTotalCounts;
@@ -118,6 +120,13 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
                     (tossupValue, count) -> count + answer.getNumberGotten());
             tossupTotalCounts.putIfAbsent(answer.getTossupValue(), answer.getNumberGotten());
         });
+
+        if (wrapper.thisTeam.getBouncebackPoints() != null) {
+            bouncebackPoints += wrapper.thisTeam.getBouncebackPoints();
+        }
+        if (wrapper.thisTeam.getOvertimeTossupsGotten() != null) {
+            overtimeTossupsGotten += wrapper.thisTeam.getOvertimeTossupsGotten();
+        }
     }
 
     private void updateAnswers(TeamsWrapper wrapper) {
@@ -174,7 +183,8 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
     }
 
     private BigDecimal calculatePointsPerBonus(BigDecimal pointsPerGame) {
-        return StatsUtilities.calculatePointsPerBonus(answers, pointsPerGame, numMatches);
+        return StatsUtilities.calculatePointsPerBonus(answers, pointsPerGame,
+                bouncebackPoints, overtimeTossupsGotten, numMatches);
     }
 
     private final class TeamsWrapper {

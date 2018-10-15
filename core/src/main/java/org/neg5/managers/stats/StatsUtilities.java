@@ -38,22 +38,27 @@ public final class StatsUtilities {
      * Calculate points per bonus
      * @param answers set of answers
      * @param pointsPerGame points per game
+     * @param bouncebackPoints the amount of points gotten from bouncebacks
+     * @param overtimeTossupsGotten number of overtime tossups gotten
      * @param numMatches number of matches
      * @return points per bonus
      */
     public static BigDecimal calculatePointsPerBonus(Set<AnswersDTO> answers,
                                                      BigDecimal pointsPerGame,
+                                                     int bouncebackPoints,
+                                                     int overtimeTossupsGotten,
                                                      int numMatches) {
         BigDecimal totalGets = new BigDecimal(
                 answers.stream()
                         .filter(answer -> !TossupAnswerType.NEG.equals(answer.getAnswerType()))
                         .mapToInt(AnswersDTO::getTotal)
                         .sum()
-        );
+        ).subtract(new BigDecimal(overtimeTossupsGotten));
         if (totalGets.equals(new BigDecimal(0))) {
             return new BigDecimal(0);
         }
-        BigDecimal totalPoints = pointsPerGame.multiply(new BigDecimal(numMatches));
+        BigDecimal totalPoints = pointsPerGame.multiply(new BigDecimal(numMatches))
+                .subtract(new BigDecimal(bouncebackPoints));
 
         BigDecimal pointsFromTossups = new BigDecimal(
                 answers.stream()
