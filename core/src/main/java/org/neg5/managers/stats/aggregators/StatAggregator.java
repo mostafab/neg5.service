@@ -6,7 +6,7 @@ import org.neg5.TournamentMatchDTO;
  * Interface used to stream matches into an aggregator and calculate a total stats result
  * @param <StatType>
  */
-interface StatAggregator<StatType> {
+public interface StatAggregator<StatType> {
 
     /**
      * Take in a match and update metrics
