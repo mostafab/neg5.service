@@ -15,6 +15,9 @@ public class IndividualStandingStatDTO {
     private BigDecimal pointsPerTossupHeard;
     private BigDecimal pointsPerGame;
 
+    private BigDecimal powersToNegRatio;
+    private BigDecimal getsToNegRatio;
+
     public String getPlayerId() {
         return playerId;
     }
@@ -69,5 +72,21 @@ public class IndividualStandingStatDTO {
 
     public void setPointsPerGame(BigDecimal pointsPerGame) {
         this.pointsPerGame = pointsPerGame;
+    }
+
+    public BigDecimal getPowersToNegRatio() {
+        return powersToNegRatio;
+    }
+
+    public void setPowersToNegRatio(BigDecimal powersToNegRatio) {
+        this.powersToNegRatio = powersToNegRatio;
+    }
+
+    public BigDecimal getGetsToNegRatio() {
+        return getsToNegRatio;
+    }
+
+    public void setGetsToNegRatio(BigDecimal getsToNegRatio) {
+        this.getsToNegRatio = getsToNegRatio;
     }
 }
