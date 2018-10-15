@@ -56,6 +56,9 @@ public class IndividualStandingStatAggregator implements StatAggregator<Individu
         standing.setPointsPerTossupHeard(StatsUtilities.calculatePointsPerTossupsHeard(tossupsHeard,
                 gamesPlayed.doubleValue(), standing.getPointsPerGame()));
 
+        standing.setPowersToNegRatio(StatsUtilities.calculatePowerToNegRatio(answers));
+        standing.setGetsToNegRatio(StatsUtilities.calculateGetsToNegRatio(answers));
+
         return standing;
     }
 
