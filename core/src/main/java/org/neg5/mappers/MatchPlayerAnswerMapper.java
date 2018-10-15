@@ -11,27 +11,12 @@ public class MatchPlayerAnswerMapper extends AbstractObjectMapper<MatchPlayerAns
     }
 
     @Override
-    public MatchPlayerAnswerDTO toDTO(MatchPlayerAnswer matchPlayerAnswer) {
-        MatchPlayerAnswerDTO answer = super.toDTO(matchPlayerAnswer);
-        setAnswerType(matchPlayerAnswer, answer);
-        return answer;
-    }
-
-    @Override
     protected void addMappings() {
         getTypeMap().addMappings(mapper -> {
            mapper.map(entity -> entity.getMatchPlayerAnswerId().getMatch().getId(), MatchPlayerAnswerDTO::setMatchId);
            mapper.map(entity -> entity.getMatchPlayerAnswerId().getPlayer().getId(), MatchPlayerAnswerDTO::setPlayerId);
            mapper.map(entity -> entity.getMatchPlayerAnswerId().getTossupValue(), MatchPlayerAnswerDTO::setTossupValue);
+           mapper.map(entity -> entity.getTournamentTossupValue().getAnswerType(), MatchPlayerAnswerDTO::setAnswerType);
         });
-    }
-
-    private void setAnswerType(MatchPlayerAnswer matchPlayerAnswer, MatchPlayerAnswerDTO dto) {
-        Tournament tournament = matchPlayerAnswer.getMatchPlayerAnswerId().getTournament();
-        tournament.getTossupValues().stream()
-                .filter(tv -> tv.getTournamentTossupValueId().getValue() != null)
-                .filter(tv -> tv.getTournamentTossupValueId().getValue().equals(dto.getTossupValue()))
-                .findFirst()
-                .ifPresent(tv -> dto.setAnswerType(tv.getAnswerType()));
     }
 }
