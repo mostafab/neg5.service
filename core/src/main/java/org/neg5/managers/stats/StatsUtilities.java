@@ -8,6 +8,7 @@ import org.neg5.enums.TossupAnswerType;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -195,6 +196,30 @@ public final class StatsUtilities {
                 .orElseThrow(() ->
                         new IllegalArgumentException("Cannot find team " + teamId + " in match " + match.getId()));
         return getAnswers(team);
+    }
+
+    /**
+     * Sum totals of answers that are the same value and return a new array
+     * with an element for each tossup value and the total number
+     * @param answers set of answers
+     * @return array with an element for each tossup value and the total number of that value
+     */
+    public static Set<AnswersDTO> aggregateAnswers(Set<AnswersDTO> answers) {
+        Map<Integer, AnswersDTO> tossupValueCounts = new HashMap<>();
+        answers.forEach(answer -> {
+            tossupValueCounts.computeIfPresent(answer.getValue(), (value, dto) -> {
+                dto.setTotal(dto.getTotal() + answer.getTotal());
+                return dto;
+            });
+            tossupValueCounts.computeIfAbsent(answer.getValue(), value -> {
+                AnswersDTO dto = new AnswersDTO();
+                dto.setValue(value);
+                dto.setAnswerType(answer.getAnswerType());
+                dto.setTotal(answer.getTotal());
+                return dto;
+            });
+        });
+        return new HashSet<>(tossupValueCounts.values());
     }
 
     private static Map<TossupAnswerType, Integer> buildAnswerTypeCountsMap(Set<AnswersDTO> answers) {

@@ -48,7 +48,7 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
         MatchTeamDTO thisTeam = teams.getThisTeam();
         stats.setPoints(thisTeam.getScore().doubleValue());
 
-        Set<AnswersDTO> answers = aggregateAnswers(StatsUtilities.getAnswers(thisTeam));
+        Set<AnswersDTO> answers = StatsUtilities.aggregateAnswers(StatsUtilities.getAnswers(thisTeam));
         stats.setTossupAnswerCounts(answers);
         stats.setPowersToNegRatio(StatsUtilities.calculatePowerToNegRatio(answers));
         stats.setGetsToNegRatio(StatsUtilities.calculateGetsToNegRatio(answers));
@@ -66,24 +66,6 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
         stats.setPointsPerBonus(getPointsPerBonus(thisTeam, stats.getPoints(), answers));
 
         return stats;
-    }
-
-    private Set<AnswersDTO> aggregateAnswers(Set<AnswersDTO> answers) {
-        Map<Integer, AnswersDTO> tossupValueCounts = new HashMap<>();
-        answers.forEach(answer -> {
-            tossupValueCounts.computeIfPresent(answer.getValue(), (value, dto) -> {
-                dto.setTotal(dto.getTotal() + answer.getTotal());
-                return dto;
-            });
-            tossupValueCounts.computeIfAbsent(answer.getValue(), value -> {
-               AnswersDTO dto = new AnswersDTO();
-               dto.setValue(value);
-               dto.setAnswerType(answer.getAnswerType());
-               dto.setTotal(answer.getTotal());
-               return dto;
-            });
-        });
-        return new HashSet<>(tossupValueCounts.values());
     }
 
     private Integer getBonusesHeard(Set<AnswersDTO> answers, Integer overtimeTossups) {

@@ -1,6 +1,7 @@
 package org.neg5;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 public class RoundStatDTO {
 
@@ -9,8 +10,10 @@ public class RoundStatDTO {
 
     private Double tossupPoints;
     private Double tossupsHeard;
+    private Integer numMatches;
 
     private BigDecimal averagePointsPerBonus;
+    private Set<AnswersDTO> tossupAnswerCounts;
 
     public Integer getRound() {
         return round;
@@ -44,11 +47,27 @@ public class RoundStatDTO {
         this.tossupsHeard = tossupsHeard;
     }
 
+    public Integer getNumMatches() {
+        return numMatches;
+    }
+
+    public void setNumMatches(Integer numMatches) {
+        this.numMatches = numMatches;
+    }
+
     public BigDecimal getAveragePointsPerBonus() {
         return averagePointsPerBonus;
     }
 
     public void setAveragePointsPerBonus(BigDecimal averagePointsPerBonus) {
         this.averagePointsPerBonus = averagePointsPerBonus;
+    }
+
+    public Set<AnswersDTO> getTossupAnswerCounts() {
+        return tossupAnswerCounts;
+    }
+
+    public void setTossupAnswerCounts(Set<AnswersDTO> tossupAnswerCounts) {
+        this.tossupAnswerCounts = tossupAnswerCounts;
     }
 }
