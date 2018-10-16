@@ -6,20 +6,20 @@ import java.util.Set;
 public class TeamMatchStatsDTO {
 
     private String opponentTeamId;
-    private int round;
+    private Integer round;
 
-    private double points;
-    private double opponentPoints;
+    private Double points;
+    private Double opponentPoints;
 
     private Set<AnswersDTO> tossupAnswerCounts;
-    private double tossupsHeard;
+    private Double tossupsHeard;
     private BigDecimal pointsPerTossupHeard;
 
     private BigDecimal powersToNegRatio;
     private BigDecimal getsToNegRatio;
 
-    private int bonusesHeard;
-    private double bonusPoints;
+    private Integer bonusesHeard;
+    private Double bonusPoints;
 
     private BigDecimal pointsPerBonus;
 
@@ -31,27 +31,27 @@ public class TeamMatchStatsDTO {
         this.opponentTeamId = opponentTeamId;
     }
 
-    public int getRound() {
+    public Integer getRound() {
         return round;
     }
 
-    public void setRound(int round) {
+    public void setRound(Integer round) {
         this.round = round;
     }
 
-    public double getPoints() {
+    public Double getPoints() {
         return points;
     }
 
-    public void setPoints(double points) {
+    public void setPoints(Double points) {
         this.points = points;
     }
 
-    public double getOpponentPoints() {
+    public Double getOpponentPoints() {
         return opponentPoints;
     }
 
-    public void setOpponentPoints(double opponentPoints) {
+    public void setOpponentPoints(Double opponentPoints) {
         this.opponentPoints = opponentPoints;
     }
 
@@ -63,11 +63,11 @@ public class TeamMatchStatsDTO {
         this.tossupAnswerCounts = tossupAnswerCounts;
     }
 
-    public double getTossupsHeard() {
+    public Double getTossupsHeard() {
         return tossupsHeard;
     }
 
-    public void setTossupsHeard(double tossupsHeard) {
+    public void setTossupsHeard(Double tossupsHeard) {
         this.tossupsHeard = tossupsHeard;
     }
 
@@ -95,19 +95,19 @@ public class TeamMatchStatsDTO {
         this.getsToNegRatio = getsToNegRatio;
     }
 
-    public int getBonusesHeard() {
+    public Integer getBonusesHeard() {
         return bonusesHeard;
     }
 
-    public void setBonusesHeard(int bonusesHeard) {
+    public void setBonusesHeard(Integer bonusesHeard) {
         this.bonusesHeard = bonusesHeard;
     }
 
-    public double getBonusPoints() {
+    public Double getBonusPoints() {
         return bonusPoints;
     }
 
-    public void setBonusPoints(double bonusPoints) {
+    public void setBonusPoints(Double bonusPoints) {
         this.bonusPoints = bonusPoints;
     }
 

@@ -15,5 +15,7 @@ public class TournamentStatsRouter extends AbstractJsonRouter {
                 teamStandingsStatsManager.calculateTeamStandings(request.params("id"), request.queryParams("phase")));
         get("/neg5-api/tournaments/:id/stats/individual-standings", (request, response) ->
                 individualStandingsStatsManager.calculateIndividualStandings(request.params("id"), request.queryParams("phase")));
+        get("/neg5-api/tournaments/:id/stats/team-full-standings", (request, response) ->
+                teamStandingsStatsManager.calculateFullTeamStandings(request.params("id"), request.queryParams("phase")));
     }
 }

@@ -2,7 +2,6 @@ package org.neg5.managers.stats.aggregators;
 
 import org.neg5.AnswersDTO;
 import org.neg5.MatchPlayerAnswerDTO;
-import org.neg5.MatchTeamDTO;
 import org.neg5.TeamRecordDTO;
 import org.neg5.TeamStandingStatsDTO;
 import org.neg5.TournamentMatchDTO;
@@ -57,9 +56,9 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
             throw new IllegalStateException("Already called aggregate on team " + teamId);
         }
 
-        TeamsWrapper teams = getTeams(match);
-        pointsPerGameBuilder.accept(teams.thisTeam.getScore());
-        pointsAgainstPerGameBuilder.accept(teams.otherTeam.getScore());
+        MatchUtil.TeamsWrapper teams = getTeams(match);
+        pointsPerGameBuilder.accept(teams.getThisTeam().getScore());
+        pointsAgainstPerGameBuilder.accept(teams.getOtherTeam().getScore());
 
         tossupsHeard += match.getTossupsHeard();
         numMatches++;
@@ -100,18 +99,18 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
         return stats;
     }
 
-    private void updateTeamRecord(TeamsWrapper wrapper) {
-        if (wrapper.thisTeam.getScore() > wrapper.otherTeam.getScore()) {
+    private void updateTeamRecord(MatchUtil.TeamsWrapper wrapper) {
+        if (wrapper.getThisTeam().getScore() > wrapper.getOtherTeam().getScore()) {
             teamRecord.setWins(teamRecord.getWins() + 1);
-        } else if (wrapper.thisTeam.getScore() < wrapper.otherTeam.getScore()) {
+        } else if (wrapper.getThisTeam().getScore() < wrapper.getOtherTeam().getScore()) {
             teamRecord.setLosses(teamRecord.getLosses() + 1);
         } else {
             teamRecord.setTies(teamRecord.getTies() + 1);
         }
     }
 
-    private void updateTossupTotalCounts(TeamsWrapper wrapper) {
-        Set<MatchPlayerAnswerDTO> answers = wrapper.thisTeam.getPlayers().stream()
+    private void updateTossupTotalCounts(MatchUtil.TeamsWrapper wrapper) {
+        Set<MatchPlayerAnswerDTO> answers = wrapper.getThisTeam().getPlayers().stream()
                 .flatMap(player -> player.getAnswers().stream())
                 .collect(Collectors.toSet());
 
@@ -121,16 +120,16 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
             tossupTotalCounts.putIfAbsent(answer.getTossupValue(), answer.getNumberGotten());
         });
 
-        if (wrapper.thisTeam.getBouncebackPoints() != null) {
-            bouncebackPoints += wrapper.thisTeam.getBouncebackPoints();
+        if (wrapper.getThisTeam().getBouncebackPoints() != null) {
+            bouncebackPoints += wrapper.getThisTeam().getBouncebackPoints();
         }
-        if (wrapper.thisTeam.getOvertimeTossupsGotten() != null) {
-            overtimeTossupsGotten += wrapper.thisTeam.getOvertimeTossupsGotten();
+        if (wrapper.getThisTeam().getOvertimeTossupsGotten() != null) {
+            overtimeTossupsGotten += wrapper.getThisTeam().getOvertimeTossupsGotten();
         }
     }
 
-    private void updateAnswers(TeamsWrapper wrapper) {
-        Set<AnswersDTO> matchAnswers = wrapper.thisTeam.getPlayers().stream()
+    private void updateAnswers(MatchUtil.TeamsWrapper wrapper) {
+        Set<AnswersDTO> matchAnswers = wrapper.getThisTeam().getPlayers().stream()
                 .flatMap(player -> player.getAnswers().stream())
                 .map(playerAnswer -> {
                     AnswersDTO answers = new AnswersDTO();
@@ -152,19 +151,8 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
                 BigDecimal.ROUND_HALF_EVEN));
     }
 
-    private TeamsWrapper getTeams(TournamentMatchDTO match) {
-        MatchTeamDTO thisTeam = match.getTeams().stream()
-                .filter(team -> teamId.equals(team.getTeamId()))
-                .findFirst()
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Cannot find team " + teamId + " in match " + match.getId()));
-        MatchTeamDTO otherTeam = match.getTeams().stream()
-                .filter(team -> !teamId.equals(team.getTeamId()))
-                .findFirst()
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Cannot find non-team " + teamId + " in match " + match.getId()));
-
-        return new TeamsWrapper(thisTeam, otherTeam);
+    private MatchUtil.TeamsWrapper getTeams(TournamentMatchDTO match) {
+        return MatchUtil.getTeams(teamId, match);
     }
 
     private BigDecimal calculatePointsPerTossupHeard(BigDecimal pointsPerGame) {
@@ -174,16 +162,5 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
     private BigDecimal calculatePointsPerBonus(BigDecimal pointsPerGame) {
         return StatsUtilities.calculatePointsPerBonus(answers, pointsPerGame,
                 bouncebackPoints, overtimeTossupsGotten, numMatches);
-    }
-
-    private final class TeamsWrapper {
-
-        private final MatchTeamDTO thisTeam;
-        private final MatchTeamDTO otherTeam;
-
-        private TeamsWrapper(MatchTeamDTO thisTeam, MatchTeamDTO otherTeam) {
-            this.thisTeam = thisTeam;
-            this.otherTeam = otherTeam;
-        }
     }
 }

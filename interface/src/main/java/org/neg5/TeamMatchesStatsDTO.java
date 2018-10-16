@@ -2,7 +2,7 @@ package org.neg5;
 
 import java.util.List;
 
-public class TeamMatchesStatsDTO extends BaseAggregateStatsDTO {
+public class TeamMatchesStatsDTO {
 
     private String teamId;
     private List<TeamMatchStatsDTO> matches;

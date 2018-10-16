@@ -1,6 +1,8 @@
 package org.neg5.managers.stats;
 
 import org.neg5.AnswersDTO;
+import org.neg5.MatchTeamDTO;
+import org.neg5.TournamentMatchDTO;
 import org.neg5.enums.TossupAnswerType;
 
 import java.math.BigDecimal;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 public final class StatsUtilities {
 
     private static final int ROUNDING_SCALE = 2;
+
+    private StatsUtilities() {}
 
     /**
      * Calculates points per game
@@ -47,8 +51,7 @@ public final class StatsUtilities {
         }
         return pointsPerGame
                 .multiply(new BigDecimal(numMatches))
-                .divide(new BigDecimal(tossupsHeard), BigDecimal.ROUND_UP)
-                .setScale(ROUNDING_SCALE, BigDecimal.ROUND_UP);
+                .divide(new BigDecimal(tossupsHeard), ROUNDING_SCALE, BigDecimal.ROUND_UP);
     }
 
     /**
@@ -82,8 +85,7 @@ public final class StatsUtilities {
                         .mapToDouble(answer -> answer.getTotal() * answer.getValue())
                         .sum()
         );
-        return totalPoints.subtract(pointsFromTossups).divide(totalGets, BigDecimal.ROUND_UP)
-                .setScale(BigDecimal.ROUND_HALF_UP, BigDecimal.ROUND_UP);
+        return totalPoints.subtract(pointsFromTossups).divide(totalGets, ROUNDING_SCALE, BigDecimal.ROUND_UP);
     }
 
     /**
@@ -143,6 +145,16 @@ public final class StatsUtilities {
     }
 
     /**
+     * Get total bonus points
+     * @param totalPoints total number of points
+     * @param answers player answers
+     * @return a double representation of bonus points
+     */
+    public static Double getBonusPoints(Double totalPoints, Set<AnswersDTO> answers) {
+        return totalPoints - getTotalPoints(answers);
+    }
+
+    /**
      * Convert a map of tossup values and their counts to an array of answers
      * @param tossupTotalCounts map of tossup value -> count
      * @return set of answers
@@ -156,6 +168,30 @@ public final class StatsUtilities {
                     return answers;
                 })
                 .collect(Collectors.toSet());
+    }
+
+    public static Set<AnswersDTO> getAnswers(MatchTeamDTO team) {
+        return team
+                .getPlayers()
+                .stream()
+                .flatMap(player -> player.getAnswers().stream())
+                .map(answer -> {
+                    AnswersDTO answers = new AnswersDTO();
+                    answers.setAnswerType(answer.getAnswerType());
+                    answers.setTotal(answer.getNumberGotten());
+                    answers.setValue(answer.getTossupValue());
+                    return answers;
+                })
+                .collect(Collectors.toSet());
+    }
+
+    public static Set<AnswersDTO> getAnswers(String teamId, TournamentMatchDTO match) {
+        MatchTeamDTO team = match.getTeams().stream()
+                .filter(t -> t.getTeamId().equals(teamId))
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Cannot find team " + teamId + " in match " + match.getId()));
+        return getAnswers(team);
     }
 
     private static Map<TossupAnswerType, Integer> buildAnswerTypeCountsMap(Set<AnswersDTO> answers) {

@@ -2,10 +2,14 @@ package org.neg5.managers.stats;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import org.neg5.FullTeamsMatchesStatsDTO;
+import org.neg5.TeamMatchesStatsDTO;
 import org.neg5.TeamStandingStatsDTO;
 import org.neg5.TeamStandingsStatsDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.managers.TournamentTeamManager;
+import org.neg5.managers.stats.aggregators.TeamMatchesStatsAggregator;
 import org.neg5.managers.stats.aggregators.TeamStandingStatAggregator;
 
 import java.util.List;
@@ -33,9 +37,38 @@ public class TeamStandingsStatsManager {
         return stats;
     }
 
+    public FullTeamsMatchesStatsDTO calculateFullTeamStandings(String tournamentId, String phaseId) {
+        FullTeamsMatchesStatsDTO stats = new FullTeamsMatchesStatsDTO();
+        stats.setTournamentId(tournamentId);
+        stats.setPhaseId(phaseId);
+
+        Map<String, List<TournamentMatchDTO>> teamsByMatches = tournamentTeamManager
+                .groupTeamsByMatches(tournamentId, phaseId);
+        stats.setTeams(
+                teamsByMatches.entrySet().stream()
+                    .map(entry -> getFullStandingsForTeam(entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toList())
+        );
+
+        return stats;
+    }
+
     private TeamStandingStatsDTO computeStandingsForTeam(String teamId, List<TournamentMatchDTO> matches) {
         TeamStandingStatAggregator aggregator = new TeamStandingStatAggregator(teamId);
         matches.forEach(aggregator::accept);
         return aggregator.collect();
+    }
+
+    private TeamMatchesStatsDTO getFullStandingsForTeam(String teamId,
+                                                        List<TournamentMatchDTO> matches) {
+
+        TeamMatchesStatsDTO teamMatchesStats = new TeamMatchesStatsDTO();
+        teamMatchesStats.setTeamId(teamId);
+
+        TeamMatchesStatsAggregator aggregator = new TeamMatchesStatsAggregator(teamId);
+        matches.forEach(aggregator::accept);
+        teamMatchesStats.setMatches(aggregator.collect());
+
+        return teamMatchesStats;
     }
 }
