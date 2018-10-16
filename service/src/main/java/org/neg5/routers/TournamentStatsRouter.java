@@ -2,12 +2,14 @@ package org.neg5.routers;
 
 import com.google.inject.Inject;
 import org.neg5.managers.stats.IndividualStandingsStatsManager;
+import org.neg5.managers.stats.RoundReportStatsManager;
 import org.neg5.managers.stats.TeamStandingsStatsManager;
 
 public class TournamentStatsRouter extends AbstractJsonRouter {
 
     @Inject private TeamStandingsStatsManager teamStandingsStatsManager;
     @Inject private IndividualStandingsStatsManager individualStandingsStatsManager;
+    @Inject private RoundReportStatsManager roundReportStatsManager;
 
     @Override
     public void registerRoutes() {
@@ -17,5 +19,7 @@ public class TournamentStatsRouter extends AbstractJsonRouter {
                 individualStandingsStatsManager.calculateIndividualStandings(request.params("id"), request.queryParams("phase")));
         get("/neg5-api/tournaments/:id/stats/team-full-standings", (request, response) ->
                 teamStandingsStatsManager.calculateFullTeamStandings(request.params("id"), request.queryParams("phase")));
+        get("/neg5-api/tournaments/:id/stats/round-report", (request, response) ->
+                roundReportStatsManager.calculateRoundReportStats(request.params("id"), request.queryParams("phase")));
     }
 }
