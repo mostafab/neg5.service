@@ -4,6 +4,7 @@ import org.neg5.AnswersDTO;
 import org.neg5.MatchTeamDTO;
 import org.neg5.TeamMatchStatsDTO;
 import org.neg5.TournamentMatchDTO;
+import org.neg5.enums.TossupAnswerType;
 import org.neg5.managers.stats.StatsUtilities;
 
 import java.math.BigDecimal;
@@ -33,7 +34,7 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
 
     @Override
     public List<TeamMatchStatsDTO> collect() {
-        return matches;
+        return new ArrayList<>(matches);
     }
 
     private TeamMatchStatsDTO calculateTeamMatchStats(TournamentMatchDTO match) {
@@ -56,6 +57,8 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
                 1, new BigDecimal(stats.getPoints())));
 
         stats.setBonusPoints(StatsUtilities.getBonusPoints(stats.getPoints(), answers));
+        stats.setBonusesHeard(getBonusesHeard(answers, thisTeam.getOvertimeTossupsGotten()));
+        stats.setPointsPerBonus(getPointsPerBonus(thisTeam, stats.getPoints(), answers));
 
         return stats;
     }
@@ -76,5 +79,24 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
             });
         });
         return new HashSet<>(tossupValueCounts.values());
+    }
+
+    private Integer getBonusesHeard(Set<AnswersDTO> answers, Integer overtimeTossups) {
+        return answers.stream()
+                .filter(answer -> TossupAnswerType.NEG != answer.getAnswerType())
+                .mapToInt(AnswersDTO::getTotal)
+                .sum() - (overtimeTossups == null ? 0 : overtimeTossups);
+    }
+
+    private BigDecimal getPointsPerBonus(MatchTeamDTO thisTeam,
+                                         Double points,
+                                         Set<AnswersDTO> answers) {
+        return StatsUtilities.calculatePointsPerBonus(
+                answers,
+                new BigDecimal(points),
+                thisTeam.getBouncebackPoints() == null ? 0 : thisTeam.getBouncebackPoints(),
+                thisTeam.getOvertimeTossupsGotten() == null ? 0 : thisTeam.getOvertimeTossupsGotten(),
+                1
+        );
     }
 }
