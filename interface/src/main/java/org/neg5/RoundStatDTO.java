@@ -12,6 +12,7 @@ public class RoundStatDTO {
     private Double tossupsHeard;
     private Integer numMatches;
 
+    private BigDecimal tossupPointsPerTossupHeard;
     private BigDecimal averagePointsPerBonus;
     private Set<AnswersDTO> tossupAnswerCounts;
 
@@ -53,6 +54,14 @@ public class RoundStatDTO {
 
     public void setNumMatches(Integer numMatches) {
         this.numMatches = numMatches;
+    }
+
+    public BigDecimal getTossupPointsPerTossupHeard() {
+        return tossupPointsPerTossupHeard;
+    }
+
+    public void setTossupPointsPerTossupHeard(BigDecimal tossupPointsPerTossupHeard) {
+        this.tossupPointsPerTossupHeard = tossupPointsPerTossupHeard;
     }
 
     public BigDecimal getAveragePointsPerBonus() {

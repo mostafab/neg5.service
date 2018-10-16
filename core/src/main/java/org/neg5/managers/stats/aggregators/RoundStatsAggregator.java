@@ -5,6 +5,7 @@ import org.neg5.RoundStatDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.managers.stats.StatsUtilities;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,6 +22,8 @@ public class RoundStatsAggregator implements StatAggregator<RoundStatDTO> {
     private int numMatches;
 
     private final Set<AnswersDTO> answers;
+
+    private static final int ROUNDING_SCALE = 2;
 
     public RoundStatsAggregator(Integer round) {
         this.round = round;
@@ -59,6 +62,8 @@ public class RoundStatsAggregator implements StatAggregator<RoundStatDTO> {
         stat.setAveragePointsPerBonus(StatsUtilities.calculatePointsPerBonus(answers,
                 stat.getAveragePointsPerGame(), totalBouncebackPoints, totalOvertimeTossups, numResults));
         stat.setTossupAnswerCounts(StatsUtilities.aggregateAnswers(answers));
+        stat.setTossupPointsPerTossupHeard(calculateTossupPointsPerTossupHeard(stat.getTossupPoints(),
+                stat.getTossupsHeard()));
         return stat;
     }
 
@@ -76,5 +81,13 @@ public class RoundStatsAggregator implements StatAggregator<RoundStatDTO> {
                 .collect(Collectors.toSet());
 
         answers.addAll(matchAnswers);
+    }
+
+    private BigDecimal calculateTossupPointsPerTossupHeard(double tossupPoints, double tossupsHeard) {
+        if (tossupsHeard == 0) {
+            return new BigDecimal(0);
+        }
+        return new BigDecimal(tossupPoints).divide(new BigDecimal(tossupsHeard), ROUNDING_SCALE,
+                BigDecimal.ROUND_HALF_EVEN);
     }
 }
