@@ -10,6 +10,7 @@ public class TeamMatchStatsDTO {
 
     private Double points;
     private Double opponentPoints;
+    private Double bouncebackPoints;
 
     private Set<AnswersDTO> tossupAnswerCounts;
     private Double tossupsHeard;
@@ -53,6 +54,14 @@ public class TeamMatchStatsDTO {
 
     public void setOpponentPoints(Double opponentPoints) {
         this.opponentPoints = opponentPoints;
+    }
+
+    public Double getBouncebackPoints() {
+        return bouncebackPoints;
+    }
+
+    public void setBouncebackPoints(Double bouncebackPoints) {
+        this.bouncebackPoints = bouncebackPoints;
     }
 
     public Set<AnswersDTO> getTossupAnswerCounts() {

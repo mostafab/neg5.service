@@ -147,11 +147,14 @@ public final class StatsUtilities {
     /**
      * Get total bonus points
      * @param totalPoints total number of points
+     * @param bouncebackPoints number of bounceback points gotten
      * @param answers player answers
      * @return a double representation of bonus points
      */
-    public static Double getBonusPoints(Double totalPoints, Set<AnswersDTO> answers) {
-        return totalPoints - getTotalPoints(answers);
+    public static Double getBonusPoints(Double totalPoints,
+                                        Double bouncebackPoints,
+                                        Set<AnswersDTO> answers) {
+        return totalPoints - getTotalPoints(answers) - (bouncebackPoints == null ? 0 : bouncebackPoints);
     }
 
     /**

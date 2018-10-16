@@ -41,6 +41,7 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
         MatchUtil.TeamsWrapper teams = MatchUtil.getTeams(teamId, match);
 
         TeamMatchStatsDTO stats = new TeamMatchStatsDTO();
+        stats.setRound(match.getRound() == null ? null : match.getRound().intValue());
         stats.setOpponentTeamId(teams.getOtherTeam().getTeamId());
         stats.setOpponentPoints(teams.getOtherTeam().getScore().doubleValue());
 
@@ -56,7 +57,11 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
         stats.setPointsPerTossupHeard(StatsUtilities.calculatePointsPerTossupsHeard(stats.getTossupsHeard().intValue(),
                 1, new BigDecimal(stats.getPoints())));
 
-        stats.setBonusPoints(StatsUtilities.getBonusPoints(stats.getPoints(), answers));
+        stats.setBouncebackPoints(thisTeam.getBouncebackPoints() == null
+                ? null
+                : thisTeam.getBouncebackPoints().doubleValue()
+        );
+        stats.setBonusPoints(StatsUtilities.getBonusPoints(stats.getPoints(), stats.getBouncebackPoints(), answers));
         stats.setBonusesHeard(getBonusesHeard(answers, thisTeam.getOvertimeTossupsGotten()));
         stats.setPointsPerBonus(getPointsPerBonus(thisTeam, stats.getPoints(), answers));
 
