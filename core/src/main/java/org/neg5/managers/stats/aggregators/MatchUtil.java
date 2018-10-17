@@ -1,5 +1,6 @@
 package org.neg5.managers.stats.aggregators;
 
+import org.neg5.MatchPlayerDTO;
 import org.neg5.MatchTeamDTO;
 import org.neg5.TournamentMatchDTO;
 
@@ -23,6 +24,15 @@ final class MatchUtil {
                         new IllegalArgumentException("Cannot find non-team " + teamId + " in match " + match.getId()));
 
         return new TeamsWrapper(thisTeam, otherTeam);
+    }
+
+    public static MatchPlayerDTO getPlayer(String playerId, TournamentMatchDTO match) {
+        return match.getTeams().stream()
+                .flatMap(t -> t.getPlayers().stream())
+                .filter(player -> playerId.equals(player.getPlayerId()))
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Cannot find player " + playerId + " in match " + match.getId()));
     }
 
     final static class TeamsWrapper {
