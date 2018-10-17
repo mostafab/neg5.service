@@ -8,6 +8,7 @@ import org.neg5.IndividualStandingStatDTO;
 import org.neg5.IndividualStandingsStatsDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.managers.TournamentPlayerManager;
+import org.neg5.managers.stats.aggregators.IndividualMatchesStatAggregator;
 import org.neg5.managers.stats.aggregators.IndividualStandingStatAggregator;
 
 import java.util.List;
@@ -63,6 +64,11 @@ public class IndividualStandingsStatsManager {
                                                                      List<TournamentMatchDTO> matches) {
         IndividualMatchesStatsDTO stats = new IndividualMatchesStatsDTO();
         stats.setPlayerId(playerId);
+
+        IndividualMatchesStatAggregator aggregator = new IndividualMatchesStatAggregator(playerId);
+        matches.forEach(aggregator::accept);
+
+        stats.setMatches(aggregator.collect());
 
         return stats;
     }
