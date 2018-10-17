@@ -1,7 +1,7 @@
 package org.neg5.daos;
 
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
-import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.type.StandardBasicTypes;
 import org.neg5.data.TournamentMatch;
 import org.neg5.data.transformers.MatchTransformer;
@@ -159,8 +159,8 @@ public class TournamentMatchDAO extends AbstractDAO<TournamentMatch> {
 
     public List<Match> findMatchesByTournamentIdWithRawQuery(String tournamentId) {
         List<Match> matches = getEntityManager().createNativeQuery(QUERY)
+                .unwrap(NativeQuery.class)
                 .setParameter("tournamentId", tournamentId)
-                .unwrap(SQLQuery.class)
                 .addScalar("phases", StringArrayType.INSTANCE)
                 .addScalar("id", StandardBasicTypes.STRING)
                 .addScalar("tournamentId", StandardBasicTypes.STRING)

@@ -34,7 +34,7 @@ public class IndividualStandingStatAggregator implements StatAggregator<Individu
 
     @Override
     public void accept(TournamentMatchDTO match) {
-        MatchPlayerDTO player = getPlayer(match);
+        MatchPlayerDTO player = MatchUtil.getPlayer(playerId, match);
 
         updateAnswers(player);
         updateGamesPlayed(match, player);
@@ -84,14 +84,5 @@ public class IndividualStandingStatAggregator implements StatAggregator<Individu
         int tuh = player.getTossupsHeard() == null ? 0 : player.getTossupsHeard();
         int totalTossups = match.getTossupsHeard() == null ? 0 : match.getTossupsHeard();
         gamesPlayed = gamesPlayed.add(StatsUtilities.calculatePercentGamePlayed(tuh, totalTossups));
-    }
-
-    private MatchPlayerDTO getPlayer(TournamentMatchDTO match) {
-        return match.getTeams().stream()
-                .flatMap(t -> t.getPlayers().stream())
-                .filter(player -> playerId.equals(player.getPlayerId()))
-                .findFirst()
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Cannot find player " + playerId + " in match " + match.getId()));
     }
 }
