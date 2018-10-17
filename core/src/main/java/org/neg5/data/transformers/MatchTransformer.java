@@ -16,23 +16,25 @@ import java.util.stream.Collectors;
 
 public class MatchTransformer implements ResultTransformer {
 
-    private final GsonProvider gsonProvider;
+    private final Gson gson;
 
     public MatchTransformer() {
-        gsonProvider = new GsonProvider();
+        gson = new GsonProvider().get();
     }
 
     @Override
     public Match transformTuple(Object[] tuple, String[] aliases) {
-        Gson gson = gsonProvider.get();
-
         Match match = new Match();
         match.setId((String) tuple[1]);
         match.setTournamentId((String) tuple[2]);
         match.setRound((Integer) tuple[3]);
         match.setTossupsHeard((Integer) tuple[4]);
-        match.setPhases(getPhases(gson, tuple));
-        match.setTeams(getTeams(gson, tuple));
+        match.setPhases(getPhases(tuple));
+        match.setTeams(getTeams(tuple));
+        match.setModerator((String) tuple[6]);
+        match.setPacket((String) tuple[7]);
+        match.setNotes((String) tuple[8]);
+        match.setSerialId((String) tuple[9]);
         return match;
     }
 
@@ -41,7 +43,7 @@ public class MatchTransformer implements ResultTransformer {
         return new ArrayList<>(collection);
     }
 
-    private Set<Phase> getPhases(Gson gson, Object[] tuple) {
+    private Set<Phase> getPhases(Object[] tuple) {
         return Arrays.stream((Object[]) tuple[0])
                 .map(object -> {
                     PGobject phaseObj = (PGobject) object;
@@ -50,7 +52,7 @@ public class MatchTransformer implements ResultTransformer {
                 .collect(Collectors.toSet());
     }
 
-    private Set<TeamInMatch> getTeams(Gson gson, Object[] tuple) {
+    private Set<TeamInMatch> getTeams(Object[] tuple) {
         return Arrays.stream((Object[]) tuple[5])
                 .map(object -> {
                     PGobject phaseObj = (PGobject) object;

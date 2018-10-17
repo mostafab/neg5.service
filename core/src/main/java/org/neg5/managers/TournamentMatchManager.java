@@ -8,6 +8,7 @@ import org.neg5.daos.TournamentMatchDAO;
 import org.neg5.data.TournamentMatch;
 import org.neg5.data.transformers.data.Match;
 import org.neg5.mappers.TournamentMatchMapper;
+import org.neg5.mappers.data.MatchToMatchDTOMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class TournamentMatchManager extends AbstractManager<TournamentMatch, TournamentMatchDTO> {
 
     @Inject private TournamentMatchMapper tournamentMatchMapper;
+    @Inject private MatchToMatchDTOMapper matchToMatchDTOMapper;
     @Inject private TournamentMatchDAO tournamentMatchDAO;
 
     @Override
@@ -28,8 +30,14 @@ public class TournamentMatchManager extends AbstractManager<TournamentMatch, Tou
         return tournamentMatchDAO;
     }
 
+    @Override
+    public List<TournamentMatchDTO> findAllByTournamentId(String tournamentId) {
+        return findByRawQuery(tournamentId).stream()
+                .map(matchToMatchDTOMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public List<TournamentMatchDTO> findAllByTournamentAndPhase(String tournamentId, String phaseId) {
-        List<Match> matches = findByRawQuery(tournamentId);
         return findAllByTournamentId(tournamentId).stream()
                 .filter(match -> phaseId == null || match.getPhases().contains(phaseId))
                 .collect(Collectors.toList());

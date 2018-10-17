@@ -13,6 +13,11 @@ public class Match {
     private Set<Phase> phases;
     private Set<TeamInMatch> teams;
 
+    private String moderator;
+    private String notes;
+    private String packet;
+    private String serialId;
+
     public String getId() {
         return id;
     }
@@ -59,5 +64,37 @@ public class Match {
 
     public void setTeams(Set<TeamInMatch> teams) {
         this.teams = teams;
+    }
+
+    public String getModerator() {
+        return moderator;
+    }
+
+    public void setModerator(String moderator) {
+        this.moderator = moderator;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getPacket() {
+        return packet;
+    }
+
+    public void setPacket(String packet) {
+        this.packet = packet;
+    }
+
+    public String getSerialId() {
+        return serialId;
+    }
+
+    public void setSerialId(String serialId) {
+        this.serialId = serialId;
     }
 }

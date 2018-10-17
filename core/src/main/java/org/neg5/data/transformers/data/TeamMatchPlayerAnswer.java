@@ -5,6 +5,7 @@ public class TeamMatchPlayerAnswer {
     private Integer value;
     private Integer number;
     private String playerId;
+    private String matchId;
 
     public Integer getValue() {
         return value;
@@ -28,5 +29,13 @@ public class TeamMatchPlayerAnswer {
 
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
+    }
+
+    public String getMatchId() {
+        return matchId;
+    }
+
+    public void setMatchId(String matchId) {
+        this.matchId = matchId;
     }
 }
