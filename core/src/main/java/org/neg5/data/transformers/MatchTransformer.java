@@ -29,6 +29,8 @@ public class MatchTransformer implements ResultTransformer {
         Match match = new Match();
         match.setId((String) tuple[1]);
         match.setTournamentId((String) tuple[2]);
+        match.setRound((Integer) tuple[3]);
+        match.setTossupsHeard((Integer) tuple[4]);
         match.setPhases(getPhases(gson, tuple));
         match.setTeams(getTeams(gson, tuple));
         return match;
