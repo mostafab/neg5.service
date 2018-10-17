@@ -52,7 +52,7 @@ public final class StatsUtilities {
         }
         return pointsPerGame
                 .multiply(new BigDecimal(numMatches))
-                .divide(new BigDecimal(tossupsHeard), ROUNDING_SCALE, BigDecimal.ROUND_UP);
+                .divide(new BigDecimal(tossupsHeard), ROUNDING_SCALE, BigDecimal.ROUND_HALF_EVEN);
     }
 
     /**
