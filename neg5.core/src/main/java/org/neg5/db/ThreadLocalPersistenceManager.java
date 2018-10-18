@@ -22,10 +22,10 @@ public class ThreadLocalPersistenceManager implements PersistenceManager {
 
     private static final String ENTITY_MANAGER_UNIT = "org.neg5.data";
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     @Inject
-    protected ThreadLocalPersistenceManager(@Named(DataAccessModule.DATA_SOURCE_PROP_NAME) DataSource dataSource) {
+    protected ThreadLocalPersistenceManager(@Named(DataAccessModule.READ_WRITE_DATA_SOURCE_PROP_NAME) DataSource dataSource) {
         this.dataSource = dataSource;
         Map<String, Object> properties = new HashMap<>();
         properties.put(AvailableSettings.DATASOURCE, dataSource);

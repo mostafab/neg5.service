@@ -10,8 +10,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>service</module>
-        <module>interface</module>
-        <module>core</module>
+        <module>neg5.interface</module>
+        <module>neg5.core</module>
     </modules>
 
     <build>
