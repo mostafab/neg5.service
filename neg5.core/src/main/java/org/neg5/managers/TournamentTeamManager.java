@@ -10,6 +10,7 @@ import org.neg5.data.TournamentTeam;
 
 import org.neg5.mappers.TournamentTeamMapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,8 @@ public class TournamentTeamManager extends AbstractManager<TournamentTeam, Tourn
                 matchesByTeamId.computeIfAbsent(team.getTeamId(), teamId -> Lists.newArrayList(match));
             });
         });
+        List<TournamentTeamDTO> allTeams = findAllByTournamentId(tournamentId);
+        allTeams.forEach(team -> matchesByTeamId.computeIfAbsent(team.getId(), teamId -> new ArrayList<>()));
         return matchesByTeamId;
     }
 }

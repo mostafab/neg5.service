@@ -11,6 +11,7 @@ import org.neg5.daos.TournamentPlayerDAO;
 import org.neg5.data.TournamentPlayer;
 import org.neg5.mappers.TournamentPlayerMapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,8 @@ public class TournamentPlayerManager extends AbstractManager<TournamentPlayer, T
                 matchesByPlayerId.computeIfAbsent(player.getPlayerId(), teamId -> Lists.newArrayList(match));
             });
         });
+        List<TournamentPlayerDTO> allPlayers = findAllByTournamentId(tournamentId);
+        allPlayers.forEach(player -> matchesByPlayerId.computeIfAbsent(player.getId(), playerId -> new ArrayList<>()));
         return matchesByPlayerId;
     }
 }
