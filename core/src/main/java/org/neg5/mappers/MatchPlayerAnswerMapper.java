@@ -1,9 +1,10 @@
 package org.neg5.mappers;
 
+import com.google.inject.Singleton;
 import org.neg5.MatchPlayerAnswerDTO;
 import org.neg5.data.MatchPlayerAnswer;
-import org.neg5.data.Tournament;
 
+@Singleton
 public class MatchPlayerAnswerMapper extends AbstractObjectMapper<MatchPlayerAnswer, MatchPlayerAnswerDTO> {
 
     protected MatchPlayerAnswerMapper() {

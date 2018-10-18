@@ -49,25 +49,19 @@ public class ThreadLocalPersistenceManager implements PersistenceManager {
     @Override
     public void begin() {
         EntityTransaction transaction = getEntityManager().getTransaction();
-        if (!transaction.isActive()) {
-            transaction.begin();
-        }
+        transaction.begin();
     }
 
     @Override
     public void commit() {
         EntityTransaction transaction = getEntityManager().getTransaction();
-        if (transaction.isActive()) {
-            transaction.commit();
-        }
+        transaction.commit();
     }
 
     @Override
     public void rollback() {
         EntityTransaction transaction = getEntityManager().getTransaction();
-        if (transaction.isActive()) {
-            transaction.rollback();
-        }
+        transaction.rollback();
     }
 
     @Override

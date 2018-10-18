@@ -1,12 +1,14 @@
 package org.neg5.mappers;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.data.TournamentMatch;
 import org.neg5.data.TournamentPhase;
 
 import java.util.stream.Collectors;
 
+@Singleton
 public class TournamentMatchMapper extends AbstractObjectMapper<TournamentMatch, TournamentMatchDTO> {
 
     @Inject private MatchTeamMapper matchTeamMapper;

@@ -1,6 +1,7 @@
 package org.neg5.mappers;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.neg5.MatchPlayerDTO;
 import org.neg5.MatchTeamDTO;
 import org.neg5.data.MatchPlayer;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Singleton
 public class MatchTeamMapper extends AbstractObjectMapper<MatchTeam, MatchTeamDTO> {
 
     @Inject private MatchPlayerMapper matchPlayerMapper;

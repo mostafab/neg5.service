@@ -1,11 +1,13 @@
 package org.neg5.mappers;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.neg5.MatchPlayerDTO;
 import org.neg5.data.MatchPlayer;
 
 import java.util.stream.Collectors;
 
+@Singleton
 public class MatchPlayerMapper extends AbstractObjectMapper<MatchPlayer, MatchPlayerDTO> {
 
     @Inject private MatchPlayerAnswerMapper matchPlayerAnswerMapper;

@@ -2,6 +2,7 @@ package org.neg5.managers;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.neg5.MatchPlayerDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentPlayerDTO;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Singleton
 public class TournamentPlayerManager extends AbstractManager<TournamentPlayer, TournamentPlayerDTO> {
 
     @Inject private TournamentPlayerMapper tournamentPlayerMapper;
