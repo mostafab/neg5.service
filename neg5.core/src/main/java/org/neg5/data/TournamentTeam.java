@@ -24,6 +24,7 @@ public class TournamentTeam extends AbstractDataObject<TournamentTeam> implement
     private Tournament tournament;
 
     private Set<TournamentDivision> divisions;
+    private Set<TournamentPlayer> players;
 
     @Id
     @Override
@@ -67,5 +68,14 @@ public class TournamentTeam extends AbstractDataObject<TournamentTeam> implement
 
     public void setDivisions(Set<TournamentDivision> divisions) {
         this.divisions = divisions;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team")
+    public Set<TournamentPlayer> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Set<TournamentPlayer> players) {
+        this.players = players;
     }
 }

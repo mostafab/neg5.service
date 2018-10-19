@@ -1,14 +1,17 @@
 package org.neg5.mappers;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.neg5.TournamentTeamDTO;
-import org.neg5.data.TournamentDivision;
 import org.neg5.data.TournamentTeam;
 
 import java.util.stream.Collectors;
 
 @Singleton
 public class TournamentTeamMapper extends AbstractObjectMapper<TournamentTeam, TournamentTeamDTO> {
+
+    @Inject private TournamentDivisionMapper divisionMapper;
+    @Inject private TournamentPlayerMapper playerMapper;
 
     protected TournamentTeamMapper() {
         super(TournamentTeam.class, TournamentTeamDTO.class);
@@ -18,7 +21,8 @@ public class TournamentTeamMapper extends AbstractObjectMapper<TournamentTeam, T
     public TournamentTeamDTO toDTO(TournamentTeam tournamentTeam) {
         TournamentTeamDTO dto = super.toDTO(tournamentTeam);
         dto.setDivisions(tournamentTeam.getDivisions().stream()
-            .map(TournamentDivision::getId).collect(Collectors.toSet()));
+            .map(divisionMapper::toDTO).collect(Collectors.toSet()));
+        dto.setPlayers(tournamentTeam.getPlayers().stream().map(playerMapper::toDTO).collect(Collectors.toSet()));
         return dto;
     }
 
