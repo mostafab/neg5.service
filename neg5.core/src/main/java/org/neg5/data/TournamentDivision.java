@@ -52,7 +52,7 @@ public class TournamentDivision extends AbstractDataObject<TournamentDivision> i
         this.tournament = tournament;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "phase_id")
     public TournamentPhase getPhase() {
         return phase;

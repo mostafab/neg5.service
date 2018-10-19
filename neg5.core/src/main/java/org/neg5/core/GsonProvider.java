@@ -6,7 +6,9 @@ import com.google.inject.Provider;
 
 public class GsonProvider implements Provider<Gson> {
 
-    private Gson gson = new GsonBuilder().create();
+    private final Gson gson = new GsonBuilder()
+            .registerTypeAdapterFactory(new IdentifiableTypeAdapterFactory())
+            .create();
 
     @Override
     public Gson get() {
