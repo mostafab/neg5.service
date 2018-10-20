@@ -24,15 +24,15 @@ public class AbstractObjectMapper<Entity, DTO> {
     }
 
     public DTO toDTO(Entity entity) {
-        return modelMapper.map(entity, dtoClass);
+        DTO dto = modelMapper.map(entity, dtoClass);
+        enrichDTO(dto, entity);
+        return dto;
     }
+
+    protected void enrichDTO(DTO dto, Entity entity) {}
 
     protected void addMappings() {
 
-    }
-
-    protected void initRules() {
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
     protected ModelMapper getModelMapper() {
