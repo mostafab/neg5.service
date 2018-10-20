@@ -4,15 +4,13 @@ import org.neg5.AnswersDTO;
 import org.neg5.MatchTeamDTO;
 import org.neg5.TeamMatchStatsDTO;
 import org.neg5.TournamentMatchDTO;
+import org.neg5.enums.MatchResult;
 import org.neg5.enums.TossupAnswerType;
 import org.neg5.managers.stats.StatsUtilities;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatchStatsDTO>> {
@@ -44,6 +42,7 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
         stats.setRound(match.getRound() == null ? null : match.getRound().intValue());
         stats.setOpponentTeamId(teams.getOtherTeam().getTeamId());
         stats.setOpponentPoints(teams.getOtherTeam().getScore().doubleValue());
+        stats.setResult(getResult(teams));
 
         MatchTeamDTO thisTeam = teams.getThisTeam();
         stats.setPoints(thisTeam.getScore().doubleValue());
@@ -85,5 +84,23 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
                 thisTeam.getOvertimeTossupsGotten() == null ? 0 : thisTeam.getOvertimeTossupsGotten(),
                 1
         );
+    }
+
+    private MatchResult getResult(MatchUtil.TeamsWrapper teams) {
+        MatchTeamDTO thisTeam = teams.getThisTeam();
+        MatchTeamDTO otherTeam = teams.getOtherTeam();
+
+        if (thisTeam.getScore() == null || otherTeam.getScore() == null) {
+            return null;
+        }
+        Integer thisScore = thisTeam.getScore();
+        Integer otherScore = otherTeam.getScore();
+        if (thisScore > otherScore) {
+            return MatchResult.WIN;
+        }
+        if (thisScore < otherScore) {
+            return MatchResult.LOSS;
+        }
+        return MatchResult.TIE;
     }
 }

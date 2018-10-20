@@ -55,7 +55,7 @@ public class TournamentTeamManager extends AbstractManager<TournamentTeam, Tourn
             });
         });
         List<TournamentTeamDTO> allTeams = findAllByTournamentId(tournamentId);
-        allTeams.forEach(team -> matchesByTeamId.computeIfAbsent(team.getId(), teamId -> new ArrayList<>()));
+        allTeams.forEach(team -> matchesByTeamId.putIfAbsent(team.getId(), new ArrayList<>()));
         return matchesByTeamId;
     }
 }

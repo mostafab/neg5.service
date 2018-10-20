@@ -1,5 +1,7 @@
 package org.neg5;
 
+import org.neg5.enums.MatchResult;
+
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -7,6 +9,8 @@ public class TeamMatchStatsDTO {
 
     private String opponentTeamId;
     private Integer round;
+
+    private MatchResult result;
 
     private Double points;
     private Double opponentPoints;
@@ -38,6 +42,14 @@ public class TeamMatchStatsDTO {
 
     public void setRound(Integer round) {
         this.round = round;
+    }
+
+    public MatchResult getResult() {
+        return result;
+    }
+
+    public void setResult(MatchResult result) {
+        this.result = result;
     }
 
     public Double getPoints() {
