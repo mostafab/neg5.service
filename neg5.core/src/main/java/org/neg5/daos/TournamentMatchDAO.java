@@ -1,5 +1,6 @@
 package org.neg5.daos;
 
+import com.google.inject.Singleton;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.type.StandardBasicTypes;
@@ -9,6 +10,7 @@ import org.neg5.data.transformers.data.Match;
 
 import java.util.List;
 
+@Singleton
 public class TournamentMatchDAO extends AbstractDAO<TournamentMatch> {
 
     private static final String QUERY = "SELECT match_information.*, COALESCE(match_phases.phases, '{}') as phases\n" +
