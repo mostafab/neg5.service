@@ -37,10 +37,7 @@ public class Neg5App implements SparkApplication {
     }
 
     private void initRoutes() {
-        routers.forEach(router -> {
-            router.registerRoutes();
-            LOGGER.info("Registered routes in {}", router.getClass());
-        });
+        routers.forEach(Router::registerRoutes);
     }
 
     private void initFilters() {
