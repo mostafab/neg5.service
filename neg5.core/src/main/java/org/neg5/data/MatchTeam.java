@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "team_plays_in_tournament_match")
 @DynamicUpdate
-public class MatchTeam {
+public class MatchTeam extends AbstractDataObject<MatchTeam, MatchTeamId> {
 
     private MatchTeamId matchTeamId;
 
@@ -23,11 +23,11 @@ public class MatchTeam {
     Since this table has a composite primary key, we need to use an {@link EmbeddedId} to represent it
      */
     @EmbeddedId
-    public MatchTeamId getMatchTeamId() {
+    public MatchTeamId getId() {
         return matchTeamId;
     }
 
-    public void setMatchTeamId(MatchTeamId matchTeamId) {
+    public void setId(MatchTeamId matchTeamId) {
         this.matchTeamId = matchTeamId;
     }
 

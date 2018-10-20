@@ -27,8 +27,8 @@ public class MatchPlayerMapper extends AbstractObjectMapper<MatchPlayer, MatchPl
     @Override
     protected void addMappings() {
         getTypeMap().addMappings(mapper -> {
-            mapper.map(entity -> entity.getMatchPlayerId().getMatch().getId(), MatchPlayerDTO::setMatchId);
-            mapper.map(entity -> entity.getMatchPlayerId().getPlayer().getId(), MatchPlayerDTO::setPlayerId);
+            mapper.map(entity -> entity.getId().getMatch().getId(), MatchPlayerDTO::setMatchId);
+            mapper.map(entity -> entity.getId().getPlayer().getId(), MatchPlayerDTO::setPlayerId);
         });
     }
 }

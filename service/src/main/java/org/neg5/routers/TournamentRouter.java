@@ -6,6 +6,7 @@ import org.neg5.managers.TournamentMatchManager;
 import org.neg5.managers.TournamentPhaseManager;
 import org.neg5.managers.TournamentPlayerManager;
 import org.neg5.managers.TournamentTeamManager;
+import org.neg5.managers.TournamentTossupValueManager;
 
 public class TournamentRouter extends AbstractJsonRouter {
 
@@ -14,6 +15,7 @@ public class TournamentRouter extends AbstractJsonRouter {
     @Inject private TournamentPlayerManager tournamentPlayerManager;
     @Inject private TournamentMatchManager tournamentMatchManager;
     @Inject private TournamentPhaseManager tournamentPhaseManager;
+    @Inject private TournamentTossupValueManager tournamentTossupValueManager;
 
     @Override
     public void registerRoutes() {
@@ -27,5 +29,7 @@ public class TournamentRouter extends AbstractJsonRouter {
                 -> tournamentMatchManager.findAllByTournamentId(request.params("id")));
         get("/neg5-api/tournaments/:id/phases", (request, response)
                 -> tournamentPhaseManager.findAllByTournamentId(request.params("id")));
+        get("/neg5-api/tournaments/:id/tossupValues", (request, response)
+                -> tournamentTossupValueManager.findAllByTournamentId(request.params("id")));
     }
 }

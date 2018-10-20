@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import spark.Route;
 import spark.Spark;
 
-import java.lang.invoke.MethodHandles;
-
 /**
  * Controller that handles converting responses to JSON payloads
  */
@@ -19,7 +17,7 @@ public abstract class AbstractJsonRouter implements Router {
     @Inject
     private JsonTransformerProvider jsonTransformerProvider;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     protected void get(String path, Route route) {
         Spark.get(path, enrichRoute(route), getJsonTransformer());

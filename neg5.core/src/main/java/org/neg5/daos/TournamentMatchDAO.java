@@ -11,7 +11,7 @@ import org.neg5.data.transformers.data.Match;
 import java.util.List;
 
 @Singleton
-public class TournamentMatchDAO extends AbstractDAO<TournamentMatch> {
+public class TournamentMatchDAO extends AbstractDAO<TournamentMatch, String> {
 
     private static final String QUERY = "SELECT match_information.*, COALESCE(match_phases.phases, '{}') as phases\n" +
             "FROM\n" +

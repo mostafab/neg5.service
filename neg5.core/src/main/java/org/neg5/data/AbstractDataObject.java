@@ -4,9 +4,9 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class AbstractDataObject<T> {
+public abstract class AbstractDataObject<T, PrimaryKeyType> {
 
-    public abstract String getId();
+    public abstract PrimaryKeyType getId();
 
     public T copyOf() {
         try {

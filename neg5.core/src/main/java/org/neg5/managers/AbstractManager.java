@@ -10,14 +10,14 @@ import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class AbstractManager<T extends AbstractDataObject<T>, DTO> {
+public abstract class AbstractManager<T extends AbstractDataObject<T, PrimaryKeyType>, DTO, PrimaryKeyType> {
 
-    protected abstract AbstractDAO<T> getDAO();
+    protected abstract AbstractDAO<T, PrimaryKeyType> getDAO();
 
     protected abstract AbstractObjectMapper<T, DTO> getMapper();
 
     @Transactional
-    public DTO get(String id) {
+    public DTO get(PrimaryKeyType id) {
         T entity = getDAO().get(id);
         if (entity == null) {
             String clazzName = getDAO().getPersistentClass().getSimpleName();

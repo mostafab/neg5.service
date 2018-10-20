@@ -7,7 +7,7 @@ import org.neg5.daos.TournamentPhaseDAO;
 import org.neg5.data.TournamentPhase;
 import org.neg5.mappers.TournamentPhaseMapper;
 
-public class TournamentPhaseManager extends AbstractManager<TournamentPhase, TournamentPhaseDTO> {
+public class TournamentPhaseManager extends AbstractManager<TournamentPhase, TournamentPhaseDTO, String> {
 
     @Inject private TournamentPhaseDAO tournamentPhaseDAO;
     @Inject private TournamentPhaseMapper tournamentPhaseMapper;

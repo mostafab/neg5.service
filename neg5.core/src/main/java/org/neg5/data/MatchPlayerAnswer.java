@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "player_match_tossup")
 @DynamicUpdate
-public class MatchPlayerAnswer {
+public class MatchPlayerAnswer extends AbstractDataObject<MatchPlayerAnswer, MatchPlayerAnswerId> {
 
     private MatchPlayerAnswerId matchPlayerAnswerId;
 
@@ -23,11 +23,11 @@ public class MatchPlayerAnswer {
     private Integer numberGotten;
 
     @EmbeddedId
-    public MatchPlayerAnswerId getMatchPlayerAnswerId() {
+    public MatchPlayerAnswerId getId() {
         return matchPlayerAnswerId;
     }
 
-    public void setMatchPlayerAnswerId(MatchPlayerAnswerId matchPlayerAnswerId) {
+    public void setId(MatchPlayerAnswerId matchPlayerAnswerId) {
         this.matchPlayerAnswerId = matchPlayerAnswerId;
     }
 

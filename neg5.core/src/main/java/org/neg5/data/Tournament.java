@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tournament")
 @DynamicUpdate
-public class Tournament extends AbstractDataObject<Tournament> {
+public class Tournament extends AbstractDataObject<Tournament, String> {
 
     private String id;
 
@@ -110,7 +110,7 @@ public class Tournament extends AbstractDataObject<Tournament> {
         this.divisions = divisions;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tournamentTossupValueId.tournament")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.tournament")
     public Set<TournamentTossupValue> getTossupValues() {
         return tossupValues;
     }

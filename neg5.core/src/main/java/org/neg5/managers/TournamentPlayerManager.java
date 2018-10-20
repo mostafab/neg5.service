@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Singleton
-public class TournamentPlayerManager extends AbstractManager<TournamentPlayer, TournamentPlayerDTO> {
+public class TournamentPlayerManager extends AbstractManager<TournamentPlayer, TournamentPlayerDTO, String> {
 
     @Inject private TournamentPlayerMapper tournamentPlayerMapper;
     @Inject private TournamentPlayerDAO tournamentPlayerDAO;

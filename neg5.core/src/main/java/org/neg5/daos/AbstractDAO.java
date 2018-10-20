@@ -8,22 +8,24 @@ import org.neg5.data.SpecificTournamentEntity;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public abstract class AbstractDAO<T extends AbstractDataObject> {
+public abstract class AbstractDAO<T extends AbstractDataObject<T, PrimaryKeyType>, PrimaryKeyType> {
 
     private Class<T> persistentClass;
 
     private static final String FIND_ALL_BY_TOURNAMENT_ID_QUERY
-            = "SELECT ent from %s ent where ent.tournament.id = :tournamentId";
+            = "SELECT ent from %s ent where ent.%s = :tournamentId";
+
+    private static final String DEFAULT_TOURNAMENT_ATTRIBUTE_PATH = "tournament.id";
 
     private static final String TOURNAMENT_ID_PARAM = "tournamentId";
 
     @Inject private Provider<EntityManager> entityManager;
 
-    protected AbstractDAO(Class<T> persistentClass) {
+    AbstractDAO(Class<T> persistentClass) {
         this.persistentClass = persistentClass;
     }
 
-    public T get(String id) {
+    public T get(PrimaryKeyType id) {
         return getEntityManager().find(getPersistentClass(), id);
     }
 
@@ -37,7 +39,8 @@ public abstract class AbstractDAO<T extends AbstractDataObject> {
 
     public List<T> findAllByTournamentId(String tournamentId) {
         validateFindByTournamentId();
-        String query = String.format(FIND_ALL_BY_TOURNAMENT_ID_QUERY, persistentClass.getSimpleName());
+        String query = String.format(FIND_ALL_BY_TOURNAMENT_ID_QUERY, persistentClass.getSimpleName(),
+                getTournamentIdAttributePath());
         return getEntityManager().createQuery(query, persistentClass)
                 .setParameter(TOURNAMENT_ID_PARAM, tournamentId)
                 .getResultList();
@@ -49,6 +52,10 @@ public abstract class AbstractDAO<T extends AbstractDataObject> {
 
     protected EntityManager getEntityManager() {
         return entityManager.get();
+    }
+
+    protected String getTournamentIdAttributePath() {
+        return DEFAULT_TOURNAMENT_ATTRIBUTE_PATH;
     }
 
     private void validateFindByTournamentId() {

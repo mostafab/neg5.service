@@ -15,11 +15,11 @@ public class TournamentTossupValueMapper extends AbstractObjectMapper<Tournament
     protected void addMappings() {
         getTypeMap().addMappings(mapper -> {
             mapper.map(
-                    tournamentTossupValue -> tournamentTossupValue.getTournamentTossupValueId().getTournament().getId(),
+                    tournamentTossupValue -> tournamentTossupValue.getId().getTournament().getId(),
                     TournamentTossupValueDTO::setTournamentId
             );
             mapper.map(
-                    tournamentTossupValue -> tournamentTossupValue.getTournamentTossupValueId().getValue(),
+                    tournamentTossupValue -> tournamentTossupValue.getId().getValue(),
                     TournamentTossupValueDTO::setValue
             );
         });

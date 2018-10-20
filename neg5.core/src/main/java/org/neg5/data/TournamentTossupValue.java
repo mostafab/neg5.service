@@ -8,21 +8,24 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tournament_tossup_values")
 @DynamicUpdate
-public class TournamentTossupValue {
+public class TournamentTossupValue
+        extends AbstractDataObject<TournamentTossupValue, TournamentTossupValueId>
+        implements SpecificTournamentEntity {
 
     private TournamentTossupValueId tournamentTossupValueId;
     private TossupAnswerType answerType;
 
     @EmbeddedId
-    public TournamentTossupValueId getTournamentTossupValueId() {
+    public TournamentTossupValueId getId() {
         return tournamentTossupValueId;
     }
 
-    public void setTournamentTossupValueId(TournamentTossupValueId tournamentTossupValueId) {
+    public void setId(TournamentTossupValueId tournamentTossupValueId) {
         this.tournamentTossupValueId = tournamentTossupValueId;
     }
 
@@ -33,5 +36,11 @@ public class TournamentTossupValue {
 
     public void setAnswerType(TossupAnswerType answerType) {
         this.answerType = answerType;
+    }
+
+    @Override
+    @Transient
+    public Tournament getTournament() {
+        return tournamentTossupValueId.getTournament();
     }
 }

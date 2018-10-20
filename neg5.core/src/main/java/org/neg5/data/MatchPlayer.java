@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "player_plays_in_tournament_match")
 @Entity
 @DynamicUpdate
-public class MatchPlayer {
+public class MatchPlayer extends AbstractDataObject<MatchPlayer, MatchPlayerId> {
 
     private MatchPlayerId matchPlayerId;
     private Integer tossupsHeard;
@@ -29,11 +29,11 @@ public class MatchPlayer {
     Since this table has a composite primary key, we need to use an {@link EmbeddedId} to represent it
      */
     @EmbeddedId
-    public MatchPlayerId getMatchPlayerId() {
+    public MatchPlayerId getId() {
         return matchPlayerId;
     }
 
-    public void setMatchPlayerId(MatchPlayerId matchPlayerId) {
+    public void setId(MatchPlayerId matchPlayerId) {
         this.matchPlayerId = matchPlayerId;
     }
 

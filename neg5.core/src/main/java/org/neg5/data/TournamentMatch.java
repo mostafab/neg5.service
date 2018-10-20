@@ -17,7 +17,8 @@ import java.util.Set;
 @Entity
 @Table(name = "tournament_match")
 @DynamicUpdate
-public class TournamentMatch extends AbstractDataObject<TournamentMatch> implements SpecificTournamentEntity {
+public class TournamentMatch extends AbstractDataObject<TournamentMatch, String>
+        implements SpecificTournamentEntity {
 
     private String id;
     private Tournament tournament;
@@ -120,7 +121,7 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
         this.serialId = serialId;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "matchTeamId.match")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.match")
     public Set<MatchTeam> getTeams() {
         return teams;
     }
@@ -129,7 +130,7 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch> impleme
         this.teams = teams;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "matchPlayerId.match")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.match")
     public Set<MatchPlayer> getPlayers() {
         return players;
     }

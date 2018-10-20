@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "account")
 @DynamicUpdate
-public class Account extends AbstractDataObject<Account> {
+public class Account extends AbstractDataObject<Account, String> {
 
     private String username;
 
