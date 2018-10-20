@@ -1,6 +1,7 @@
 package org.neg5;
 
 import com.google.inject.Inject;
+import com.google.inject.persist.PersistService;
 import org.neg5.filters.RequestFilter;
 import org.neg5.module.SystemProperties;
 import org.neg5.routers.Router;
@@ -16,13 +17,17 @@ public class Neg5App implements SparkApplication {
 
     @Inject private Set<Router> routers;
     @Inject private Set<RequestFilter> filters;
-
     @Inject private SystemProperties systemProperties;
 
     private static final int DEFAULT_PORT = 1337;
     private static final String PORT_PROP_NAME = "PORT";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Neg5App.class);
+
+    @Inject
+    public Neg5App(PersistService persistService) {
+        persistService.start();
+    }
 
     @Override
     public synchronized void init() {

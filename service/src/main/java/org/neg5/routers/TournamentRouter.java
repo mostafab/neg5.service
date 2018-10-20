@@ -25,6 +25,7 @@ public class TournamentRouter extends AbstractJsonRouter {
                 -> tournamentPlayerManager.findAllByTournamentId(request.params("id")));
         get("/neg5-api/tournaments/:id/matches", (request, response)
                 -> tournamentMatchManager.findAllByTournamentId(request.params("id")));
-        get("/neg5-api/tournaments/:id/phases", (request, response) -> tournamentPhaseManager.findAllByTournamentId(request.params("id")));
+        get("/neg5-api/tournaments/:id/phases", (request, response)
+                -> tournamentPhaseManager.findAllByTournamentId(request.params("id")));
     }
 }

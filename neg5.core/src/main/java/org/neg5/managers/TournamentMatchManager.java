@@ -2,9 +2,9 @@ package org.neg5.managers;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentTossupValueDTO;
-import org.neg5.core.TransactionalSimple;
 import org.neg5.daos.TournamentMatchDAO;
 import org.neg5.data.TournamentMatch;
 import org.neg5.data.transformers.data.Match;
@@ -49,7 +49,7 @@ public class TournamentMatchManager extends AbstractManager<TournamentMatch, Tou
                 .collect(Collectors.toList());
     }
 
-    @TransactionalSimple
+    @Transactional
     protected List<Match> findByRawQuery(String tournamentId) {
         return tournamentMatchDAO.findMatchesByTournamentIdWithRawQuery(tournamentId);
     }

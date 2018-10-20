@@ -1,18 +1,15 @@
 package org.neg5.module;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.name.Named;
+import com.google.inject.persist.jpa.JpaPersistModule;
 import com.zaxxer.hikari.HikariDataSource;
-import org.neg5.core.TransactionalSimpleModule;
-import org.neg5.db.PersistenceManager;
-import org.neg5.db.ThreadLocalPersistenceManager;
+import org.hibernate.cfg.AvailableSettings;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DataAccessModule extends AbstractModule {
-
-    public static final String READ_WRITE_DATA_SOURCE_PROP_NAME = "DataSource.readWrite";
 
     private static final String USERNAME_PROP = "neg5.username";
     private static final String PASSWORD_PROP = "neg5.password";
@@ -20,14 +17,16 @@ public class DataAccessModule extends AbstractModule {
 
     private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver";
 
+    private static final String PERSISTENCE_UNIT_NAME = "org.neg5.data";
+
+    @Override
     protected void configure() {
-        install(new TransactionalSimpleModule());
-        bind(PersistenceManager.class).to(ThreadLocalPersistenceManager.class);
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(AvailableSettings.DATASOURCE, provideRWDataSource(new EnvironmentBackedSystemVariables()));
+        install(new JpaPersistModule(PERSISTENCE_UNIT_NAME).properties(properties));
     }
 
-    @Provides
-    @Named(READ_WRITE_DATA_SOURCE_PROP_NAME)
-    protected DataSource provideRWDataSource(SystemProperties properties) {
+    private DataSource provideRWDataSource(SystemProperties properties) {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setUsername(properties.getString(USERNAME_PROP));
         dataSource.setPassword(properties.getString(PASSWORD_PROP));
