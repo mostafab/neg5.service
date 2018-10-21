@@ -126,7 +126,7 @@ public class Tournament extends AbstractDataObject<Tournament, String> {
         return currentPhase;
     }
 
-    public void setCurrentPhase(TournamentPhase activePhase) {
+    public void setCurrentPhase(TournamentPhase currentPhase) {
         this.currentPhase = currentPhase;
     }
 

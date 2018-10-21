@@ -32,6 +32,7 @@ public class DataAccessModule extends AbstractModule {
         dataSource.setPassword(properties.getString(PASSWORD_PROP));
         dataSource.setJdbcUrl(properties.getString(JDBC_URL_PROP));
         dataSource.setDriverClassName(DRIVER_CLASS_NAME);
+        dataSource.setReadOnly(false);
         return dataSource;
     }
 }
