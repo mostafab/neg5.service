@@ -13,7 +13,7 @@ public class TournamentTossupValueMapper extends AbstractObjectMapper<Tournament
 
     @Override
     protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
+        getEntityToDTOTypeMap().addMappings(mapper -> {
             mapper.map(
                     tournamentTossupValue -> tournamentTossupValue.getTournament().getId(),
                     TournamentTossupValueDTO::setTournamentId

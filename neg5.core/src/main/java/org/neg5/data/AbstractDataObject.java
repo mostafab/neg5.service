@@ -8,6 +8,8 @@ public abstract class AbstractDataObject<T, PrimaryKeyType> {
 
     public abstract PrimaryKeyType getId();
 
+    public abstract void setId(PrimaryKeyType id);
+
     public T copyOf() {
         try {
             T that = (T) this.getClass().newInstance();

@@ -1,11 +1,11 @@
-package org.neg5.routers;
+package org.neg5.controllers;
 
 import com.google.inject.Inject;
 import org.neg5.managers.stats.IndividualStandingsStatsManager;
 import org.neg5.managers.stats.RoundReportStatsManager;
 import org.neg5.managers.stats.TeamStandingsStatsManager;
 
-public class TournamentStatsRouter extends AbstractJsonRouter {
+public class TournamentStatsController extends AbstractJsonController {
 
     @Inject private TeamStandingsStatsManager teamStandingsStatsManager;
     @Inject private IndividualStandingsStatsManager individualStandingsStatsManager;

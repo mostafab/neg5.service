@@ -1,11 +1,11 @@
-package org.neg5.routers;
+package org.neg5.controllers;
 
 import static spark.Spark.get;
 
 /**
  * System status router
  */
-public class SystemStatusRouter implements Router {
+public class SystemStatusController implements Controller {
 
     @Override
     public void registerRoutes() {

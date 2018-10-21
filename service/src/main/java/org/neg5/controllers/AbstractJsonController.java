@@ -1,4 +1,4 @@
-package org.neg5.routers;
+package org.neg5.controllers;
 
 import com.google.inject.Inject;
 import org.neg5.transformers.JsonTransformer;
@@ -12,7 +12,7 @@ import spark.Spark;
 /**
  * Controller that handles converting responses to JSON payloads
  */
-public abstract class AbstractJsonRouter implements Router {
+public abstract class AbstractJsonController implements Controller {
 
     @Inject
     private JsonTransformerProvider jsonTransformerProvider;

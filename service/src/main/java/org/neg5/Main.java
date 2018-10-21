@@ -11,7 +11,7 @@ public class Main {
         Injector injector = Guice.createInjector(
                 new SystemPropertiesModule(),
                 new DataAccessModule(),
-                new RouterModule(),
+                new ControllersModule(),
                 new FilterModule()
         );
         Neg5App app = injector.getInstance(Neg5App.class);

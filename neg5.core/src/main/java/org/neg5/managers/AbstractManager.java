@@ -27,6 +27,15 @@ public abstract class AbstractManager<T extends AbstractDataObject<T, PrimaryKey
     }
 
     @Transactional
+    public DTO create(DTO dto) {
+        T entity = getMapper().mergeToEntity(dto);
+        if (entity.getId() != null) {
+            throw new IllegalArgumentException("Id on input dto is null.");
+        }
+        return getMapper().toDTO(getDAO().save(entity));
+    }
+
+    @Transactional
     public List<DTO> findAllByTournamentId(String tournamentId) {
         return getDAO().findAllByTournamentId(tournamentId)
                 .stream()

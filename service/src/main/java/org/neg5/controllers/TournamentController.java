@@ -1,4 +1,4 @@
-package org.neg5.routers;
+package org.neg5.controllers;
 
 import com.google.inject.Inject;
 import org.neg5.managers.TournamentManager;
@@ -8,7 +8,7 @@ import org.neg5.managers.TournamentPlayerManager;
 import org.neg5.managers.TournamentTeamManager;
 import org.neg5.managers.TournamentTossupValueManager;
 
-public class TournamentRouter extends AbstractJsonRouter {
+public class TournamentController extends AbstractJsonController {
 
     @Inject private TournamentManager tournamentManager;
     @Inject private TournamentTeamManager tournamentTeamManager;

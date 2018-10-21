@@ -1,16 +1,16 @@
-package org.neg5.routers;
+package org.neg5.controllers;
 
 import com.google.inject.Inject;
 import org.neg5.core.EnumSerializer;
 import org.neg5.enums.MatchResult;
 import org.neg5.enums.TossupAnswerType;
 
-public class Neg5EnumRouter extends AbstractJsonRouter {
+public class Neg5EnumController extends AbstractJsonController {
 
     private final EnumSerializer enumSerializer;
 
     @Inject
-    public Neg5EnumRouter(EnumSerializer enumSerializer) {
+    public Neg5EnumController(EnumSerializer enumSerializer) {
         this.enumSerializer = enumSerializer;
         addEnums();
     }
