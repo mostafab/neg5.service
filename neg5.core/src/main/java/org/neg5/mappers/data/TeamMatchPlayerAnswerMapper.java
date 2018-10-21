@@ -13,16 +13,8 @@ public class TeamMatchPlayerAnswerMapper extends AbstractObjectMapper<TeamMatchP
     }
 
     @Override
-    public MatchPlayerAnswerDTO toDTO(TeamMatchPlayerAnswer teamMatchPlayerAnswer) {
-        MatchPlayerAnswerDTO dto = super.toDTO(teamMatchPlayerAnswer);
-        return dto;
-    }
-
-    @Override
-    protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
-           mapper.map(TeamMatchPlayerAnswer::getNumber, MatchPlayerAnswerDTO::setNumberGotten);
-           mapper.map(TeamMatchPlayerAnswer::getValue, MatchPlayerAnswerDTO::setTossupValue);
-        });
+    protected void enrichDTO(MatchPlayerAnswerDTO matchPlayerAnswerDTO, TeamMatchPlayerAnswer teamMatchPlayerAnswer) {
+        matchPlayerAnswerDTO.setNumberGotten(teamMatchPlayerAnswer.getNumber());
+        matchPlayerAnswerDTO.setTossupValue(teamMatchPlayerAnswer.getValue());
     }
 }

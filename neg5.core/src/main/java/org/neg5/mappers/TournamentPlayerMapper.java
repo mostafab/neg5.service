@@ -12,10 +12,8 @@ public class TournamentPlayerMapper extends AbstractObjectMapper<TournamentPlaye
     }
 
     @Override
-    protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
-            mapper.map(player -> player.getTeam().getId(), TournamentPlayerDTO::setTeamId);
-            mapper.map(player -> player.getTournament().getId(), TournamentPlayerDTO::setTournamentId);
-        });
+    protected void enrichDTO(TournamentPlayerDTO tournamentPlayerDTO, TournamentPlayer tournamentPlayer) {
+        tournamentPlayerDTO.setTeamId(tournamentPlayer.getTeam().getId());
+        tournamentPlayerDTO.setTournamentId(tournamentPlayer.getTournament().getId());
     }
 }

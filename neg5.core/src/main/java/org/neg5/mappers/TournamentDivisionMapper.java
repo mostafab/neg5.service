@@ -12,10 +12,8 @@ public class TournamentDivisionMapper extends AbstractObjectMapper<TournamentDiv
     }
 
     @Override
-    protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
-           mapper.map(division -> division.getTournament().getId(), TournamentDivisionDTO::setTournamentId);
-           mapper.map(division -> division.getPhase().getId(), TournamentDivisionDTO::setPhaseId);
-        });
+    protected void enrichDTO(TournamentDivisionDTO tournamentDivisionDTO, TournamentDivision tournamentDivision) {
+        tournamentDivisionDTO.setTournamentId(tournamentDivision.getTournament().getId());
+        tournamentDivisionDTO.setPhaseId(tournamentDivision.getPhase().getId());
     }
 }

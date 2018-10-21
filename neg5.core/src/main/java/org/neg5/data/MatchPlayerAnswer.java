@@ -22,6 +22,8 @@ public class MatchPlayerAnswer extends AbstractDataObject<MatchPlayerAnswer, Mat
     private TournamentTossupValue tournamentTossupValue;
     private Integer numberGotten;
 
+    private MatchPlayer player;
+
     @EmbeddedId
     public MatchPlayerAnswerId getId() {
         return matchPlayerAnswerId;
@@ -51,5 +53,19 @@ public class MatchPlayerAnswer extends AbstractDataObject<MatchPlayerAnswer, Mat
 
     public void setTournamentTossupValue(TournamentTossupValue tournamentTossupValue) {
         this.tournamentTossupValue = tournamentTossupValue;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "player_id", insertable = false, updatable = false),
+            @JoinColumn(name = "match_id", insertable = false, updatable = false),
+            @JoinColumn(name = "tournament_id", insertable = false, updatable = false)
+    })
+    public MatchPlayer getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(MatchPlayer player) {
+        this.player = player;
     }
 }

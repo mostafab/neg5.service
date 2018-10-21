@@ -18,17 +18,9 @@ public class TeamInMatchMapper extends AbstractObjectMapper<TeamInMatch, MatchTe
     }
 
     @Override
-    public MatchTeamDTO toDTO(TeamInMatch teamInMatch) {
-        MatchTeamDTO dto = super.toDTO(teamInMatch);
-        dto.setPlayers(teamInMatch.getPlayers().stream().map(teamMatchPlayerMapper::toDTO)
+    protected void enrichDTO(MatchTeamDTO matchTeamDTO, TeamInMatch teamInMatch) {
+        matchTeamDTO.setPlayers(teamInMatch.getPlayers().stream().map(teamMatchPlayerMapper::toDTO)
                 .collect(Collectors.toList()));
-        return dto;
-    }
-
-    @Override
-    protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
-            mapper.map(TeamInMatch::getOvertimeTossups, MatchTeamDTO::setOvertimeTossupsGotten);
-        });
+        matchTeamDTO.setOvertimeTossupsGotten(teamInMatch.getOvertimeTossups());
     }
 }

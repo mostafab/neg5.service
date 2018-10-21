@@ -17,18 +17,11 @@ public class MatchPlayerMapper extends AbstractObjectMapper<MatchPlayer, MatchPl
     }
 
     @Override
-    public MatchPlayerDTO toDTO(MatchPlayer matchPlayer) {
-        MatchPlayerDTO dto = super.toDTO(matchPlayer);
-        dto.setAnswers(matchPlayer.getAnswers().stream()
-            .map(answer -> matchPlayerAnswerMapper.toDTO(answer)).collect(Collectors.toSet()));
-        return dto;
-    }
-
-    @Override
-    protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
-            mapper.map(entity -> entity.getId().getMatch().getId(), MatchPlayerDTO::setMatchId);
-            mapper.map(entity -> entity.getId().getPlayer().getId(), MatchPlayerDTO::setPlayerId);
-        });
+    protected void enrichDTO(MatchPlayerDTO matchPlayerDTO, MatchPlayer matchPlayer) {
+        matchPlayerDTO.setAnswers(matchPlayer.getAnswers().stream()
+                .map(answer -> matchPlayerAnswerMapper.toDTO(answer)).collect(Collectors.toSet())
+        );
+        matchPlayerDTO.setMatchId(matchPlayer.getId().getMatchId());
+        matchPlayerDTO.setPlayerId(matchPlayer.getId().getPlayerId());
     }
 }

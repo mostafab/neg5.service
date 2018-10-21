@@ -18,19 +18,11 @@ public class TournamentMatchMapper extends AbstractObjectMapper<TournamentMatch,
     }
 
     @Override
-    public TournamentMatchDTO toDTO(TournamentMatch tournamentMatch) {
-        TournamentMatchDTO dto = super.toDTO(tournamentMatch);
-        dto.setTeams(tournamentMatch.getTeams().stream().map(matchTeamMapper::toDTO).collect(Collectors.toSet()));
-        dto.setPhases(tournamentMatch.getPhases().stream()
+    protected void enrichDTO(TournamentMatchDTO tournamentMatchDTO, TournamentMatch tournamentMatch) {
+        tournamentMatchDTO.setTeams(tournamentMatch.getTeams().stream().map(matchTeamMapper::toDTO).collect(Collectors.toSet()));
+        tournamentMatchDTO.setPhases(tournamentMatch.getPhases().stream()
                 .map(TournamentPhase::getId).collect(Collectors.toSet()));
 
-        return dto;
-    }
-
-    @Override
-    protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
-            mapper.map(match -> match.getTournament().getId(), TournamentMatchDTO::setTournamentId);
-        });
+        tournamentMatchDTO.setTournamentId(tournamentMatch.getTournament().getId());
     }
 }

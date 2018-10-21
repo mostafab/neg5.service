@@ -6,6 +6,9 @@ import org.neg5.data.embeddables.MatchTeamId;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,6 +21,9 @@ public class MatchTeam extends AbstractDataObject<MatchTeam, MatchTeamId> {
     private Integer score;
     private Integer bouncebackPoints;
     private Integer overtimeTossupsGotten;
+
+    private TournamentTeam team;
+    private TournamentMatch match;
 
     /*
     Since this table has a composite primary key, we need to use an {@link EmbeddedId} to represent it
@@ -56,5 +62,25 @@ public class MatchTeam extends AbstractDataObject<MatchTeam, MatchTeamId> {
 
     public void setOvertimeTossupsGotten(Integer overtimeTossupsGotten) {
         this.overtimeTossupsGotten = overtimeTossupsGotten;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "match_id", updatable = false, insertable = false)
+    public TournamentMatch getMatch() {
+        return match;
+    }
+
+    public void setMatch(TournamentMatch match) {
+        this.match = match;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id", updatable = false, insertable = false)
+    public TournamentTeam getTeam() {
+        return team;
+    }
+
+    public void setTeam(TournamentTeam team) {
+        this.team = team;
     }
 }

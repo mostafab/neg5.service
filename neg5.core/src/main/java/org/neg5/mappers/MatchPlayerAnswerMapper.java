@@ -12,12 +12,10 @@ public class MatchPlayerAnswerMapper extends AbstractObjectMapper<MatchPlayerAns
     }
 
     @Override
-    protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
-           mapper.map(entity -> entity.getId().getMatch().getId(), MatchPlayerAnswerDTO::setMatchId);
-           mapper.map(entity -> entity.getId().getPlayer().getId(), MatchPlayerAnswerDTO::setPlayerId);
-           mapper.map(entity -> entity.getId().getTossupValue(), MatchPlayerAnswerDTO::setTossupValue);
-           mapper.map(entity -> entity.getTournamentTossupValue().getAnswerType(), MatchPlayerAnswerDTO::setAnswerType);
-        });
+    protected void enrichDTO(MatchPlayerAnswerDTO matchPlayerAnswerDTO, MatchPlayerAnswer matchPlayerAnswer) {
+        matchPlayerAnswerDTO.setMatchId(matchPlayerAnswer.getId().getMatchId());
+        matchPlayerAnswerDTO.setPlayerId(matchPlayerAnswer.getId().getPlayerId());
+        matchPlayerAnswerDTO.setTossupValue(matchPlayerAnswer.getId().getTossupValue());
+        matchPlayerAnswerDTO.setAnswerType(matchPlayerAnswer.getTournamentTossupValue().getAnswerType());
     }
 }

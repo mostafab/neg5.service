@@ -12,17 +12,16 @@ import java.io.Serializable;
 @Embeddable
 public class TournamentTossupValueId implements Serializable {
 
-    private Tournament tournament;
+    private String tournamentId;
     private Integer value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tournament_id")
-    public Tournament getTournament() {
-        return tournament;
+    @Column(name = "tournament_id")
+    public String getTournamentId() {
+        return tournamentId;
     }
 
-    public void setTournament(Tournament tournament) {
-        this.tournament = tournament;
+    public void setTournamentId(String tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
     @Column(name = "tossup_value")
@@ -43,7 +42,7 @@ public class TournamentTossupValueId implements Serializable {
             return false;
         }
         TournamentTossupValueId that = (TournamentTossupValueId) obj;
-        return that.getTournament().getId().equals(tournament.getId())
+        return that.getTournamentId().equals(tournamentId)
                 && that.getValue().equals(value);
     }
 }

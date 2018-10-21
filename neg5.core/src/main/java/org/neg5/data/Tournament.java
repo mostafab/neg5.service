@@ -110,7 +110,7 @@ public class Tournament extends AbstractDataObject<Tournament, String> {
         this.divisions = divisions;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.tournament")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tournament")
     public Set<TournamentTossupValue> getTossupValues() {
         return tossupValues;
     }

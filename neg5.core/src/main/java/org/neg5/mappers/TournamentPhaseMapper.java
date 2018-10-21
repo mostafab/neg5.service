@@ -12,9 +12,7 @@ public class TournamentPhaseMapper extends AbstractObjectMapper<TournamentPhase,
     }
 
     @Override
-    protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
-            mapper.map(phase -> phase.getTournament().getId(), TournamentPhaseDTO::setTournamentId);
-        });
+    protected void enrichDTO(TournamentPhaseDTO tournamentPhaseDTO, TournamentPhase tournamentPhase) {
+        tournamentPhaseDTO.setTournamentId(tournamentPhase.getTournament().getId());
     }
 }

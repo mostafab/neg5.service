@@ -23,23 +23,16 @@ public class MatchTeamMapper extends AbstractObjectMapper<MatchTeam, MatchTeamDT
     }
 
     @Override
-    public MatchTeamDTO toDTO(MatchTeam matchTeam) {
-        MatchTeamDTO dto = super.toDTO(matchTeam);
-        Set<MatchPlayer> players = Optional.ofNullable(matchTeam.getId().getMatch().getPlayers())
+    protected void enrichDTO(MatchTeamDTO matchTeamDTO, MatchTeam matchTeam) {
+        Set<MatchPlayer> players = Optional.ofNullable(matchTeam.getMatch().getPlayers())
                 .orElse(new HashSet<>());
         List<MatchPlayerDTO> playersOnTeam = players.stream()
-                .filter(p -> p.getId().getPlayer().getTeam().getId().equals(dto.getTeamId()))
+                .filter(p -> p.getPlayer().getTeam().getId().equals(matchTeam.getId().getTeamId()))
                 .map(matchPlayerMapper::toDTO)
                 .collect(Collectors.toList());
-        dto.setPlayers(playersOnTeam);
-        return dto;
-    }
+        matchTeamDTO.setPlayers(playersOnTeam);
 
-    @Override
-    protected void addMappings() {
-        getTypeMap().addMappings(mapper -> {
-           mapper.map(entity -> entity.getId().getMatch().getId(), MatchTeamDTO::setMatchId);
-           mapper.map(entity -> entity.getId().getTeam().getId(), MatchTeamDTO::setTeamId);
-        });
+        matchTeamDTO.setMatchId(matchTeam.getId().getMatchId());
+        matchTeamDTO.setTeamId(matchTeam.getId().getTeamId());
     }
 }

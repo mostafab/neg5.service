@@ -7,6 +7,9 @@ import org.neg5.enums.TossupAnswerType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -19,6 +22,8 @@ public class TournamentTossupValue
 
     private TournamentTossupValueId tournamentTossupValueId;
     private TossupAnswerType answerType;
+
+    private Tournament tournament;
 
     @EmbeddedId
     public TournamentTossupValueId getId() {
@@ -39,8 +44,13 @@ public class TournamentTossupValue
     }
 
     @Override
-    @Transient
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tournament_id", updatable = false, insertable = false)
     public Tournament getTournament() {
-        return tournamentTossupValueId.getTournament();
+        return tournament;
+    }
+
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
     }
 }
