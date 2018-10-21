@@ -145,10 +145,11 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
     private void finalizeRecord() {
         if (numMatches == 0) {
             teamRecord.setWinPercentage(new BigDecimal(0));
+        } else {
+            double wins = teamRecord.getWins();
+            teamRecord.setWinPercentage(new BigDecimal(wins / numMatches).setScale(WIN_RECORD_ROUNDING_SCALE,
+                    BigDecimal.ROUND_HALF_EVEN));
         }
-        double wins = teamRecord.getWins();
-        teamRecord.setWinPercentage(new BigDecimal(wins / numMatches).setScale(WIN_RECORD_ROUNDING_SCALE,
-                BigDecimal.ROUND_HALF_EVEN));
     }
 
     private MatchUtil.TeamsWrapper getTeams(TournamentMatchDTO match) {
