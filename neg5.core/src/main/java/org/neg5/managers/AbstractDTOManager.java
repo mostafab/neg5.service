@@ -4,6 +4,7 @@ import com.google.inject.persist.Transactional;
 import org.neg5.daos.AbstractDAO;
 
 import org.neg5.data.AbstractDataObject;
+import org.neg5.data.CompositeIdObject;
 import org.neg5.data.IdDataObject;
 import org.neg5.mappers.AbstractObjectMapper;
 
@@ -33,7 +34,9 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
     @Transactional
     public DTO create(DTO dto) {
         T entity = getMapper().mergeToEntity(dto);
-        entity.setId(null);
+        if (!(entity instanceof CompositeIdObject)) {
+            entity.setId(null);
+        }
         return getMapper().toDTO(getDAO().save(entity));
     }
 

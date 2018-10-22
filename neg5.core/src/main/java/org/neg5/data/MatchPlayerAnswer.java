@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "player_match_tossup")
 @DynamicUpdate
 public class MatchPlayerAnswer extends AbstractDataObject<MatchPlayerAnswer>
-        implements IdDataObject<MatchPlayerAnswerId> {
+        implements CompositeIdObject<MatchPlayerAnswerId> {
 
     private MatchPlayerAnswerId matchPlayerAnswerId;
 

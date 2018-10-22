@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "player_plays_in_tournament_match")
 @Entity
 @DynamicUpdate
-public class MatchPlayer extends AbstractDataObject<MatchPlayer> implements IdDataObject<MatchPlayerId> {
+public class MatchPlayer extends AbstractDataObject<MatchPlayer> implements CompositeIdObject<MatchPlayerId> {
 
     private MatchPlayerId matchPlayerId;
     private Integer tossupsHeard;
