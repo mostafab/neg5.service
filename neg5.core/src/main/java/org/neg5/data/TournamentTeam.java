@@ -33,6 +33,7 @@ public class TournamentTeam extends AbstractDataObject<TournamentTeam>
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }

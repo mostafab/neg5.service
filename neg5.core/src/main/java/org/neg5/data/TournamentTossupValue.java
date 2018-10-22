@@ -26,10 +26,12 @@ public class TournamentTossupValue
     private Tournament tournament;
 
     @EmbeddedId
+    @Override
     public TournamentTossupValueId getId() {
         return tournamentTossupValueId;
     }
 
+    @Override
     public void setId(TournamentTossupValueId tournamentTossupValueId) {
         this.tournamentTossupValueId = tournamentTossupValueId;
     }

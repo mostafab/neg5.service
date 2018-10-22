@@ -22,10 +22,12 @@ public class TournamentPlayer extends AbstractDataObject<TournamentPlayer>
     private Tournament tournament;
 
     @Id
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }

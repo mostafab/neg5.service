@@ -29,10 +29,12 @@ public class MatchTeam extends AbstractDataObject<MatchTeam> implements IdDataOb
     Since this table has a composite primary key, we need to use an {@link EmbeddedId} to represent it
      */
     @EmbeddedId
+    @Override
     public MatchTeamId getId() {
         return matchTeamId;
     }
 
+    @Override
     public void setId(MatchTeamId matchTeamId) {
         this.matchTeamId = matchTeamId;
     }

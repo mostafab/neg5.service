@@ -33,10 +33,12 @@ public class MatchPlayer extends AbstractDataObject<MatchPlayer> implements IdDa
     Since this table has a composite primary key, we need to use an {@link EmbeddedId} to represent it
      */
     @EmbeddedId
+    @Override
     public MatchPlayerId getId() {
         return matchPlayerId;
     }
 
+    @Override
     public void setId(MatchPlayerId matchPlayerId) {
         this.matchPlayerId = matchPlayerId;
     }

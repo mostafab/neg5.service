@@ -27,6 +27,7 @@ public class TournamentPhase extends AbstractDataObject<TournamentPhase>
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }

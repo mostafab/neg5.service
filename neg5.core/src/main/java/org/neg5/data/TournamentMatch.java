@@ -41,12 +41,14 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch>
     private Set<TournamentPhase> phases;
 
     @Id
+    @Override
     @GeneratedValue(generator = "uuid_generator")
     @GenericGenerator(name = "uuid_generator", strategy = "org.neg5.data.generators.UUIDGenerator")
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }

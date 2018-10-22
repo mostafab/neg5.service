@@ -39,10 +39,12 @@ public class Tournament extends AbstractDataObject<Tournament> implements IdData
     private Long partsPerBonus;
 
     @Id
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
