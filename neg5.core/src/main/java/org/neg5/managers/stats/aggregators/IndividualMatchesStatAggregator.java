@@ -72,8 +72,7 @@ public class IndividualMatchesStatAggregator implements StatAggregator<List<Indi
                 .filter(team -> team.getPlayers().stream().noneMatch(p -> p.getPlayerId().equals(playerId)))
                 .findFirst()
                 .map(MatchTeamDTO::getTeamId)
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find opponent team for player "
-                        + playerId + " in match " + match.getId()));
+                .orElse(null);
 
         return new PlayerWrapper(thisPlayer, teamId, opponentTeamId);
     }
