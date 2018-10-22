@@ -1,14 +1,17 @@
 package org.neg5.controllers;
 
+import org.neg5.annotations.Controller;
+
 import static spark.Spark.get;
 
 /**
  * System status router
  */
-public class SystemStatusController implements Controller {
+@Controller("/neg5-api/system-status")
+public class SystemStatusController extends AbstractController {
 
     @Override
     public void registerRoutes() {
-        get("neg5-api/system-status", (request, response) ->  "Status: OK");
+        get("", (request, response) ->  "Status: OK");
     }
 }

@@ -1,10 +1,12 @@
 package org.neg5.controllers;
 
 import com.google.inject.Inject;
+import org.neg5.annotations.Controller;
 import org.neg5.managers.stats.IndividualStandingsStatsManager;
 import org.neg5.managers.stats.RoundReportStatsManager;
 import org.neg5.managers.stats.TeamStandingsStatsManager;
 
+@Controller("/neg5-api/tournaments/:id/stats")
 public class TournamentStatsController extends AbstractJsonController {
 
     @Inject private TeamStandingsStatsManager teamStandingsStatsManager;
@@ -13,15 +15,15 @@ public class TournamentStatsController extends AbstractJsonController {
 
     @Override
     public void registerRoutes() {
-        get("/neg5-api/tournaments/:id/stats/team-standings", (request, response) ->
+        get("/team-standings", (request, response) ->
                 teamStandingsStatsManager.calculateTeamStandings(request.params("id"), request.queryParams("phase")));
-        get("/neg5-api/tournaments/:id/stats/individual-standings", (request, response) ->
+        get("/individual-standings", (request, response) ->
                 individualStandingsStatsManager.calculateIndividualStandings(request.params("id"), request.queryParams("phase")));
-        get("/neg5-api/tournaments/:id/stats/team-full-standings", (request, response) ->
+        get("/team-full-standings", (request, response) ->
                 teamStandingsStatsManager.calculateFullTeamStandings(request.params("id"), request.queryParams("phase")));
-        get("/neg5-api/tournaments/:id/stats/individual-full-standings", (request, response) ->
+        get("/individual-full-standings", (request, response) ->
                 individualStandingsStatsManager.getFullIndividualStats(request.params("id"), request.queryParams("phase")));
-        get("/neg5-api/tournaments/:id/stats/round-report", (request, response) ->
+        get("/round-report", (request, response) ->
                 roundReportStatsManager.calculateRoundReportStats(request.params("id"), request.queryParams("phase")));
     }
 }
