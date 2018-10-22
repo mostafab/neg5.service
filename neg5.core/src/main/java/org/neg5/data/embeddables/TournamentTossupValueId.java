@@ -1,12 +1,9 @@
 package org.neg5.data.embeddables;
 
-import org.neg5.data.Tournament;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Embeddable
@@ -44,5 +41,13 @@ public class TournamentTossupValueId implements Serializable {
         TournamentTossupValueId that = (TournamentTossupValueId) obj;
         return that.getTournamentId().equals(tournamentId)
                 && that.getValue().equals(value);
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 3)
+                .append(tournamentId)
+                .append(value)
+                .toHashCode();
     }
 }

@@ -1,14 +1,9 @@
 package org.neg5.data.embeddables;
 
-import org.neg5.data.Tournament;
-import org.neg5.data.TournamentMatch;
-import org.neg5.data.TournamentTeam;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Embeddable
@@ -59,12 +54,12 @@ public class MatchTeamId implements Serializable {
                 && that.getMatchId().equals(matchId);
     }
 
-    /**
-     * TODO come back and implement this
-     * @return a hash code
-     */
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return new HashCodeBuilder(17, 3)
+                .append(teamId)
+                .append(tournamentId)
+                .append(matchId)
+                .toHashCode();
     }
 }

@@ -43,7 +43,7 @@ public class TournamentController extends AbstractJsonController {
         get("/:id/qbj", (request, response) -> {
             response.type(QBJ_CONTENT_TYPE);
             return qbjManager.getQbj(request.params("id"));
-            },obj -> qbjGsonProvider.get().toJson(obj)
+            }, obj -> qbjGsonProvider.get().toJson(obj)
         );
     }
 }
