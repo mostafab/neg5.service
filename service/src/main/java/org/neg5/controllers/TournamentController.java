@@ -24,6 +24,8 @@ public class TournamentController extends AbstractJsonController {
     @Inject private QBJManager qbjManager;
     @Inject private QBJGsonProvider qbjGsonProvider;
 
+    private static final String QBJ_CONTENT_TYPE = "application/vnd.quizbowl.qbj+json";
+
     @Override
     public void registerRoutes() {
         get("/:id", (request, response)
@@ -38,7 +40,10 @@ public class TournamentController extends AbstractJsonController {
                 -> tournamentPhaseManager.findAllByTournamentId(request.params("id")));
         get("/:id/tossupValues", (request, response)
                 -> tournamentTossupValueManager.findAllByTournamentId(request.params("id")));
-        get("/:id/qbj", (request, response) -> qbjManager.getQbj(request.params("id")),
-                obj -> qbjGsonProvider.get().toJson(obj));
+        get("/:id/qbj", (request, response) -> {
+            response.type(QBJ_CONTENT_TYPE);
+            return qbjManager.getQbj(request.params("id"));
+            },obj -> qbjGsonProvider.get().toJson(obj)
+        );
     }
 }
