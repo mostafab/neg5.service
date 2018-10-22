@@ -3,12 +3,13 @@ package org.neg5.daos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.neg5.data.AbstractDataObject;
+import org.neg5.data.IdDataObject;
 import org.neg5.data.SpecificTournamentEntity;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public abstract class AbstractDAO<T extends AbstractDataObject<T, PrimaryKeyType>, PrimaryKeyType> {
+public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject<PrimaryKeyType>, PrimaryKeyType> {
 
     private Class<T> persistentClass;
 

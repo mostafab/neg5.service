@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tournament")
 @DynamicUpdate
-public class Tournament extends AbstractDataObject<Tournament, String> {
+public class Tournament extends AbstractDataObject<Tournament> implements IdDataObject<String> {
 
     private String id;
 

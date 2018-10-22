@@ -17,8 +17,8 @@ import javax.persistence.Transient;
 @Table(name = "tournament_tossup_values")
 @DynamicUpdate
 public class TournamentTossupValue
-        extends AbstractDataObject<TournamentTossupValue, TournamentTossupValueId>
-        implements SpecificTournamentEntity {
+        extends AbstractDataObject<TournamentTossupValue>
+        implements SpecificTournamentEntity, IdDataObject<TournamentTossupValueId> {
 
     private TournamentTossupValueId tournamentTossupValueId;
     private TossupAnswerType answerType;

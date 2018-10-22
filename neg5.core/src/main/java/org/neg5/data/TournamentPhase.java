@@ -13,8 +13,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tournament_phase")
 @DynamicUpdate
-public class TournamentPhase extends AbstractDataObject<TournamentPhase, String>
-        implements SpecificTournamentEntity {
+public class TournamentPhase extends AbstractDataObject<TournamentPhase>
+        implements SpecificTournamentEntity, IdDataObject<String> {
 
     private String id;
     private String name;

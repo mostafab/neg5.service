@@ -15,7 +15,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "player_match_tossup")
 @DynamicUpdate
-public class MatchPlayerAnswer extends AbstractDataObject<MatchPlayerAnswer, MatchPlayerAnswerId> {
+public class MatchPlayerAnswer extends AbstractDataObject<MatchPlayerAnswer>
+        implements IdDataObject<MatchPlayerAnswerId> {
 
     private MatchPlayerAnswerId matchPlayerAnswerId;
 
