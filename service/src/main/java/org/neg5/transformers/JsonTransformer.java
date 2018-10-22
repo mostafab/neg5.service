@@ -1,5 +1,6 @@
 package org.neg5.transformers;
 
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import org.neg5.core.GsonProvider;
 import spark.ResponseTransformer;
@@ -10,6 +11,10 @@ public class JsonTransformer implements ResponseTransformer {
 
     @Override
     public String render(Object o) {
-        return gsonProvider.get().toJson(o);
+        return getGson().toJson(o);
+    }
+
+    protected Gson getGson() {
+        return gsonProvider.get();
     }
 }
