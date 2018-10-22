@@ -1,5 +1,7 @@
 package org.neg5.qbj;
 
+import java.util.List;
+
 public class TournamentQbjDTO {
 
     private String name;
@@ -8,6 +10,8 @@ public class TournamentQbjDTO {
 
     private TournamentSiteDTO tournamentSite;
     private ScoringRulesDTO scoringRules;
+
+    private List<RegistrationDTO> registrations;
 
     public String getName() {
         return name;
@@ -47,5 +51,13 @@ public class TournamentQbjDTO {
 
     public void setScoringRules(ScoringRulesDTO scoringRules) {
         this.scoringRules = scoringRules;
+    }
+
+    public List<RegistrationDTO> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<RegistrationDTO> registrations) {
+        this.registrations = registrations;
     }
 }
