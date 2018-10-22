@@ -26,4 +26,9 @@ public class TournamentManager extends AbstractManager<Tournament, TournamentDTO
     protected TournamentMapper getMapper() {
         return tournamentMapper;
     }
+
+    @Override
+    protected String getIdFromDTO(TournamentDTO tournamentDTO) {
+        return tournamentDTO.getId();
+    }
 }

@@ -34,6 +34,11 @@ public class TournamentTeamManager extends AbstractManager<TournamentTeam, Tourn
         return tournamentTeamMapper;
     }
 
+    @Override
+    protected String getIdFromDTO(TournamentTeamDTO tournamentTeamDTO) {
+        return tournamentTeamDTO.getId();
+    }
+
     /**
      * Group matches by teams, where the key is the team's id and the value is the list of matches the team is part of
      * @param tournamentId tournamentId

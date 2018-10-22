@@ -21,4 +21,9 @@ public class TournamentPhaseManager extends AbstractManager<TournamentPhase, Tou
     protected TournamentPhaseMapper getMapper() {
         return tournamentPhaseMapper;
     }
+
+    @Override
+    protected String getIdFromDTO(TournamentPhaseDTO tournamentPhaseDTO) {
+        return tournamentPhaseDTO.getId();
+    }
 }

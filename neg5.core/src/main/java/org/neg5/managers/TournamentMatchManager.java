@@ -36,6 +36,11 @@ public class TournamentMatchManager extends AbstractManager<TournamentMatch, Tou
     }
 
     @Override
+    protected String getIdFromDTO(TournamentMatchDTO tournamentMatchDTO) {
+        return tournamentMatchDTO.getId();
+    }
+
+    @Override
     public List<TournamentMatchDTO> findAllByTournamentId(String tournamentId) {
         Map<Integer, TournamentTossupValueDTO> tossupValues = getTossupValueMap(tournamentId);
         return findByRawQuery(tournamentId).stream()

@@ -18,6 +18,8 @@ public abstract class AbstractManager<T extends AbstractDataObject<T>
 
     protected abstract AbstractObjectMapper<T, DTO> getMapper();
 
+    protected abstract PrimaryKeyType getIdFromDTO(DTO dto);
+
     @Transactional
     public DTO get(PrimaryKeyType id) {
         T entity = getDAO().get(id);
@@ -39,9 +41,9 @@ public abstract class AbstractManager<T extends AbstractDataObject<T>
 
     @Transactional
     public DTO update(DTO dto) {
-        T original = getMapper().mergeToEntity(dto);
-        T entity = getMapper().mergeToEntity(dto, getDAO().get(original.getId()));
-        return getMapper().toDTO(getDAO().save(entity));
+        T originalEntity = getDAO().get(getIdFromDTO(dto));
+        T updated = getMapper().mergeToEntity(dto, originalEntity);
+        return getMapper().toDTO(getDAO().save(updated));
     }
 
     @Transactional

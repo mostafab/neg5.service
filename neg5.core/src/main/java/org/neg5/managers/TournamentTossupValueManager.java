@@ -22,4 +22,12 @@ public class TournamentTossupValueManager extends
     protected TournamentTossupValueMapper getMapper() {
         return tournamentTossupValueMapper;
     }
+
+    @Override
+    protected TournamentTossupValueId getIdFromDTO(TournamentTossupValueDTO tournamentTossupValueDTO) {
+        TournamentTossupValueId id = new TournamentTossupValueId();
+        id.setValue(tournamentTossupValueDTO.getValue());
+        id.setTournamentId(tournamentTossupValueDTO.getTournamentId());
+        return id;
+    }
 }

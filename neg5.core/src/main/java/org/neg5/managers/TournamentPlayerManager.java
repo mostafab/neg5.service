@@ -36,6 +36,11 @@ public class TournamentPlayerManager extends AbstractManager<TournamentPlayer, T
         return tournamentPlayerDAO;
     }
 
+    @Override
+    protected String getIdFromDTO(TournamentPlayerDTO tournamentPlayerDTO) {
+        return tournamentPlayerDTO.getId();
+    }
+
     /**
      * Group matches by players, where the key is the player's id and the value is the list of matches the player is part of
      * @param tournamentId tournamentId
