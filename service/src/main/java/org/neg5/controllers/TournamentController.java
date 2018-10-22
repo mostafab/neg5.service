@@ -2,12 +2,14 @@ package org.neg5.controllers;
 
 import com.google.inject.Inject;
 import org.neg5.annotations.Controller;
+import org.neg5.core.QBJGsonProvider;
 import org.neg5.managers.TournamentManager;
 import org.neg5.managers.TournamentMatchManager;
 import org.neg5.managers.TournamentPhaseManager;
 import org.neg5.managers.TournamentPlayerManager;
 import org.neg5.managers.TournamentTeamManager;
 import org.neg5.managers.TournamentTossupValueManager;
+import org.neg5.managers.stats.QBJManager;
 
 @Controller("/neg5-api/tournaments")
 public class TournamentController extends AbstractJsonController {
@@ -18,6 +20,9 @@ public class TournamentController extends AbstractJsonController {
     @Inject private TournamentMatchManager tournamentMatchManager;
     @Inject private TournamentPhaseManager tournamentPhaseManager;
     @Inject private TournamentTossupValueManager tournamentTossupValueManager;
+
+    @Inject private QBJManager qbjManager;
+    @Inject private QBJGsonProvider qbjGsonProvider;
 
     @Override
     public void registerRoutes() {
@@ -33,5 +38,7 @@ public class TournamentController extends AbstractJsonController {
                 -> tournamentPhaseManager.findAllByTournamentId(request.params("id")));
         get("/:id/tossupValues", (request, response)
                 -> tournamentTossupValueManager.findAllByTournamentId(request.params("id")));
+        get("/:id/qbj", (request, response) -> qbjManager.getQbj(request.params("id")),
+                obj -> qbjGsonProvider.get().toJson(obj));
     }
 }
