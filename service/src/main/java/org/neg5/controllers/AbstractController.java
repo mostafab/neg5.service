@@ -11,13 +11,17 @@ public abstract class AbstractController implements BaseController {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     protected void get(String path, Route route) {
+        get(path, route, getResponseTransformer());
+    }
+
+    protected void get(String path, Route route, ResponseTransformer responseTransformer) {
         String fullPath = constructPath(path);
-        if (getResponseTransformer() == null) {
+        if (responseTransformer == null) {
             Spark.get(fullPath, enrichRoute(route));
         } else {
-            Spark.get(fullPath, enrichRoute(route), getResponseTransformer());
+            Spark.get(fullPath, enrichRoute(route), responseTransformer);
         }
-        LOGGER.info("Mapped GET route {}", path);
+        LOGGER.info("Mapped GET route {}", fullPath);
     }
 
     protected Route enrichRoute(Route route) {
