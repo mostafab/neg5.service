@@ -2,6 +2,7 @@ package org.neg5.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.persist.jpa.JpaPersistModule;
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.hibernate.cfg.AvailableSettings;
 
@@ -14,6 +15,7 @@ public class DataAccessModule extends AbstractModule {
     private static final String USERNAME_PROP = "neg5.username";
     private static final String PASSWORD_PROP = "neg5.password";
     private static final String JDBC_URL_PROP = "neg5.jdbc_url";
+    private static final String CONNECTION_POOL_SIZE_PROP = "neg5.maxPoolSize";
 
     private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver";
 
@@ -27,12 +29,14 @@ public class DataAccessModule extends AbstractModule {
     }
 
     private DataSource provideRWDataSource(SystemProperties properties) {
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setUsername(properties.getString(USERNAME_PROP));
-        dataSource.setPassword(properties.getString(PASSWORD_PROP));
-        dataSource.setJdbcUrl(properties.getString(JDBC_URL_PROP));
-        dataSource.setDriverClassName(DRIVER_CLASS_NAME);
-        dataSource.setReadOnly(false);
-        return dataSource;
+        HikariConfig config = new HikariConfig();
+        config.setUsername(properties.getString(USERNAME_PROP));
+        config.setPassword(properties.getString(PASSWORD_PROP));
+        config.setJdbcUrl(properties.getString(JDBC_URL_PROP));
+        config.setDriverClassName(DRIVER_CLASS_NAME);
+        config.setMaximumPoolSize(properties.getInt(CONNECTION_POOL_SIZE_PROP));
+        config.setReadOnly(false);
+
+        return new HikariDataSource(config);
     }
 }
