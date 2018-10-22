@@ -9,7 +9,7 @@ import org.neg5.data.SpecificTournamentEntity;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject<PrimaryKeyType>, PrimaryKeyType> {
+public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject<IdType>, IdType> {
 
     private Class<T> persistentClass;
 
@@ -26,7 +26,7 @@ public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject
         this.persistentClass = persistentClass;
     }
 
-    public T get(PrimaryKeyType id) {
+    public T get(IdType id) {
         return getEntityManager().find(getPersistentClass(), id);
     }
 

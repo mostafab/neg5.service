@@ -12,16 +12,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class AbstractManager<T extends AbstractDataObject<T>
-        & IdDataObject<PrimaryKeyType>, DTO, PrimaryKeyType> {
+        & IdDataObject<IdType>, DTO, IdType> {
 
-    protected abstract AbstractDAO<T, PrimaryKeyType> getDAO();
+    protected abstract AbstractDAO<T, IdType> getDAO();
 
     protected abstract AbstractObjectMapper<T, DTO> getMapper();
 
-    protected abstract PrimaryKeyType getIdFromDTO(DTO dto);
+    protected abstract IdType getIdFromDTO(DTO dto);
 
     @Transactional
-    public DTO get(PrimaryKeyType id) {
+    public DTO get(IdType id) {
         T entity = getDAO().get(id);
         if (entity == null) {
             String clazzName = getDAO().getPersistentClass().getSimpleName();
