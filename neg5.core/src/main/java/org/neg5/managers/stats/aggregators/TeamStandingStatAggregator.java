@@ -2,6 +2,7 @@ package org.neg5.managers.stats.aggregators;
 
 import org.neg5.AnswersDTO;
 import org.neg5.MatchPlayerAnswerDTO;
+import org.neg5.MatchTeamDTO;
 import org.neg5.TeamRecordDTO;
 import org.neg5.TeamStandingStatsDTO;
 import org.neg5.TournamentMatchDTO;
@@ -58,7 +59,12 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
 
         MatchUtil.TeamsWrapper teams = getTeams(match);
         pointsPerGameBuilder.accept(teams.getThisTeam().getScore());
-        pointsAgainstPerGameBuilder.accept(teams.getOtherTeam().getScore());
+
+        pointsAgainstPerGameBuilder.accept(
+                teams.getOtherTeam().isPresent()
+                        ? teams.getOtherTeam().get().getScore()
+                        : 0
+        );
 
         tossupsHeard += match.getTossupsHeard();
         numMatches++;
@@ -100,9 +106,13 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
     }
 
     private void updateTeamRecord(MatchUtil.TeamsWrapper wrapper) {
-        if (wrapper.getThisTeam().getScore() > wrapper.getOtherTeam().getScore()) {
+        if (!wrapper.getOtherTeam().isPresent()) {
+            return;
+        }
+        MatchTeamDTO otherTeam = wrapper.getOtherTeam().get();
+        if (wrapper.getThisTeam().getScore() > otherTeam.getScore()) {
             teamRecord.setWins(teamRecord.getWins() + 1);
-        } else if (wrapper.getThisTeam().getScore() < wrapper.getOtherTeam().getScore()) {
+        } else if (wrapper.getThisTeam().getScore() < otherTeam.getScore()) {
             teamRecord.setLosses(teamRecord.getLosses() + 1);
         } else {
             teamRecord.setTies(teamRecord.getTies() + 1);
