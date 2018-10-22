@@ -9,7 +9,7 @@ import org.neg5.data.Tournament;
 import org.neg5.mappers.TournamentMapper;
 
 @Singleton
-public class TournamentManager extends AbstractManager<Tournament, TournamentDTO, String> {
+public class TournamentManager extends AbstractDTOManager<Tournament, TournamentDTO, String> {
 
     @Inject
     private TournamentDAO tournamentDAO;

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class TournamentTeamManager extends AbstractManager<TournamentTeam, TournamentTeamDTO, String> {
+public class TournamentTeamManager extends AbstractDTOManager<TournamentTeam, TournamentTeamDTO, String> {
 
     @Inject private TournamentTeamDAO tournamentTeamDAO;
 

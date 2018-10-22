@@ -26,10 +26,12 @@ public class MatchPlayerAnswer extends AbstractDataObject<MatchPlayerAnswer>
     private MatchPlayer player;
 
     @EmbeddedId
+    @Override
     public MatchPlayerAnswerId getId() {
         return matchPlayerAnswerId;
     }
 
+    @Override
     public void setId(MatchPlayerAnswerId matchPlayerAnswerId) {
         this.matchPlayerAnswerId = matchPlayerAnswerId;
     }

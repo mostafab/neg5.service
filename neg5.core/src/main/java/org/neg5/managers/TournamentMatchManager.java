@@ -17,7 +17,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Singleton
-public class TournamentMatchManager extends AbstractManager<TournamentMatch, TournamentMatchDTO, String> {
+public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, TournamentMatchDTO, String> {
 
     @Inject private TournamentManager tournamentManager;
 

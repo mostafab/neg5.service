@@ -11,7 +11,7 @@ import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class AbstractManager<T extends AbstractDataObject<T>
+public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
         & IdDataObject<IdType>, DTO, IdType> {
 
     protected abstract AbstractDAO<T, IdType> getDAO();
@@ -33,9 +33,7 @@ public abstract class AbstractManager<T extends AbstractDataObject<T>
     @Transactional
     public DTO create(DTO dto) {
         T entity = getMapper().mergeToEntity(dto);
-        if (entity.getId() != null) {
-            throw new IllegalArgumentException("Id on input dto is null.");
-        }
+        entity.setId(null);
         return getMapper().toDTO(getDAO().save(entity));
     }
 
@@ -43,7 +41,7 @@ public abstract class AbstractManager<T extends AbstractDataObject<T>
     public DTO update(DTO dto) {
         T originalEntity = getDAO().get(getIdFromDTO(dto));
         T updated = getMapper().mergeToEntity(dto, originalEntity);
-        return getMapper().toDTO(getDAO().save(updated));
+        return getMapper().toDTO(getDAO().save(updated).copyOf());
     }
 
     @Transactional

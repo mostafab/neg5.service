@@ -8,7 +8,7 @@ import org.neg5.data.embeddables.TournamentTossupValueId;
 import org.neg5.mappers.TournamentTossupValueMapper;
 
 public class TournamentTossupValueManager extends
-        AbstractManager<TournamentTossupValue, TournamentTossupValueDTO, TournamentTossupValueId> {
+        AbstractDTOManager<TournamentTossupValue, TournamentTossupValueDTO, TournamentTossupValueId> {
 
     @Inject private TournamentTossupValueDAO tournamentTossupValueDAO;
     @Inject private TournamentTossupValueMapper tournamentTossupValueMapper;
