@@ -6,7 +6,7 @@ import spark.ResponseTransformer;
 import spark.Route;
 import spark.Spark;
 
-public abstract class AbstractController implements Controller {
+public abstract class AbstractController implements BaseController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 

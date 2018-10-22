@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.persist.PersistService;
 import org.neg5.filters.RequestFilter;
 import org.neg5.module.SystemProperties;
-import org.neg5.controllers.Controller;
+import org.neg5.controllers.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.servlet.SparkApplication;
@@ -15,7 +15,7 @@ import static spark.Spark.port;
 
 public class Neg5App implements SparkApplication {
 
-    @Inject private Set<Controller> controllers;
+    @Inject private Set<BaseController> controllers;
     @Inject private Set<RequestFilter> filters;
     @Inject private SystemProperties systemProperties;
 
@@ -37,7 +37,7 @@ public class Neg5App implements SparkApplication {
     }
 
     private void initRoutes() {
-        controllers.forEach(Controller::registerRoutes);
+        controllers.forEach(BaseController::registerRoutes);
     }
 
     private void initFilters() {

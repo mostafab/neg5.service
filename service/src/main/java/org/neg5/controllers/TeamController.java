@@ -5,7 +5,7 @@ import org.neg5.managers.TournamentTeamManager;
 import org.neg5.annotations.Controller;
 
 @Controller("/neg5-api/teams")
-public class TeamController extends AbstractJsonController implements org.neg5.controllers.Controller {
+public class TeamController extends AbstractJsonController implements BaseController {
 
     @Inject private TournamentTeamManager teamManager;
 
