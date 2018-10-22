@@ -43,6 +43,13 @@ public class QBJManager {
     private ScoringRulesDTO getScoringRules(TournamentDTO tournament) {
         ScoringRulesDTO rules = new ScoringRulesDTO();
         rules.setBonusesBounceBack(tournament.getUsesBouncebacks());
+        rules.setMinimumPartsPerBonus(tournament.getPartsPerBonus());
+        rules.setPointsPerBonusPart(tournament.getBonusPointValue());
+
+        if (tournament.getPartsPerBonus() != null
+                && tournament.getBonusPointValue() != null) {
+            rules.setMaximumBonusScore(tournament.getPartsPerBonus() * tournament.getBonusPointValue());
+        }
 
         rules.setAnswerTypes(
                 tournament.getTossupValues().stream()

@@ -7,10 +7,12 @@ public class ScoringRulesDTO {
     private Integer teamsPerMatch;
     private Integer maximumPlayersPerTeam;
 
-    private Integer regulationTossupCount;
-    private Integer maximumBonusScore;
+    private Long regulationTossupCount;
 
-    private Integer minimumPartsPerBonus;
+    private Long pointsPerBonusPart;
+    private Long maximumBonusScore;
+    private Long minimumPartsPerBonus;
+    private Long totalDivisor;
 
     private Boolean bonusesBounceBack;
 
@@ -32,28 +34,44 @@ public class ScoringRulesDTO {
         this.maximumPlayersPerTeam = maximumPlayersPerTeam;
     }
 
-    public Integer getRegulationTossupCount() {
+    public Long getRegulationTossupCount() {
         return regulationTossupCount;
     }
 
-    public void setRegulationTossupCount(Integer regulationTossupCount) {
+    public void setRegulationTossupCount(Long regulationTossupCount) {
         this.regulationTossupCount = regulationTossupCount;
     }
 
-    public Integer getMaximumBonusScore() {
+    public Long getPointsPerBonusPart() {
+        return pointsPerBonusPart;
+    }
+
+    public void setPointsPerBonusPart(Long pointsPerBonusPart) {
+        this.pointsPerBonusPart = pointsPerBonusPart;
+    }
+
+    public Long getMaximumBonusScore() {
         return maximumBonusScore;
     }
 
-    public void setMaximumBonusScore(Integer maximumBonusScore) {
+    public void setMaximumBonusScore(Long maximumBonusScore) {
         this.maximumBonusScore = maximumBonusScore;
     }
 
-    public Integer getMinimumPartsPerBonus() {
+    public Long getMinimumPartsPerBonus() {
         return minimumPartsPerBonus;
     }
 
-    public void setMinimumPartsPerBonus(Integer minimumPartsPerBonus) {
+    public void setMinimumPartsPerBonus(Long minimumPartsPerBonus) {
         this.minimumPartsPerBonus = minimumPartsPerBonus;
+    }
+
+    public Long getTotalDivisor() {
+        return totalDivisor;
+    }
+
+    public void setTotalDivisor(Long totalDivisor) {
+        this.totalDivisor = totalDivisor;
     }
 
     public Boolean getBonusesBounceBack() {
