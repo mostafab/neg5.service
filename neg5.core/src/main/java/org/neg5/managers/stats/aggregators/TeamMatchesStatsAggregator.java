@@ -11,7 +11,6 @@ import org.neg5.managers.stats.StatsUtilities;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatchStatsDTO>> {
@@ -41,11 +40,8 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
 
         TeamMatchStatsDTO stats = new TeamMatchStatsDTO();
         stats.setRound(match.getRound() == null ? null : match.getRound().intValue());
-
-        teams.getOtherTeam().ifPresent(otherTeam -> {
-            stats.setOpponentTeamId(otherTeam.getTeamId());
-            stats.setOpponentPoints(otherTeam.getScore().doubleValue());
-        });
+        stats.setOpponentTeamId(teams.getOtherTeam().getTeamId());
+        stats.setOpponentPoints(teams.getOtherTeam().getScore().doubleValue());
         stats.setResult(getResult(teams));
 
         MatchTeamDTO thisTeam = teams.getThisTeam();
@@ -92,13 +88,13 @@ public class TeamMatchesStatsAggregator implements StatAggregator<List<TeamMatch
 
     private MatchResult getResult(MatchUtil.TeamsWrapper teams) {
         MatchTeamDTO thisTeam = teams.getThisTeam();
-        Optional<MatchTeamDTO> otherTeam = teams.getOtherTeam();
+        MatchTeamDTO otherTeam = teams.getOtherTeam();
 
-        if (thisTeam.getScore() == null || !otherTeam.map(MatchTeamDTO::getScore).isPresent()) {
+        if (thisTeam.getScore() == null || otherTeam.getScore() == null) {
             return null;
         }
         Integer thisScore = thisTeam.getScore();
-        Integer otherScore = otherTeam.get().getScore();
+        Integer otherScore = otherTeam.getScore();
         if (thisScore > otherScore) {
             return MatchResult.WIN;
         }
