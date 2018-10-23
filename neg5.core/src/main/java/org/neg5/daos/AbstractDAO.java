@@ -31,11 +31,6 @@ public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject
     }
 
     public T save(T entity) {
-        if (entity.getId() == null) {
-            getEntityManager().persist(entity);
-            flush();
-            return get(entity.getId());
-        }
         return getEntityManager().merge(entity);
     }
 
