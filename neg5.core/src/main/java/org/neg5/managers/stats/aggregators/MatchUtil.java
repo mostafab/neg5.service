@@ -4,8 +4,6 @@ import org.neg5.MatchPlayerDTO;
 import org.neg5.MatchTeamDTO;
 import org.neg5.TournamentMatchDTO;
 
-import java.util.Optional;
-
 /**
  * Utility class for matches
  */
@@ -19,9 +17,11 @@ final class MatchUtil {
                 .findFirst()
                 .orElseThrow(() ->
                         new IllegalArgumentException("Cannot find team " + teamId + " in match " + match.getId()));
-        Optional<MatchTeamDTO> otherTeam = match.getTeams().stream()
+        MatchTeamDTO otherTeam = match.getTeams().stream()
                 .filter(team -> !teamId.equals(team.getTeamId()))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Cannot find non-team " + teamId + " in match " + match.getId()));
 
         return new TeamsWrapper(thisTeam, otherTeam);
     }
@@ -38,9 +38,9 @@ final class MatchUtil {
     final static class TeamsWrapper {
 
         private final MatchTeamDTO thisTeam;
-        private final Optional<MatchTeamDTO> otherTeam;
+        private final MatchTeamDTO otherTeam;
 
-        TeamsWrapper(MatchTeamDTO thisTeam, Optional<MatchTeamDTO> otherTeam) {
+        TeamsWrapper(MatchTeamDTO thisTeam, MatchTeamDTO otherTeam) {
             this.thisTeam = thisTeam;
             this.otherTeam = otherTeam;
         }
@@ -49,7 +49,7 @@ final class MatchUtil {
             return thisTeam;
         }
 
-        Optional<MatchTeamDTO> getOtherTeam() {
+        MatchTeamDTO getOtherTeam() {
             return otherTeam;
         }
     }

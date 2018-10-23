@@ -6,6 +6,7 @@ public class TeamMatchPlayer {
 
     private String playerId;
     private String matchId;
+    private String teamId;
     private Integer tossupsHeard;
 
     private Set<TeamMatchPlayerAnswer> tossupValues;
@@ -24,6 +25,14 @@ public class TeamMatchPlayer {
 
     public void setMatchId(String matchId) {
         this.matchId = matchId;
+    }
+
+    public String getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
     }
 
     public Integer getTossupsHeard() {

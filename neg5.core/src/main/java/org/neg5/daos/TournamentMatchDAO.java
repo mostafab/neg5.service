@@ -13,7 +13,7 @@ import java.util.List;
 @Singleton
 public class TournamentMatchDAO extends AbstractDAO<TournamentMatch, String> {
 
-    private static final String QUERY = "SELECT match_information.*, COALESCE(match_phases.phases, '{}') as phases\n" +
+    private static final String QUERY = "SELECT match_information.*, COALESCE(match_players.players, '{}') as players, COALESCE(match_phases.phases, '{}') as phases\n" +
             "FROM\n" +
             "\n" +
             "(\n" +
@@ -42,8 +42,7 @@ public class TournamentMatchDAO extends AbstractDAO<TournamentMatch, String> {
             "                'teamId', player_team_join.team_id,\n" +
             "                'score', player_team_join.score,\n" +
             "                'bouncebackPoints', COALESCE(player_team_join.bounceback_points, 0),\n" +
-            "                'overtimeTossups', COALESCE(player_team_join.overtime_tossups_gotten, 0),\n" +
-            "                'players', player_team_join.player_match_totals\n" +
+            "                'overtimeTossups', COALESCE(player_team_join.overtime_tossups_gotten, 0)\n" +
             "            )\n" +
             "        ) as teams\n" +
             "\n" +
@@ -56,52 +55,11 @@ public class TournamentMatchDAO extends AbstractDAO<TournamentMatch, String> {
             "            TTM.match_id,\n" +
             "            TTM.score,\n" +
             "            TTM.bounceback_points,\n" +
-            "            TTM.overtime_tossups_gotten,\n" +
-            "            array_agg(\n" +
-            "                json_build_object(\n" +
-            "                    'playerId', TP.id,\n" +
-            "                    'matchId', PPM.match_id,\n" +
-            "                    'teamId', TP.team_id,\n" +
-            "                    'tossupsHeard', COALESCE(PPM.tossups_heard, 0),\n" +
-            "                    'tossupValues', COALESCE(player_match_values.tossup_values, '{}')\n" +
-            "                )\n" +
-            "            ) as player_match_totals\n" +
+            "            TTM.overtime_tossups_gotten\n" +
             "\n" +
             "            FROM\n" +
             "            \n" +
             "            team_plays_in_tournament_match TTM\n" +
-            "\n" +
-            "            INNER JOIN\n" +
-            "\n" +
-            "            player_plays_in_tournament_match PPM \n" +
-            "\n" +
-            "            ON TTM.match_id = PPM.match_id AND TTM.tournament_id = PPM.tournament_id\n" +
-            "\n" +
-            "            INNER JOIN tournament_player TP\n" +
-            "\n" +
-            "            ON TP.team_id = TTM.team_id AND TP.id = PPM.player_id\n" +
-            "\n" +
-            "            INNER JOIN\n" +
-            "\n" +
-            "            (\n" +
-            "                SELECT \n" +
-            "                PMT.player_id,\n" +
-            "                PMT.match_id,\n" +
-            "                array_agg(\n" +
-            "                    json_build_object('value', PMT.tossup_value, 'number', PMT.number_gotten, 'playerId', PMT.player_id, 'matchId', PMT.match_id)\n" +
-            "                ) as tossup_values\n" +
-            "                \n" +
-            "                FROM\n" +
-            "\n" +
-            "                player_match_tossup PMT\n" +
-            "\n" +
-            "                WHERE PMT.tournament_id = :tournamentId\n" +
-            "\n" +
-            "                GROUP BY PMT.player_id, PMT.match_id\n" +
-            "\n" +
-            "            ) as player_match_values\n" +
-            "\n" +
-            "            ON PPM.player_id = player_match_values.player_id AND PPM.match_id = player_match_values.match_id\n" +
             "\n" +
             "            WHERE TTM.tournament_id = :tournamentId\n" +
             "\n" +
@@ -120,8 +78,6 @@ public class TournamentMatchDAO extends AbstractDAO<TournamentMatch, String> {
             "    tournament_match M\n" +
             "\n" +
             "    ON M.id = match_teams.match_id\n" +
-            "\n" +
-            "    WHERE M.tournament_id = :tournamentId\n" +
             "\n" +
             ") as match_information\n" +
             "\n" +
@@ -153,7 +109,68 @@ public class TournamentMatchDAO extends AbstractDAO<TournamentMatch, String> {
             "\n" +
             ") as match_phases\n" +
             "\n" +
-            "ON match_information.id = match_phases.match_id";
+            "ON match_information.id = match_phases.match_id\n" +
+            "\n" +
+            "LEFT JOIN\n" +
+            "\n" +
+            "(\n" +
+            "\n" +
+            "  SELECT\n" +
+            "    match_id,\n" +
+            "    array_agg(\n" +
+            "      json_build_object(\n" +
+            "        'playerId', player_match_result.player_id,\n" +
+            "        'teamId', player_match_result.team_id,\n" +
+            "        'matchId', player_match_result.match_id,\n" +
+            "        'tossupsHeard', player_match_result.tossups_heard,\n" +
+            "        'tossupValues', player_match_result.tossup_values\n" +
+            "      )\n" +
+            "    ) as players\n" +
+            "\n" +
+            "    FROM (\n" +
+            "        SELECT\n" +
+            "          PPM.player_id as player_id,\n" +
+            "          PPM.match_id,\n" +
+            "          COALESCE(PPM.tossups_heard, 0) as tossups_heard,\n" +
+            "          tournament_player.team_id,\n" +
+            "          match_tossup_data.tossup_values\n" +
+            "        \n" +
+            "        FROM\n" +
+            "        \n" +
+            "        player_plays_in_tournament_match PPM\n" +
+            "\n" +
+            "        INNER JOIN\n" +
+            "\n" +
+            "        (\n" +
+            "          SELECT \n" +
+            "          PMT.player_id,\n" +
+            "          PMT.match_id,\n" +
+            "          array_agg(\n" +
+            "              json_build_object('value', PMT.tossup_value, 'number', PMT.number_gotten, 'playerId', PMT.player_id, 'matchId', PMT.match_id)\n" +
+            "          ) as tossup_values\n" +
+            "        \n" +
+            "          FROM\n" +
+            "\n" +
+            "          player_match_tossup PMT\n" +
+            "\n" +
+            "          WHERE PMT.tournament_id = :tournamentId\n" +
+            "\n" +
+            "          GROUP BY PMT.player_id, PMT.match_id\n" +
+            "        ) as match_tossup_data\n" +
+            "\n" +
+            "        ON match_tossup_data.player_id = PPM.player_id AND match_tossup_data.match_id = PPM.match_id\n" +
+            "\n" +
+            "        INNER JOIN tournament_player\n" +
+            "\n" +
+            "        ON tournament_player.id = PPM.player_id\n" +
+            "\n" +
+            "    ) player_match_result\n" +
+            "\n" +
+            "    GROUP BY match_id\n" +
+            "\n" +
+            ") as match_players\n" +
+            "\n" +
+            "ON match_information.id = match_players.match_id\n";
 
     protected TournamentMatchDAO() {
         super(TournamentMatch.class);
@@ -173,6 +190,7 @@ public class TournamentMatchDAO extends AbstractDAO<TournamentMatch, String> {
                 .addScalar("packet", StandardBasicTypes.STRING)
                 .addScalar("notes", StandardBasicTypes.STRING)
                 .addScalar("serialId", StandardBasicTypes.STRING)
+                .addScalar("players", StringArrayType.INSTANCE)
                 .setResultTransformer(new MatchTransformer())
                 .getResultList();
         return matches;

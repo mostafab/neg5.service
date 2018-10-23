@@ -6,6 +6,7 @@ import org.neg5.core.GsonProvider;
 import org.neg5.data.transformers.data.Match;
 import org.neg5.data.transformers.data.Phase;
 import org.neg5.data.transformers.data.TeamInMatch;
+import org.neg5.data.transformers.data.TeamMatchPlayer;
 import org.postgresql.util.PGobject;
 
 import java.util.ArrayList;
@@ -53,10 +54,25 @@ public class MatchTransformer implements ResultTransformer {
     }
 
     private Set<TeamInMatch> getTeams(Object[] tuple) {
+        Set<TeamMatchPlayer> players = getPlayers(tuple);
         return Arrays.stream((Object[]) tuple[5])
                 .map(object -> {
                     PGobject phaseObj = (PGobject) object;
-                    return gson.fromJson(phaseObj.getValue(), TeamInMatch.class);
+                    TeamInMatch team = gson.fromJson(phaseObj.getValue(), TeamInMatch.class);
+                    team.setPlayers(players.stream()
+                        .filter(p -> p.getTeamId().equals(team.getTeamId()))
+                        .collect(Collectors.toSet())
+                    );
+                    return team;
+                })
+                .collect(Collectors.toSet());
+    }
+
+    private Set<TeamMatchPlayer> getPlayers(Object[] tuple) {
+        return Arrays.stream((Object[]) tuple[10])
+                .map(object -> {
+                    PGobject phaseObj = (PGobject) object;
+                    return gson.fromJson(phaseObj.getValue(), TeamMatchPlayer.class);
                 })
                 .collect(Collectors.toSet());
     }
