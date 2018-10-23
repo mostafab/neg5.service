@@ -63,10 +63,6 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
         if (match.getTossupsHeard() != null) {
             tossupsHeard += match.getTossupsHeard();
         }
-
-        if (match.getTossupsHeard() != null) {
-            tossupsHeard += match.getTossupsHeard();
-        }
         numMatches++;
 
         updateTeamRecord(teams);
