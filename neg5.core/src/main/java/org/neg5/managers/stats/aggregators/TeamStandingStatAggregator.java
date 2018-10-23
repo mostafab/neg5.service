@@ -63,11 +63,6 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
         if (match.getTossupsHeard() != null) {
             tossupsHeard += match.getTossupsHeard();
         }
-        pointsAgainstPerGameBuilder.accept(
-                teams.getOtherTeam().isPresent()
-                        ? teams.getOtherTeam().get().getScore()
-                        : 0
-        );
 
         if (match.getTossupsHeard() != null) {
             tossupsHeard += match.getTossupsHeard();
