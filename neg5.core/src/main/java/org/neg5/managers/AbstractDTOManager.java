@@ -23,12 +23,13 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
 
     @Transactional
     public DTO get(IdType id) {
-        T entity = getDAO().get(id);
-        if (entity == null) {
-            String clazzName = getDAO().getPersistentClass().getSimpleName();
-            throw new NoResultException("No result found for " + clazzName + " with id " + id);
-        }
-        return getMapper().toDTO(entity.copyOf());
+        throw new RuntimeException("SDA");
+//        T entity = getDAO().get(id);
+//        if (entity == null) {
+//            String clazzName = getDAO().getPersistentClass().getSimpleName();
+//            throw new NoResultException("No result found for " + clazzName + " with id " + id);
+//        }
+//        return getMapper().toDTO(entity.copyOf());
     }
 
     @Transactional

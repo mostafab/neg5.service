@@ -2,6 +2,7 @@ package org.neg5.managers;
 
 import com.google.inject.Inject;
 import org.neg5.TournamentTossupValueDTO;
+import org.neg5.core.ReadOnly;
 import org.neg5.daos.TournamentTossupValueDAO;
 import org.neg5.data.TournamentTossupValue;
 import org.neg5.data.embeddables.TournamentTossupValueId;
@@ -10,7 +11,7 @@ import org.neg5.mappers.TournamentTossupValueMapper;
 public class TournamentTossupValueManager extends
         AbstractDTOManager<TournamentTossupValue, TournamentTossupValueDTO, TournamentTossupValueId> {
 
-    @Inject private TournamentTossupValueDAO tournamentTossupValueDAO;
+    @Inject @ReadOnly private TournamentTossupValueDAO tournamentTossupValueDAO;
     @Inject private TournamentTossupValueMapper tournamentTossupValueMapper;
 
     @Override

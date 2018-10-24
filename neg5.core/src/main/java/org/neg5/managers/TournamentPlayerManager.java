@@ -7,6 +7,7 @@ import org.neg5.MatchPlayerDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentPlayerDTO;
 
+import org.neg5.core.ReadOnly;
 import org.neg5.daos.TournamentPlayerDAO;
 import org.neg5.data.TournamentPlayer;
 import org.neg5.mappers.TournamentPlayerMapper;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 public class TournamentPlayerManager extends AbstractDTOManager<TournamentPlayer, TournamentPlayerDTO, String> {
 
     @Inject private TournamentPlayerMapper tournamentPlayerMapper;
-    @Inject private TournamentPlayerDAO tournamentPlayerDAO;
+    @Inject @ReadOnly private TournamentPlayerDAO tournamentPlayerDAO;
 
     @Inject private TournamentMatchManager tournamentMatchManager;
 

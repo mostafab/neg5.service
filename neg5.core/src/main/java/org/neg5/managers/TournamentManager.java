@@ -3,6 +3,8 @@ package org.neg5.managers;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.neg5.TournamentDTO;
+import org.neg5.core.ReadOnly;
+import org.neg5.core.ReadWrite;
 import org.neg5.daos.TournamentDAO;
 import org.neg5.data.Tournament;
 
@@ -12,14 +14,19 @@ import org.neg5.mappers.TournamentMapper;
 public class TournamentManager extends AbstractDTOManager<Tournament, TournamentDTO, String> {
 
     @Inject
-    private TournamentDAO tournamentDAO;
+    @ReadOnly
+    private TournamentDAO rwTournamentDAO;
+
+    @Inject
+    @ReadWrite
+    private TournamentDAO roTournamentDAO;
 
     @Inject
     private TournamentMapper tournamentMapper;
 
     @Override
     protected TournamentDAO getDAO() {
-        return tournamentDAO;
+        return rwTournamentDAO;
     }
 
     @Override

@@ -23,9 +23,12 @@ public class DataAccessModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(AvailableSettings.DATASOURCE, provideRWDataSource(new EnvironmentBackedSystemVariables()));
-        install(new JpaPersistModule(PERSISTENCE_UNIT_NAME).properties(properties));
+        install(new ReadOnlyModule());
+        install(new ReadWriteModule());
+//        install(new ReadOnlyModule());
+//        Map<String, Object> properties = new HashMap<>();
+//        properties.put(AvailableSettings.DATASOURCE, provideRWDataSource(new EnvironmentBackedSystemVariables()));
+//        install(new JpaPersistModule(PERSISTENCE_UNIT_NAME).properties(properties));
     }
 
     private DataSource provideRWDataSource(SystemProperties properties) {

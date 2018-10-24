@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentTossupValueDTO;
+import org.neg5.core.ReadOnly;
 import org.neg5.daos.TournamentMatchDAO;
 import org.neg5.data.TournamentMatch;
 import org.neg5.data.transformers.data.Match;
@@ -19,11 +20,12 @@ import java.util.stream.Collectors;
 @Singleton
 public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, TournamentMatchDTO, String> {
 
-    @Inject private TournamentManager tournamentManager;
+    @Inject
+    private TournamentManager tournamentManager;
 
     @Inject private TournamentMatchMapper tournamentMatchMapper;
     @Inject private MatchToMatchDTOMapper matchToMatchDTOMapper;
-    @Inject private TournamentMatchDAO tournamentMatchDAO;
+    @Inject @ReadOnly private TournamentMatchDAO tournamentMatchDAO;
 
     @Override
     protected TournamentMatchMapper getMapper() {

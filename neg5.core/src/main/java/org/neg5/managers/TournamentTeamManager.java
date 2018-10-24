@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import org.neg5.MatchTeamDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentTeamDTO;
+import org.neg5.core.ReadOnly;
 import org.neg5.daos.TournamentTeamDAO;
 import org.neg5.data.TournamentTeam;
 
@@ -20,7 +21,7 @@ import java.util.Set;
 @Singleton
 public class TournamentTeamManager extends AbstractDTOManager<TournamentTeam, TournamentTeamDTO, String> {
 
-    @Inject private TournamentTeamDAO tournamentTeamDAO;
+    @Inject @ReadOnly private TournamentTeamDAO tournamentTeamDAO;
 
     @Inject private TournamentTeamMapper tournamentTeamMapper;
 
