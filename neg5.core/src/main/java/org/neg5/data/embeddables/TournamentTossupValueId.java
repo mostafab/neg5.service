@@ -1,24 +1,30 @@
 package org.neg5.data.embeddables;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.neg5.data.CompositeId;
+import org.neg5.data.Tournament;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Embeddable
-public class TournamentTossupValueId implements Serializable {
+public class TournamentTossupValueId implements Serializable, CompositeId {
 
-    private String tournamentId;
+    private Tournament tournament;
     private Integer value;
 
-    @Column(name = "tournament_id")
-    public String getTournamentId() {
-        return tournamentId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tournament_id", nullable = false, updatable = false)
+    public Tournament getTournament() {
+        return tournament;
     }
 
-    public void setTournamentId(String tournamentId) {
-        this.tournamentId = tournamentId;
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
     }
 
     @Column(name = "tossup_value")
@@ -39,14 +45,14 @@ public class TournamentTossupValueId implements Serializable {
             return false;
         }
         TournamentTossupValueId that = (TournamentTossupValueId) obj;
-        return that.getTournamentId().equals(tournamentId)
+        return that.getTournament().getId().equals(tournament.getId())
                 && that.getValue().equals(value);
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 3)
-                .append(tournamentId)
+                .append(tournament.getId())
                 .append(value)
                 .toHashCode();
     }

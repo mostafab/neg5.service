@@ -18,22 +18,20 @@ import javax.persistence.Table;
 public class MatchPlayerAnswer extends AbstractDataObject<MatchPlayerAnswer>
         implements CompositeIdObject<MatchPlayerAnswerId> {
 
-    private MatchPlayerAnswerId matchPlayerAnswerId;
+    private MatchPlayerAnswerId id;
 
     private TournamentTossupValue tournamentTossupValue;
     private Integer numberGotten;
 
-    private MatchPlayer player;
-
     @EmbeddedId
     @Override
     public MatchPlayerAnswerId getId() {
-        return matchPlayerAnswerId;
+        return id;
     }
 
     @Override
-    public void setId(MatchPlayerAnswerId matchPlayerAnswerId) {
-        this.matchPlayerAnswerId = matchPlayerAnswerId;
+    public void setId(MatchPlayerAnswerId id) {
+        this.id = id;
     }
 
     @Column(name = "number_gotten")
@@ -56,19 +54,5 @@ public class MatchPlayerAnswer extends AbstractDataObject<MatchPlayerAnswer>
 
     public void setTournamentTossupValue(TournamentTossupValue tournamentTossupValue) {
         this.tournamentTossupValue = tournamentTossupValue;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "player_id", insertable = false, updatable = false),
-            @JoinColumn(name = "match_id", insertable = false, updatable = false),
-            @JoinColumn(name = "tournament_id", insertable = false, updatable = false)
-    })
-    public MatchPlayer getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(MatchPlayer player) {
-        this.player = player;
     }
 }

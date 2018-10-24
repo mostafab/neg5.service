@@ -27,12 +27,9 @@ public class MatchTeamMapper extends AbstractObjectMapper<MatchTeam, MatchTeamDT
         Set<MatchPlayer> players = Optional.ofNullable(matchTeam.getMatch().getPlayers())
                 .orElse(new HashSet<>());
         List<MatchPlayerDTO> playersOnTeam = players.stream()
-                .filter(p -> p.getPlayer().getTeam().getId().equals(matchTeam.getId().getTeamId()))
+                .filter(p -> p.getPlayer().getTeam().getId().equals(matchTeam.getTeam().getId()))
                 .map(matchPlayerMapper::toDTO)
                 .collect(Collectors.toList());
         matchTeamDTO.setPlayers(playersOnTeam);
-
-        matchTeamDTO.setMatchId(matchTeam.getId().getMatchId());
-        matchTeamDTO.setTeamId(matchTeam.getId().getTeamId());
     }
 }

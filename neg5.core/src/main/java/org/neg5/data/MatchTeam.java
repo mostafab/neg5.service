@@ -6,24 +6,19 @@ import org.neg5.data.embeddables.MatchTeamId;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "team_plays_in_tournament_match")
 @DynamicUpdate
 public class MatchTeam extends AbstractDataObject<MatchTeam> implements CompositeIdObject<MatchTeamId> {
 
-    private MatchTeamId matchTeamId;
+    private MatchTeamId id;
 
     private Integer score;
     private Integer bouncebackPoints;
     private Integer overtimeTossupsGotten;
-
-    private TournamentTeam team;
-    private TournamentMatch match;
 
     /*
     Since this table has a composite primary key, we need to use an {@link EmbeddedId} to represent it
@@ -31,12 +26,12 @@ public class MatchTeam extends AbstractDataObject<MatchTeam> implements Composit
     @EmbeddedId
     @Override
     public MatchTeamId getId() {
-        return matchTeamId;
+        return id;
     }
 
     @Override
-    public void setId(MatchTeamId matchTeamId) {
-        this.matchTeamId = matchTeamId;
+    public void setId(MatchTeamId id) {
+        this.id = id;
     }
 
     @Column(name = "score")
@@ -66,23 +61,18 @@ public class MatchTeam extends AbstractDataObject<MatchTeam> implements Composit
         this.overtimeTossupsGotten = overtimeTossupsGotten;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "match_id", updatable = false, insertable = false)
+    @Transient
     public TournamentMatch getMatch() {
-        return match;
+        return id.getMatch();
     }
 
-    public void setMatch(TournamentMatch match) {
-        this.match = match;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", updatable = false, insertable = false)
+    @Transient
     public TournamentTeam getTeam() {
-        return team;
+        return id.getTeam();
     }
 
-    public void setTeam(TournamentTeam team) {
-        this.team = team;
+    @Transient
+    public Tournament getTournament() {
+        return id.getTournament();
     }
 }

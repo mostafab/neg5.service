@@ -8,4 +8,9 @@ public class TournamentTossupValueDAO extends AbstractDAO<TournamentTossupValue,
     protected TournamentTossupValueDAO() {
         super(TournamentTossupValue.class);
     }
+
+    @Override
+    protected String getTournamentIdAttributePath() {
+        return "id.tournament.id";
+    }
 }

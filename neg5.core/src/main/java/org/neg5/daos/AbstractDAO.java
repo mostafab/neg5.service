@@ -1,15 +1,15 @@
 package org.neg5.daos;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import org.neg5.core.EntityManagerSupplier;
 import org.neg5.data.AbstractDataObject;
 import org.neg5.data.IdDataObject;
 import org.neg5.data.SpecificTournamentEntity;
 
 import javax.persistence.EntityManager;
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject<IdType>, IdType> {
+public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject<IdType>, IdType extends Serializable> {
 
     private Class<T> persistentClass;
 
@@ -20,7 +20,7 @@ public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject
 
     private static final String TOURNAMENT_ID_PARAM = "tournamentId";
 
-    @Inject private Provider<EntityManager> entityManager;
+    private EntityManagerSupplier entityManagerSupplier;
 
     AbstractDAO(Class<T> persistentClass) {
         this.persistentClass = persistentClass;
@@ -52,11 +52,15 @@ public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject
     }
 
     protected EntityManager getEntityManager() {
-        return entityManager.get();
+        return entityManagerSupplier.get();
     }
 
     protected String getTournamentIdAttributePath() {
         return DEFAULT_TOURNAMENT_ATTRIBUTE_PATH;
+    }
+
+    public void setEntityManagerSupplier(EntityManagerSupplier entityManagerSupplier) {
+        this.entityManagerSupplier = entityManagerSupplier;
     }
 
     private void validateFindByTournamentId() {

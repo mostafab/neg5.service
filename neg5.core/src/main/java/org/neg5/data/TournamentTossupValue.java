@@ -7,9 +7,6 @@ import org.neg5.enums.TossupAnswerType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -20,20 +17,18 @@ public class TournamentTossupValue
         extends AbstractDataObject<TournamentTossupValue>
         implements SpecificTournamentEntity, CompositeIdObject<TournamentTossupValueId> {
 
-    private TournamentTossupValueId tournamentTossupValueId;
+    private TournamentTossupValueId id;
     private TossupAnswerType answerType;
-
-    private Tournament tournament;
 
     @EmbeddedId
     @Override
     public TournamentTossupValueId getId() {
-        return tournamentTossupValueId;
+        return id;
     }
 
     @Override
-    public void setId(TournamentTossupValueId tournamentTossupValueId) {
-        this.tournamentTossupValueId = tournamentTossupValueId;
+    public void setId(TournamentTossupValueId id) {
+        this.id = id;
     }
 
     @Column(name = "tossup_answer_type")
@@ -46,13 +41,8 @@ public class TournamentTossupValue
     }
 
     @Override
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tournament_id", updatable = false, insertable = false)
+    @Transient
     public Tournament getTournament() {
-        return tournament;
-    }
-
-    public void setTournament(Tournament tournament) {
-        this.tournament = tournament;
+        return id.getTournament();
     }
 }

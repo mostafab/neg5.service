@@ -127,7 +127,7 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch>
         this.serialId = serialId;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "match")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.match")
     public Set<MatchTeam> getTeams() {
         return teams;
     }
@@ -136,7 +136,7 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch>
         this.teams = teams;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "match")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.match")
     public Set<MatchPlayer> getPlayers() {
         return players;
     }

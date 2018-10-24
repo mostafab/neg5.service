@@ -6,6 +6,9 @@ import com.google.inject.Singleton;
 import org.neg5.MatchTeamDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentTeamDTO;
+import org.neg5.core.ReadOnly;
+import org.neg5.core.ReadWrite;
+import org.neg5.core.Transactional;
 import org.neg5.daos.TournamentTeamDAO;
 import org.neg5.data.TournamentTeam;
 
@@ -16,19 +19,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Singleton
 public class TournamentTeamManager extends AbstractDTOManager<TournamentTeam, TournamentTeamDTO, String> {
 
-    @Inject private TournamentTeamDAO tournamentTeamDAO;
+    @Inject @ReadWrite private TournamentTeamDAO rwTournamentTeamDAO;
+    @Inject @ReadOnly private TournamentTeamDAO roTournamentTeamDAO;
 
     @Inject private TournamentTeamMapper tournamentTeamMapper;
 
     @Inject private TournamentMatchManager tournamentMatchManager;
+    @Inject private TournamentPlayerManager playerManager;
 
     @Override
-    protected TournamentTeamDAO getDAO() {
-        return tournamentTeamDAO;
+    @Transactional
+    public TournamentTeamDTO create(TournamentTeamDTO tournamentTeamDTO) {
+        TournamentTeamDTO created = super.create(tournamentTeamDTO);
+        if (tournamentTeamDTO.getPlayers() != null) {
+            created.setPlayers(tournamentTeamDTO.getPlayers().stream()
+                    .map(player -> {
+                        player.setTeamId(created.getId());
+                        player.setTournamentId(created.getTournamentId());
+                        return playerManager.create(player);
+                    })
+                    .collect(Collectors.toSet())
+            );
+        }
+        return created;
+    }
+
+    @Override
+    protected TournamentTeamDAO getRwDAO() {
+        return rwTournamentTeamDAO;
+    }
+
+    protected TournamentTeamDAO getRoDAO() {
+        return roTournamentTeamDAO;
     }
 
     @Override

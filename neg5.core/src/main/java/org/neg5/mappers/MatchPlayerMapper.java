@@ -21,7 +21,5 @@ public class MatchPlayerMapper extends AbstractObjectMapper<MatchPlayer, MatchPl
         matchPlayerDTO.setAnswers(matchPlayer.getAnswers().stream()
                 .map(answer -> matchPlayerAnswerMapper.toDTO(answer)).collect(Collectors.toSet())
         );
-        matchPlayerDTO.setMatchId(matchPlayer.getId().getMatchId());
-        matchPlayerDTO.setPlayerId(matchPlayer.getId().getPlayerId());
     }
 }

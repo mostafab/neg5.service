@@ -22,7 +22,5 @@ public class TournamentMatchMapper extends AbstractObjectMapper<TournamentMatch,
         tournamentMatchDTO.setTeams(tournamentMatch.getTeams().stream().map(matchTeamMapper::toDTO).collect(Collectors.toSet()));
         tournamentMatchDTO.setPhases(tournamentMatch.getPhases().stream()
                 .map(TournamentPhase::getId).collect(Collectors.toSet()));
-
-        tournamentMatchDTO.setTournamentId(tournamentMatch.getTournament().getId());
     }
 }

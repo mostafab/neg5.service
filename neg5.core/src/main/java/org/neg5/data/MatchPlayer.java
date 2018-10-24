@@ -10,9 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.Set;
 
@@ -21,13 +21,10 @@ import java.util.Set;
 @DynamicUpdate
 public class MatchPlayer extends AbstractDataObject<MatchPlayer> implements CompositeIdObject<MatchPlayerId> {
 
-    private MatchPlayerId matchPlayerId;
+    private MatchPlayerId id;
     private Integer tossupsHeard;
 
     private Set<MatchPlayerAnswer> answers;
-
-    private TournamentPlayer player;
-    private TournamentMatch match;
 
     /*
     Since this table has a composite primary key, we need to use an {@link EmbeddedId} to represent it
@@ -35,12 +32,12 @@ public class MatchPlayer extends AbstractDataObject<MatchPlayer> implements Comp
     @EmbeddedId
     @Override
     public MatchPlayerId getId() {
-        return matchPlayerId;
+        return id;
     }
 
     @Override
-    public void setId(MatchPlayerId matchPlayerId) {
-        this.matchPlayerId = matchPlayerId;
+    public void setId(MatchPlayerId id) {
+        this.id = id;
     }
 
     @Column(name = "tossups_heard")
@@ -66,23 +63,13 @@ public class MatchPlayer extends AbstractDataObject<MatchPlayer> implements Comp
         this.answers = answers;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "player_id", nullable = false, updatable = false, insertable = false)
+    @Transient
     public TournamentPlayer getPlayer() {
-        return player;
+        return id.getPlayer();
     }
 
-    public void setPlayer(TournamentPlayer player) {
-        this.player = player;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "match_id", nullable = false, updatable = false, insertable = false)
+    @Transient
     public TournamentMatch getMatch() {
-        return match;
-    }
-
-    public void setMatch(TournamentMatch match) {
-        this.match = match;
+        return id.getMatch();
     }
 }
