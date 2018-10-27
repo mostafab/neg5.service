@@ -1,6 +1,8 @@
 package org.neg5.data;
 
-public interface IdDataObject<IdType> {
+import java.io.Serializable;
+
+public interface IdDataObject<IdType extends Serializable> {
 
     IdType getId();
 

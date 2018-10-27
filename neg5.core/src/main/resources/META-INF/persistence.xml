@@ -7,7 +7,6 @@
     <persistence-unit name="org.neg5.data" transaction-type="RESOURCE_LOCAL">
         <description>Hibernate Entity Manager</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
         <properties>
             <property name="hibernate.show_sql" value="false" />
             <property name="hibernate.format_sql" value="false" />

@@ -1,5 +1,7 @@
 package org.neg5.data;
 
-public interface CompositeIdObject<IdType> extends IdDataObject<IdType> {
+import java.io.Serializable;
+
+public interface CompositeIdObject<IdType extends Serializable & CompositeId> extends IdDataObject<IdType> {
 
 }

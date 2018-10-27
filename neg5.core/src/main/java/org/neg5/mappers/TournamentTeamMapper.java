@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import org.neg5.TournamentTeamDTO;
 import org.neg5.data.TournamentTeam;
 
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -19,11 +20,9 @@ public class TournamentTeamMapper extends AbstractObjectMapper<TournamentTeam, T
 
     @Override
     protected void enrichDTO(TournamentTeamDTO tournamentTeamDTO, TournamentTeam tournamentTeam) {
-        tournamentTeamDTO.setDivisions(tournamentTeam.getDivisions().stream()
+        tournamentTeamDTO.setDivisions(tournamentTeam.getDivisions() == null ? new HashSet<>() : tournamentTeam.getDivisions().stream()
                 .map(divisionMapper::toDTO).collect(Collectors.toSet()));
         tournamentTeamDTO.setPlayers(tournamentTeam.getPlayers().stream().map(playerMapper::toDTO)
                 .collect(Collectors.toSet()));
-
-        tournamentTeamDTO.setTournamentId(tournamentTeam.getTournament().getId());
     }
 }

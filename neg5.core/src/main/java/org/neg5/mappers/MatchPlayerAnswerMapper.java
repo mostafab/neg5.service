@@ -1,8 +1,11 @@
 package org.neg5.mappers;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Singleton;
 import org.neg5.MatchPlayerAnswerDTO;
 import org.neg5.data.MatchPlayerAnswer;
+
+import java.util.Set;
 
 @Singleton
 public class MatchPlayerAnswerMapper extends AbstractObjectMapper<MatchPlayerAnswer, MatchPlayerAnswerDTO> {
@@ -12,10 +15,20 @@ public class MatchPlayerAnswerMapper extends AbstractObjectMapper<MatchPlayerAns
     }
 
     @Override
+    public MatchPlayerAnswer mergeToEntity(MatchPlayerAnswerDTO matchPlayerAnswerDTO, MatchPlayerAnswer matchPlayerAnswer) {
+        MatchPlayerAnswer ent = super.mergeToEntity(matchPlayerAnswerDTO, matchPlayerAnswer);
+        ent.getId().setTossupValue(matchPlayerAnswerDTO.getTossupValue());
+        return ent;
+    }
+
+    @Override
     protected void enrichDTO(MatchPlayerAnswerDTO matchPlayerAnswerDTO, MatchPlayerAnswer matchPlayerAnswer) {
-        matchPlayerAnswerDTO.setMatchId(matchPlayerAnswer.getId().getMatchId());
-        matchPlayerAnswerDTO.setPlayerId(matchPlayerAnswer.getId().getPlayerId());
         matchPlayerAnswerDTO.setTossupValue(matchPlayerAnswer.getId().getTossupValue());
         matchPlayerAnswerDTO.setAnswerType(matchPlayerAnswer.getTournamentTossupValue().getAnswerType());
+    }
+
+    @Override
+    protected Set<String> getIgnoredEntityPropertyNames() {
+        return Sets.newHashSet("player");
     }
 }

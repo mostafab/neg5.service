@@ -12,12 +12,15 @@ public class TournamentTossupValueMapper extends AbstractObjectMapper<Tournament
     }
 
     @Override
+    public TournamentTossupValue mergeToEntity(TournamentTossupValueDTO tournamentTossupValueDTO) {
+        TournamentTossupValue entity = super.mergeToEntity(tournamentTossupValueDTO);
+        entity.getId().setValue(tournamentTossupValueDTO.getValue());
+        return entity;
+    }
+
+    @Override
     protected void addMappings() {
         getEntityToDTOTypeMap().addMappings(mapper -> {
-            mapper.map(
-                    tournamentTossupValue -> tournamentTossupValue.getTournament().getId(),
-                    TournamentTossupValueDTO::setTournamentId
-            );
             mapper.map(
                     tournamentTossupValue -> tournamentTossupValue.getId().getValue(),
                     TournamentTossupValueDTO::setValue

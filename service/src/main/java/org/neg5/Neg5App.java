@@ -1,7 +1,6 @@
 package org.neg5;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.PersistService;
 import org.neg5.filters.RequestFilter;
 import org.neg5.module.SystemProperties;
 import org.neg5.controllers.BaseController;
@@ -23,11 +22,6 @@ public class Neg5App implements SparkApplication {
     private static final String PORT_PROP_NAME = "PORT";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Neg5App.class);
-
-    @Inject
-    public Neg5App(PersistService persistService) {
-        persistService.start();
-    }
 
     @Override
     public synchronized void init() {

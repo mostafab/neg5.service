@@ -2,6 +2,8 @@ package org.neg5.managers;
 
 import com.google.inject.Inject;
 import org.neg5.TournamentTossupValueDTO;
+import org.neg5.core.ReadOnly;
+import org.neg5.core.ReadWrite;
 import org.neg5.daos.TournamentTossupValueDAO;
 import org.neg5.data.TournamentTossupValue;
 import org.neg5.data.embeddables.TournamentTossupValueId;
@@ -10,12 +12,19 @@ import org.neg5.mappers.TournamentTossupValueMapper;
 public class TournamentTossupValueManager extends
         AbstractDTOManager<TournamentTossupValue, TournamentTossupValueDTO, TournamentTossupValueId> {
 
-    @Inject private TournamentTossupValueDAO tournamentTossupValueDAO;
+    @Inject @ReadWrite private TournamentTossupValueDAO rwTournamentTossupValueDAO;
+    @Inject @ReadOnly private TournamentTossupValueDAO roTournamentTossupValueDAO;
+
     @Inject private TournamentTossupValueMapper tournamentTossupValueMapper;
 
     @Override
-    protected TournamentTossupValueDAO getDAO() {
-        return tournamentTossupValueDAO;
+    protected TournamentTossupValueDAO getRwDAO() {
+        return rwTournamentTossupValueDAO;
+    }
+
+    @Override
+    protected TournamentTossupValueDAO getRoDAO() {
+        return roTournamentTossupValueDAO;
     }
 
     @Override
@@ -25,9 +34,6 @@ public class TournamentTossupValueManager extends
 
     @Override
     protected TournamentTossupValueId getIdFromDTO(TournamentTossupValueDTO tournamentTossupValueDTO) {
-        TournamentTossupValueId id = new TournamentTossupValueId();
-        id.setValue(tournamentTossupValueDTO.getValue());
-        id.setTournamentId(tournamentTossupValueDTO.getTournamentId());
-        return id;
+        return getMapper().mergeToEntity(tournamentTossupValueDTO).getId();
     }
 }

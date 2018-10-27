@@ -10,10 +10,4 @@ public class TournamentPlayerMapper extends AbstractObjectMapper<TournamentPlaye
     protected TournamentPlayerMapper() {
         super(TournamentPlayer.class, TournamentPlayerDTO.class);
     }
-
-    @Override
-    protected void enrichDTO(TournamentPlayerDTO tournamentPlayerDTO, TournamentPlayer tournamentPlayer) {
-        tournamentPlayerDTO.setTeamId(tournamentPlayer.getTeam().getId());
-        tournamentPlayerDTO.setTournamentId(tournamentPlayer.getTournament().getId());
-    }
 }

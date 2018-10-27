@@ -10,10 +10,4 @@ public class TournamentDivisionMapper extends AbstractObjectMapper<TournamentDiv
     protected TournamentDivisionMapper() {
         super(TournamentDivision.class, TournamentDivisionDTO.class);
     }
-
-    @Override
-    protected void enrichDTO(TournamentDivisionDTO tournamentDivisionDTO, TournamentDivision tournamentDivision) {
-        tournamentDivisionDTO.setTournamentId(tournamentDivision.getTournament().getId());
-        tournamentDivisionDTO.setPhaseId(tournamentDivision.getPhase().getId());
-    }
 }
