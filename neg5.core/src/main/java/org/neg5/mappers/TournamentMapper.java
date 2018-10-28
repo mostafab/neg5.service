@@ -20,13 +20,18 @@ public class TournamentMapper extends AbstractObjectMapper<Tournament, Tournamen
 
     @Override
     protected void enrichDTO(TournamentDTO tournamentDTO, Tournament tournament) {
-        tournamentDTO.setPhases(tournament.getPhases().stream()
-                .map(tournamentPhaseMapper::toDTO).collect(Collectors.toSet()));
-        tournamentDTO.setDivisions(tournament.getDivisions().stream()
-                .map(tournamentDivisionMapper::toDTO).collect(Collectors.toSet()));
-        tournamentDTO.setTossupValues(tournament.getTossupValues().stream()
-                .map(tournamentTossupValueMapper::toDTO).collect(Collectors.toSet()));
-
+        if (tournament.getPhases() != null) {
+            tournamentDTO.setPhases(tournament.getPhases().stream()
+                    .map(tournamentPhaseMapper::toDTO).collect(Collectors.toSet()));
+        }
+        if (tournament.getDivisions() != null) {
+            tournamentDTO.setDivisions(tournament.getDivisions().stream()
+                    .map(tournamentDivisionMapper::toDTO).collect(Collectors.toSet()));
+        }
+        if (tournamentDTO.getTossupValues() != null) {
+            tournamentDTO.setTossupValues(tournament.getTossupValues().stream()
+                    .map(tournamentTossupValueMapper::toDTO).collect(Collectors.toSet()));
+        }
         if (tournament.getCurrentPhase() != null) {
             tournamentDTO.setCurrentPhaseId(tournament.getCurrentPhase().getId());
         }
