@@ -1,6 +1,7 @@
 package org.neg5;
 
 import com.google.inject.Inject;
+import org.neg5.core.PersistInitializer;
 import org.neg5.filters.RequestFilter;
 import org.neg5.module.SystemProperties;
 import org.neg5.controllers.BaseController;
@@ -18,6 +19,8 @@ public class Neg5App implements SparkApplication {
     @Inject private Set<RequestFilter> filters;
     @Inject private SystemProperties systemProperties;
 
+    @Inject private PersistInitializer persistInitializer;
+
     private static final int DEFAULT_PORT = 1337;
     private static final String PORT_PROP_NAME = "PORT";
 
@@ -25,6 +28,8 @@ public class Neg5App implements SparkApplication {
 
     @Override
     public synchronized void init() {
+        persistInitializer.start();
+
         port(getPort());
         initRoutes();
         initFilters();

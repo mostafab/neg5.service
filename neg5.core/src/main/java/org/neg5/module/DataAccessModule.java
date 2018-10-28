@@ -6,8 +6,6 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.hibernate.cfg.AvailableSettings;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,49 +28,6 @@ public class DataAccessModule extends AbstractModule {
         Map<String, Object> properties = new HashMap<>();
         properties.put(AvailableSettings.DATASOURCE, getDataSource(new EnvironmentBackedSystemVariables(), false));
         install(new JpaPersistModule(PERSISTENCE_UNIT_NAME).properties(properties));
-    }
-
-//    private void initSelfManagingTransaction() {
-//        EntityManagerFactory readOnlyEntityManagerFactory = provideROEntityManagerFactory();
-//        EntityManagerFactory readWriteEntityManagerFactory = provideRWEntityManagerFactory();
-//        PersistenceManager persistenceManager =
-//                new ThreadLocalPersistenceManager(readWriteEntityManagerFactory, readOnlyEntityManagerFactory);
-//        bind(PersistenceManager.class).toInstance(persistenceManager);
-//        install(new TransactionalModule());
-////        bindDAOs();
-//    }
-
-//    private void bindDAOs() {
-//        Reflections reflections = new Reflections("org.neg5.daos");
-//        reflections.getSubTypesOf(AbstractDAO.class).forEach(this::bindDAO);
-//    }
-
-    @SuppressWarnings("unchecked")
-//    private <T extends AbstractDAO> void bindDAO(Class<T> daoClass) {
-//        if (!Modifier.isAbstract(daoClass.getModifiers())) {
-//            bind(daoClass).annotatedWith(ReadOnly.class)
-//                    .toProvider(new DAOProvider(getProvider(daoClass),
-//                            new EntityManagerSupplier(true, persistenceManager)))
-//                    .in(Scopes.SINGLETON);
-//            bind(daoClass).annotatedWith(ReadWrite.class)
-//                    .toProvider(new DAOProvider(getProvider(daoClass),
-//                            new EntityManagerSupplier(false, persistenceManager)))
-//                    .in(Scopes.SINGLETON);
-//        }
-//    }
-
-    private EntityManagerFactory provideRWEntityManagerFactory() {
-        DataSource dataSource = getDataSource(new EnvironmentBackedSystemVariables(), false);
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(AvailableSettings.DATASOURCE, dataSource);
-        return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, properties);
-    }
-
-    private EntityManagerFactory provideROEntityManagerFactory() {
-        DataSource dataSource = getDataSource(new EnvironmentBackedSystemVariables(), true);
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(AvailableSettings.DATASOURCE, dataSource);
-        return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, properties);
     }
 
     private DataSource getDataSource(SystemProperties properties, boolean readOnly) {
