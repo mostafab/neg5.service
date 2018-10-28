@@ -2,11 +2,9 @@ package org.neg5.managers;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentTossupValueDTO;
-import org.neg5.core.ReadOnly;
-import org.neg5.core.ReadWrite;
-import org.neg5.core.Transactional;
 import org.neg5.daos.TournamentMatchDAO;
 import org.neg5.data.TournamentMatch;
 import org.neg5.data.transformers.data.Match;
@@ -26,8 +24,7 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
     @Inject private TournamentMatchMapper tournamentMatchMapper;
     @Inject private MatchToMatchDTOMapper matchToMatchDTOMapper;
 
-    @Inject @ReadWrite private TournamentMatchDAO rwTournamentMatchDAO;
-    @Inject @ReadOnly private TournamentMatchDAO roTournamentMatchDAO;
+    @Inject private TournamentMatchDAO rwTournamentMatchDAO;
 
     @Override
     protected TournamentMatchMapper getMapper() {
@@ -37,11 +34,6 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
     @Override
     protected TournamentMatchDAO getRwDAO() {
         return rwTournamentMatchDAO;
-    }
-
-    @Override
-    protected TournamentMatchDAO getRoDAO() {
-        return roTournamentMatchDAO;
     }
 
     @Override
@@ -57,16 +49,16 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readWrite = false)
+    @Transactional
     public List<TournamentMatchDTO> findAllByTournamentAndPhase(String tournamentId, String phaseId) {
         return findAllByTournamentId(tournamentId).stream()
                 .filter(match -> phaseId == null || match.getPhases().contains(phaseId))
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readWrite = false)
+    @Transactional
     protected List<Match> findByRawQuery(String tournamentId) {
-        return getRoDAO().findMatchesByTournamentIdWithRawQuery(tournamentId);
+        return getRwDAO().findMatchesByTournamentIdWithRawQuery(tournamentId);
     }
 
     private Map<Integer, TournamentTossupValueDTO> getTossupValueMap(String tournamentId) {

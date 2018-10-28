@@ -7,8 +7,6 @@ import org.neg5.MatchPlayerDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentPlayerDTO;
 
-import org.neg5.core.ReadOnly;
-import org.neg5.core.ReadWrite;
 import org.neg5.daos.TournamentPlayerDAO;
 import org.neg5.data.TournamentPlayer;
 import org.neg5.mappers.TournamentPlayerMapper;
@@ -25,8 +23,7 @@ public class TournamentPlayerManager extends AbstractDTOManager<TournamentPlayer
 
     @Inject private TournamentPlayerMapper tournamentPlayerMapper;
 
-    @Inject @ReadWrite private TournamentPlayerDAO rwTournamentPlayerDAO;
-    @Inject @ReadOnly private TournamentPlayerDAO roTournamentPlayerDAO;
+    @Inject private TournamentPlayerDAO rwTournamentPlayerDAO;
 
     @Inject private TournamentMatchManager tournamentMatchManager;
 
@@ -38,11 +35,6 @@ public class TournamentPlayerManager extends AbstractDTOManager<TournamentPlayer
     @Override
     protected TournamentPlayerDAO getRwDAO() {
         return rwTournamentPlayerDAO;
-    }
-
-    @Override
-    protected TournamentPlayerDAO getRoDAO() {
-        return roTournamentPlayerDAO;
     }
 
     @Override

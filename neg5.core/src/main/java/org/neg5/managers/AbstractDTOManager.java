@@ -1,6 +1,6 @@
 package org.neg5.managers;
 
-import org.neg5.core.Transactional;
+import com.google.inject.persist.Transactional;
 import org.neg5.daos.AbstractDAO;
 
 import org.neg5.data.AbstractDataObject;
@@ -18,17 +18,15 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
 
     protected abstract AbstractDAO<T, IdType> getRwDAO();
 
-    protected abstract AbstractDAO<T, IdType> getRoDAO();
-
     protected abstract AbstractObjectMapper<T, DTO> getMapper();
 
     protected abstract IdType getIdFromDTO(DTO dto);
 
-    @Transactional(readWrite = false)
+    @Transactional
     public DTO get(IdType id) {
-        T entity = getRoDAO().get(id);
+        T entity = getRwDAO().get(id);
         if (entity == null) {
-            String clazzName = getRoDAO().getPersistentClass().getSimpleName();
+            String clazzName = getRwDAO().getPersistentClass().getSimpleName();
             throw new NoResultException("No result found for " + clazzName + " with id " + id);
         }
         return getMapper().toDTO(entity.copyOf());
@@ -56,9 +54,9 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
         return getMapper().toDTO(getRwDAO().save(updated).copyOf());
     }
 
-    @Transactional(readWrite = false)
+    @Transactional
     public List<DTO> findAllByTournamentId(String tournamentId) {
-        return getRoDAO().findAllByTournamentId(tournamentId)
+        return getRwDAO().findAllByTournamentId(tournamentId)
                 .stream()
                 .map(entity -> getMapper().toDTO(entity))
                 .collect(Collectors.toList());

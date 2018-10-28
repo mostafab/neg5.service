@@ -1,5 +1,7 @@
 package org.neg5.daos;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.neg5.core.EntityManagerSupplier;
 import org.neg5.data.AbstractDataObject;
 import org.neg5.data.IdDataObject;
@@ -21,6 +23,8 @@ public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject
     private static final String TOURNAMENT_ID_PARAM = "tournamentId";
 
     private EntityManagerSupplier entityManagerSupplier;
+
+    @Inject private Provider<EntityManager> entityManagerProvider;
 
     AbstractDAO(Class<T> persistentClass) {
         this.persistentClass = persistentClass;
@@ -52,7 +56,7 @@ public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject
     }
 
     protected EntityManager getEntityManager() {
-        return entityManagerSupplier.get();
+        return entityManagerProvider.get();
     }
 
     protected String getTournamentIdAttributePath() {

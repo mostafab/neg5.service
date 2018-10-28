@@ -1,0 +1,18 @@
+package org.neg5.core;
+
+import com.google.inject.Inject;
+import com.google.inject.persist.PersistService;
+
+public class PersistInitializer {
+
+    private PersistService persistService;
+
+    @Inject
+    protected PersistInitializer(PersistService persistService) {
+        this.persistService = persistService;
+    }
+
+    public void start() {
+        persistService.start();
+    }
+}
