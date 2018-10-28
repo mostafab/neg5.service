@@ -22,7 +22,11 @@ public class TournamentTeamMapper extends AbstractObjectMapper<TournamentTeam, T
     protected void enrichDTO(TournamentTeamDTO tournamentTeamDTO, TournamentTeam tournamentTeam) {
         tournamentTeamDTO.setDivisions(tournamentTeam.getDivisions() == null ? new HashSet<>() : tournamentTeam.getDivisions().stream()
                 .map(divisionMapper::toDTO).collect(Collectors.toSet()));
-        tournamentTeamDTO.setPlayers(tournamentTeam.getPlayers().stream().map(playerMapper::toDTO)
-                .collect(Collectors.toSet()));
+        tournamentTeamDTO.setPlayers(tournamentTeam.getPlayers() == null
+                ? new HashSet<>()
+                : tournamentTeam.getPlayers().stream()
+                    .map(playerMapper::toDTO)
+                    .collect(Collectors.toSet())
+        );
     }
 }

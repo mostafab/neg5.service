@@ -6,6 +6,7 @@ import org.neg5.TournamentMatchDTO;
 import org.neg5.data.TournamentMatch;
 import org.neg5.data.TournamentPhase;
 
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -19,8 +20,13 @@ public class TournamentMatchMapper extends AbstractObjectMapper<TournamentMatch,
 
     @Override
     protected void enrichDTO(TournamentMatchDTO tournamentMatchDTO, TournamentMatch tournamentMatch) {
-        tournamentMatchDTO.setTeams(tournamentMatch.getTeams().stream().map(matchTeamMapper::toDTO).collect(Collectors.toSet()));
-        tournamentMatchDTO.setPhases(tournamentMatch.getPhases().stream()
-                .map(TournamentPhase::getId).collect(Collectors.toSet()));
+        tournamentMatchDTO.setTeams(tournamentMatch.getTeams() == null
+                ? new HashSet<>()
+                : tournamentMatch.getTeams().stream().map(matchTeamMapper::toDTO).collect(Collectors.toSet())
+        );
+        tournamentMatchDTO.setPhases(tournamentMatch.getPhases() == null
+                ? new HashSet<>()
+                : tournamentMatch.getPhases().stream().map(TournamentPhase::getId).collect(Collectors.toSet())
+        );
     }
 }
