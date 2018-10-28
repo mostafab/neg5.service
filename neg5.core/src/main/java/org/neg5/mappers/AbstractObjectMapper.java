@@ -172,13 +172,15 @@ public class AbstractObjectMapper<Entity, DTO> {
         List<PropertyDescriptor> idDataObjProperties = getCompositeIdDataObjectProperties(idInstance);
         for (PropertyDescriptor idDataObjProp : idDataObjProperties) {
             try {
-                Constructor<?> propConstructor = idDataObjProp.getPropertyType().getDeclaredConstructor();
-                propConstructor.setAccessible(true);
-                IdDataObject dataObject = (IdDataObject) propConstructor.newInstance();
-                Serializable id = (Serializable) PropertyUtils
+                Object id = PropertyUtils
                         .getSimpleProperty(source, getIdPropertyName(idDataObjProp));
-                dataObject.setId(id);
-                BeanUtils.copyProperty(idInstance, idDataObjProp.getName(), dataObject);
+                if (id != null) {
+                    Constructor<?> propConstructor = idDataObjProp.getPropertyType().getDeclaredConstructor();
+                    propConstructor.setAccessible(true);
+                    IdDataObject dataObject = (IdDataObject) propConstructor.newInstance();
+                    dataObject.setId((Serializable) id);
+                    BeanUtils.copyProperty(idInstance, idDataObjProp.getName(), dataObject);
+                }
             } catch (NoSuchMethodException
                     | IllegalAccessException
                     | InvocationTargetException
