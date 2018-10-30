@@ -20,8 +20,6 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
 
     protected abstract AbstractObjectMapper<T, DTO> getMapper();
 
-    protected abstract IdType getIdFromDTO(DTO dto);
-
     @Transactional
     public DTO get(IdType id) {
         T entity = getRwDAO().get(id);
@@ -60,5 +58,9 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
                 .stream()
                 .map(entity -> getMapper().toDTO(entity))
                 .collect(Collectors.toList());
+    }
+
+    protected IdType getIdFromDTO(DTO dto) {
+        return getMapper().mergeToEntity(dto).getId();
     }
 }

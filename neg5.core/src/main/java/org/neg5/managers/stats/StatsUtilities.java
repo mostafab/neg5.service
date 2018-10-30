@@ -34,7 +34,7 @@ public final class StatsUtilities {
             return new BigDecimal(0);
         }
         return new BigDecimal(totalPoints).divide(new BigDecimal(numMatches),
-                ROUNDING_SCALE, BigDecimal.ROUND_HALF_EVEN);
+                ROUNDING_SCALE, RoundingMode.HALF_UP);
     }
 
     /**
@@ -52,7 +52,7 @@ public final class StatsUtilities {
         }
         return pointsPerGame
                 .multiply(new BigDecimal(numMatches))
-                .divide(new BigDecimal(tossupsHeard), ROUNDING_SCALE, BigDecimal.ROUND_HALF_EVEN);
+                .divide(new BigDecimal(tossupsHeard), ROUNDING_SCALE, RoundingMode.HALF_UP);
     }
 
     /**
@@ -86,7 +86,7 @@ public final class StatsUtilities {
                         .mapToDouble(answer -> answer.getTotal() * answer.getValue())
                         .sum()
         );
-        return totalPoints.subtract(pointsFromTossups).divide(totalGets, ROUNDING_SCALE, BigDecimal.ROUND_UP);
+        return totalPoints.subtract(pointsFromTossups).divide(totalGets, ROUNDING_SCALE, RoundingMode.HALF_UP);
     }
 
     /**
@@ -101,7 +101,7 @@ public final class StatsUtilities {
         if (negs == 0 || powers == 0) {
             return new BigDecimal(0);
         }
-        return new BigDecimal(powers).divide(new BigDecimal(negs), ROUNDING_SCALE,  BigDecimal.ROUND_HALF_EVEN);
+        return new BigDecimal(powers).divide(new BigDecimal(negs), ROUNDING_SCALE,  RoundingMode.HALF_UP);
     }
 
     /**
@@ -117,7 +117,7 @@ public final class StatsUtilities {
         if (negs == 0 || gets == 0) {
             return new BigDecimal(0);
         }
-        return new BigDecimal(gets).divide(new BigDecimal(negs), ROUNDING_SCALE, BigDecimal.ROUND_HALF_EVEN);
+        return new BigDecimal(gets).divide(new BigDecimal(negs), ROUNDING_SCALE, RoundingMode.HALF_UP);
     }
 
     /**

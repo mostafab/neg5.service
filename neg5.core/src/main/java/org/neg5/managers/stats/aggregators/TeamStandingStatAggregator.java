@@ -8,6 +8,7 @@ import org.neg5.TournamentMatchDTO;
 import org.neg5.managers.stats.StatsUtilities;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -83,10 +84,10 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
         stats.setTeamId(teamId);
 
         double ppg = pointsPerGameBuilder.build().average().orElse(0);
-        stats.setPointsPerGame(new BigDecimal(ppg).setScale(ROUNDING_SCALE, BigDecimal.ROUND_HALF_UP));
+        stats.setPointsPerGame(new BigDecimal(ppg).setScale(ROUNDING_SCALE, RoundingMode.HALF_UP));
 
         double papg = pointsAgainstPerGameBuilder.build().average().orElse(0);
-        stats.setPointsAgainstPerGame(new BigDecimal(papg).setScale(ROUNDING_SCALE, BigDecimal.ROUND_HALF_UP));
+        stats.setPointsAgainstPerGame(new BigDecimal(papg).setScale(ROUNDING_SCALE, RoundingMode.HALF_UP));
 
         stats.setMarginOfVictory(stats.getPointsPerGame().subtract(stats.getPointsAgainstPerGame()));
         stats.setPointsPerBonus(calculatePointsPerBonus(stats.getPointsPerGame()));
@@ -150,7 +151,7 @@ public class TeamStandingStatAggregator implements StatAggregator<TeamStandingSt
         } else {
             double wins = teamRecord.getWins();
             teamRecord.setWinPercentage(new BigDecimal(wins / numMatches).setScale(WIN_RECORD_ROUNDING_SCALE,
-                    BigDecimal.ROUND_HALF_EVEN));
+                    RoundingMode.HALF_EVEN));
         }
     }
 

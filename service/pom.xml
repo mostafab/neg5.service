@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>4.2.0</version>
+            <version>4.2.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -57,12 +57,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <optimize>true</optimize>
-                    <debug>true</debug>
+                    <source>10</source>
+                    <target>10</target>
+                    <release>10</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -100,7 +99,7 @@
                 <artifactId>heroku-maven-plugin</artifactId>
                 <version>2.0.6</version>
                 <configuration>
-                    <jdkVersion>1.8</jdkVersion>
+                    <jdkVersion>10</jdkVersion>
                     <appName>spark-neg5-api</appName>
                     <processTypes>
                         <web>java -Xmx128m -jar ./target/neg5.service-1.0-SNAPSHOT-jar-with-dependencies.jar</web>

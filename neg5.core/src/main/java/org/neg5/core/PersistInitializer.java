@@ -5,7 +5,7 @@ import com.google.inject.persist.PersistService;
 
 public class PersistInitializer {
 
-    private PersistService persistService;
+    private final PersistService persistService;
 
     @Inject
     protected PersistInitializer(PersistService persistService) {
