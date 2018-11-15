@@ -3,7 +3,7 @@ package org.neg5;
 import com.google.inject.Inject;
 import org.neg5.core.PersistInitializer;
 import org.neg5.filters.RequestFilter;
-import org.neg5.module.SystemProperties;
+import org.neg5.module.Configuration;
 import org.neg5.controllers.BaseController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class Neg5App implements SparkApplication {
 
     @Inject private Set<BaseController> controllers;
     @Inject private Set<RequestFilter> filters;
-    @Inject private SystemProperties systemProperties;
+    @Inject private Configuration configuration;
 
     @Inject private PersistInitializer persistInitializer;
 
@@ -47,8 +47,8 @@ public class Neg5App implements SparkApplication {
     }
 
     private Integer getPort() {
-        if (systemProperties.getInt(PORT_PROP_NAME) != null) {
-            return systemProperties.getInt(PORT_PROP_NAME);
+        if (configuration.getInt(PORT_PROP_NAME) != null) {
+            return configuration.getInt(PORT_PROP_NAME);
         }
         return DEFAULT_PORT;
     }

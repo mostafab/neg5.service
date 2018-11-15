@@ -1,6 +1,6 @@
 package org.neg5.module;
 
-public interface SystemProperties {
+public interface Configuration {
 
     /**
      * Get a property by key and return it as a string

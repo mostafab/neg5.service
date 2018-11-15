@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
-public final class EnvironmentBackedSystemVariables implements SystemProperties {
+public final class EnvironmentBackedConfig implements Configuration {
 
     private final Map<String, String> properties;
 
-    EnvironmentBackedSystemVariables() {
+    EnvironmentBackedConfig() {
         this.properties = Collections.unmodifiableMap(new HashMap<>(System.getenv()));
     }
 
