@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import org.neg5.RoundStatDTO;
 import org.neg5.RoundsReportStatsDTO;
 import org.neg5.TournamentMatchDTO;
+import org.neg5.cache.TournamentStatsCache;
 import org.neg5.managers.TournamentMatchManager;
 import org.neg5.managers.stats.aggregators.RoundStatsAggregator;
 
@@ -16,6 +17,13 @@ import java.util.stream.Collectors;
 public class RoundReportStatsManager {
 
     @Inject private TournamentMatchManager tournamentMatchManager;
+
+    @Inject private StatsCacheManager statsCacheManager;
+
+    public RoundsReportStatsDTO getCachedStats(String tournamentId, String phaseId) {
+        return statsCacheManager.getCache(RoundsReportStatsDTO.class).getOrAdd(tournamentId, phaseId, () -> calculateRoundReportStats(tournamentId, phaseId))
+                .orElseGet(() -> calculateRoundReportStats(tournamentId, phaseId));
+    }
 
     public RoundsReportStatsDTO calculateRoundReportStats(String tournamentId, String phaseId) {
         Map<Long, List<TournamentMatchDTO>> matchesByRound = groupMatchesByRound(tournamentId, phaseId);
