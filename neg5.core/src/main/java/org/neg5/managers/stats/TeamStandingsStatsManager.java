@@ -8,6 +8,7 @@ import org.neg5.TeamMatchesStatsDTO;
 import org.neg5.TeamStandingStatsDTO;
 import org.neg5.TeamStandingsStatsDTO;
 import org.neg5.TournamentMatchDTO;
+import org.neg5.cache.TournamentStatsCache;
 import org.neg5.managers.TournamentTeamManager;
 import org.neg5.managers.stats.aggregators.TeamMatchesStatsAggregator;
 import org.neg5.managers.stats.aggregators.TeamStandingStatAggregator;
@@ -20,6 +21,12 @@ import java.util.stream.Collectors;
 public class TeamStandingsStatsManager {
 
     @Inject private TournamentTeamManager tournamentTeamManager;
+    @Inject private StatsCacheManager statsCacheManager;
+
+    public TeamStandingsStatsDTO getCachedTeamStandings(String tournamentId, String phaseId) {
+        return statsCacheManager.getCache(TeamStandingsStatsDTO.class).getOrAdd(tournamentId, phaseId, () -> calculateTeamStandings(tournamentId, phaseId))
+                .orElseGet(() -> this.calculateTeamStandings(tournamentId, phaseId));
+    }
 
     public TeamStandingsStatsDTO calculateTeamStandings(String tournamentId, String phaseId) {
         TeamStandingsStatsDTO stats = new TeamStandingsStatsDTO();
@@ -35,6 +42,11 @@ public class TeamStandingsStatsManager {
         );
 
         return stats;
+    }
+
+    public FullTeamsMatchesStatsDTO getCachedFullTeamStandings(String tournamentId, String phaseId) {
+        return statsCacheManager.getCache(FullTeamsMatchesStatsDTO.class).getOrAdd(tournamentId, phaseId, () -> calculateFullTeamStandings(tournamentId, phaseId))
+                .orElseGet(() -> this.calculateFullTeamStandings(tournamentId, phaseId));
     }
 
     public FullTeamsMatchesStatsDTO calculateFullTeamStandings(String tournamentId, String phaseId) {
