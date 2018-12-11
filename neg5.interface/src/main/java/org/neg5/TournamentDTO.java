@@ -7,6 +7,8 @@ public class TournamentDTO {
 
     private String id;
 
+    private String directorId;
+
     private String name;
     private Date tournamentDate;
     private String location;
@@ -29,6 +31,14 @@ public class TournamentDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDirectorId() {
+        return directorId;
+    }
+
+    public void setDirectorId(String directorId) {
+        this.directorId = directorId;
     }
 
     public String getName() {

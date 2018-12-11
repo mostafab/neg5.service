@@ -8,7 +8,6 @@ import org.neg5.TeamMatchesStatsDTO;
 import org.neg5.TeamStandingStatsDTO;
 import org.neg5.TeamStandingsStatsDTO;
 import org.neg5.TournamentMatchDTO;
-import org.neg5.cache.TournamentStatsCache;
 import org.neg5.managers.TournamentTeamManager;
 import org.neg5.managers.stats.aggregators.TeamMatchesStatsAggregator;
 import org.neg5.managers.stats.aggregators.TeamStandingStatAggregator;
