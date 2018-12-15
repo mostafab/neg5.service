@@ -5,7 +5,7 @@ package org.neg5.enums;
  */
 public enum TournamentAccessLevel {
 
-    NONE(0),
+    NONE(-999),
     COLLABORATOR(1),
     ADMIN(2),
     OWNER(3);
