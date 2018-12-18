@@ -2,6 +2,7 @@ package org.neg5.core;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.neg5.jwt.JwtManager;
 import org.neg5.jwt.JwtData;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ public class CurrentUserContextUtil {
             JwtData jwtData = jwtManager.readJwt(token);
             return new UserData(jwtData.getClaim("username", String.class));
         } catch (Exception e) {
-            LOGGER.error("Encountered exception attempting to get user data", e);
+            LOGGER.error("Encountered exception attempting to get user data: {}", ExceptionUtils.getStackTrace(e));
             return null;
         }
     }
