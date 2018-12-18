@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.neg5.TournamentDTO;
+import org.neg5.data.Account;
 import org.neg5.data.Tournament;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -68,6 +69,30 @@ public class TournamentMapperTest {
         Tournament entity = tournamentMapper.mergeToEntity(tournament);
         Assert.assertNotNull(entity.getCurrentPhase());
         Assert.assertEquals(tournament.getCurrentPhaseId(), entity.getCurrentPhase().getId());
+    }
+
+    @Test
+    public void testDtoMappingForDirector() {
+        Tournament tournament = buildTournament();
+        tournament.setDirector(new Account());
+        tournament.getDirector().setEmail("test@domain.com");
+        tournament.getDirector().setId("User_ID");
+        tournament.getDirector().setName("Mostafa");
+
+        TournamentDTO dto = tournamentMapper.toDTO(tournament);
+        Assert.assertNotNull(dto.getDirectorId());
+        Assert.assertEquals(tournament.getDirector().getId(), dto.getDirectorId());
+    }
+
+    @Test
+    public void testMergeToEntityForDirector() {
+        TournamentDTO dto = buildTournamentDTO();
+        dto.setDirectorId("USER_ID");
+
+        Tournament entity = tournamentMapper.mergeToEntity(dto);
+        Assert.assertNotNull(entity.getDirector());
+        Assert.assertNotNull(entity.getDirector().getId());
+        Assert.assertEquals(dto.getDirectorId(), entity.getDirector().getId());
     }
 
     private Tournament buildTournament() {

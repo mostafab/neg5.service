@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -21,6 +22,8 @@ import java.util.Set;
 public class Tournament extends AbstractDataObject<Tournament> implements IdDataObject<String> {
 
     private String id;
+
+    private Account director;
 
     private String name;
     private Date tournamentDate;
@@ -47,6 +50,16 @@ public class Tournament extends AbstractDataObject<Tournament> implements IdData
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    @JoinColumn(name = "director_id", nullable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    public Account getDirector() {
+        return director;
+    }
+
+    public void setDirector(Account director) {
+        this.director = director;
     }
 
     @Column(name = "name", nullable = false)

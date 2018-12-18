@@ -6,6 +6,7 @@ import org.neg5.MatchPlayerDTO;
 import org.neg5.data.transformers.data.TeamMatchPlayer;
 import org.neg5.mappers.AbstractObjectMapper;
 
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -19,7 +20,11 @@ public class TeamMatchPlayerMapper extends AbstractObjectMapper<TeamMatchPlayer,
 
     @Override
     protected void enrichDTO(MatchPlayerDTO matchPlayerDTO, TeamMatchPlayer teamMatchPlayer) {
-        matchPlayerDTO.setAnswers(teamMatchPlayer.getTossupValues().stream()
-                .map(teamMatchPlayerAnswerMapper::toDTO).collect(Collectors.toSet()));
+        if (teamMatchPlayer.getTossupValues() != null) {
+            matchPlayerDTO.setAnswers(teamMatchPlayer.getTossupValues().stream()
+                    .map(teamMatchPlayerAnswerMapper::toDTO).collect(Collectors.toSet()));
+        } else {
+            matchPlayerDTO.setAnswers(new HashSet<>());
+        }
     }
 }

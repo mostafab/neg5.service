@@ -26,11 +26,11 @@ public class DataAccessModule extends AbstractModule {
     @Override
     protected void configure() {
         Map<String, Object> properties = new HashMap<>();
-        properties.put(AvailableSettings.DATASOURCE, getDataSource(new EnvironmentBackedSystemVariables(), false));
+        properties.put(AvailableSettings.DATASOURCE, getDataSource(new EnvironmentBackedConfig(), false));
         install(new JpaPersistModule(PERSISTENCE_UNIT_NAME).properties(properties));
     }
 
-    private DataSource getDataSource(SystemProperties properties, boolean readOnly) {
+    private DataSource getDataSource(Configuration properties, boolean readOnly) {
         HikariConfig config = new HikariConfig();
         config.setUsername(properties.getString(USERNAME_PROP));
         config.setPassword(properties.getString(PASSWORD_PROP));
