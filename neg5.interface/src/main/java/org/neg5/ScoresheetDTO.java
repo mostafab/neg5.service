@@ -1,5 +1,8 @@
 package org.neg5;
 
+import java.util.List;
+import java.util.Set;
+
 public class ScoresheetDTO {
 
     private Long id;
@@ -14,6 +17,13 @@ public class ScoresheetDTO {
     private Integer round;
 
     private Boolean submitted;
+
+    private Set<String> phases;
+
+    private List<ScoresheetTeamDTO> teams;
+    private List<ScoresheetCycleDTO> cycles;
+
+    private ScoresheetCycleDTO currentCycle;
 
     public Long getId() {
         return id;
@@ -85,5 +95,37 @@ public class ScoresheetDTO {
 
     public void setSubmitted(Boolean submitted) {
         this.submitted = submitted;
+    }
+
+    public Set<String> getPhases() {
+        return phases;
+    }
+
+    public void setPhases(Set<String> phases) {
+        this.phases = phases;
+    }
+
+    public List<ScoresheetTeamDTO> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<ScoresheetTeamDTO> teams) {
+        this.teams = teams;
+    }
+
+    public List<ScoresheetCycleDTO> getCycles() {
+        return cycles;
+    }
+
+    public void setCycles(List<ScoresheetCycleDTO> cycles) {
+        this.cycles = cycles;
+    }
+
+    public ScoresheetCycleDTO getCurrentCycle() {
+        return currentCycle;
+    }
+
+    public void setCurrentCycle(ScoresheetCycleDTO currentCycle) {
+        this.currentCycle = currentCycle;
     }
 }
