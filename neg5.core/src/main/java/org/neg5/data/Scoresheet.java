@@ -1,8 +1,13 @@
 package org.neg5.data;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.neg5.ScoresheetCycleDTO;
+import org.neg5.data.converters.ScoresheetCycleConverter;
+import org.neg5.data.converters.ScoresheetCycleListConverter;
+import org.neg5.data.converters.SetOfStringsConverter;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "scoresheet")
@@ -33,6 +40,10 @@ public class Scoresheet extends AbstractDataObject<Scoresheet> implements IdData
     private Integer round;
 
     private Boolean submitted;
+
+    private Set<String> phases;
+    private List<ScoresheetCycleDTO> cycles;
+    private ScoresheetCycleDTO currentCycle;
 
     @Id
     @Override
@@ -118,5 +129,35 @@ public class Scoresheet extends AbstractDataObject<Scoresheet> implements IdData
 
     public void setSubmitted(Boolean submitted) {
         this.submitted = submitted;
+    }
+
+    @Column(name = "phases")
+    @Convert(converter = SetOfStringsConverter.class)
+    public Set<String> getPhases() {
+        return phases;
+    }
+
+    public void setPhases(Set<String> phases) {
+        this.phases = phases;
+    }
+
+    @Column(name = "cycles")
+    @Convert(converter = ScoresheetCycleListConverter.class)
+    public List<ScoresheetCycleDTO> getCycles() {
+        return cycles;
+    }
+
+    public void setCycles(List<ScoresheetCycleDTO> cycles) {
+        this.cycles = cycles;
+    }
+
+    @Column(name = "current_cycle")
+    @Convert(converter = ScoresheetCycleConverter.class)
+    public ScoresheetCycleDTO getCurrentCycle() {
+        return currentCycle;
+    }
+
+    public void setCurrentCycle(ScoresheetCycleDTO currentCycle) {
+        this.currentCycle = currentCycle;
     }
 }

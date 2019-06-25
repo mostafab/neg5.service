@@ -20,4 +20,16 @@ public class ScoresheetManager extends AbstractDTOManager<Scoresheet, Scoresheet
     protected ScoresheetDAO getRwDAO() {
         return scoresheetDAO;
     }
+
+    /**
+     * Given a scoresheet, create if id passed in is null, update otherwise
+     * @param scoresheet the dto
+     * @return generated scoresheet dto
+     */
+    public ScoresheetDTO createOrUpdate(ScoresheetDTO scoresheet) {
+        if (scoresheet.getId() == null) {
+            return create(scoresheet);
+        }
+        return update(scoresheet);
+    }
 }

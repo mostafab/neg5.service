@@ -12,6 +12,6 @@ public class ScoresheetController extends AbstractJsonController {
 
     @Override
     public void registerRoutes() {
-        post("", ScoresheetDTO.class, scoresheet -> (req, res) -> scoresheetManager.create(scoresheet));
+        post("", ScoresheetDTO.class, scoresheet -> (req, res) -> scoresheetManager.createOrUpdate(scoresheet));
     }
 }
