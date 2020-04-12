@@ -65,6 +65,11 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
     }
 
     @Transactional
+    public void delete(IdType id) {
+        getRwDAO().delete(id);
+    }
+
+    @Transactional
     public List<DTO> findAllByTournamentId(String tournamentId) {
         return getRwDAO().findAllByTournamentId(tournamentId)
                 .stream()

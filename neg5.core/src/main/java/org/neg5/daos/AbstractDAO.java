@@ -35,6 +35,10 @@ public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject
         return getEntityManager().merge(entity);
     }
 
+    public void delete(IdType id) {
+        getEntityManager().remove(get(id));
+    }
+
     public void flush() {
         getEntityManager().flush();
     }

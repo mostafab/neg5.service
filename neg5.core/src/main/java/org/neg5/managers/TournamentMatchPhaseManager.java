@@ -29,6 +29,7 @@ public class TournamentMatchPhaseManager
     public List<TournamentMatchPhaseDTO> associateMatchWithPhases(Set<String> phaseIds,
                                                                   String matchId,
                                                                   String tournamentId) {
+        deleteOldAssociations(matchId);
         return phaseIds.stream()
                 .map(phaseId -> {
                    TournamentMatchPhaseDTO dto = new TournamentMatchPhaseDTO();
@@ -38,6 +39,14 @@ public class TournamentMatchPhaseManager
                    return create(dto);
                 })
                 .collect(Collectors.toList());
+    }
+
+    private void deleteOldAssociations(String matchId) {
+        findByMatch(matchId).forEach(association -> delete(association.getId()));
+    }
+
+    private List<TournamentMatchPhase> findByMatch(String matchId) {
+        return getRwDAO().findByMatch(matchId);
     }
 
     @Override
