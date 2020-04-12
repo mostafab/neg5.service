@@ -3,16 +3,8 @@ package org.neg5.data;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 
@@ -20,7 +12,7 @@ import java.util.Set;
 @Table(name = "tournament_match")
 @DynamicUpdate
 public class TournamentMatch extends AbstractDataObject<TournamentMatch>
-        implements SpecificTournamentEntity, IdDataObject<String>, Auditable {
+        implements SpecificTournamentEntity, IdDataObject<String>, Auditable, Serializable {
 
     private String id;
     private Tournament tournament;
@@ -38,7 +30,7 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch>
     private Set<MatchTeam> teams;
     private Set<MatchPlayer> players;
 
-    private Set<TournamentPhase> phases;
+    private Set<TournamentMatchPhase> phases;
 
     private String addedBy;
     private Instant addedAt;
@@ -149,16 +141,15 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch>
     }
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "match_is_part_of_phase",
-            joinColumns = @JoinColumn(name = "match_id"),
-            inverseJoinColumns = @JoinColumn(name = "phase_id")
-    )
-    public Set<TournamentPhase> getPhases() {
+    @JoinColumns({
+            @JoinColumn(name = "match_id", referencedColumnName = "id", updatable = false, insertable = false),
+            @JoinColumn(name = "tournament_id", referencedColumnName = "tournament_id", updatable = false, insertable = false),
+    })
+    public Set<TournamentMatchPhase> getPhases() {
         return phases;
     }
 
-    public void setPhases(Set<TournamentPhase> phases) {
+    public void setPhases(Set<TournamentMatchPhase> phases) {
         this.phases = phases;
     }
 

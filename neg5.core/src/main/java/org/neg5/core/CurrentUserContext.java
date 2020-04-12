@@ -15,7 +15,7 @@ public class CurrentUserContext {
 
     public Optional<UserData> getUserData() {
         Optional<UserData> userData = currentUser.get();
-        if (userData == null) {
+        if (userData == null || !userData.isPresent()) {
             throw new IllegalArgumentException("User data has not been initialized for this context.");
         }
         return userData;
