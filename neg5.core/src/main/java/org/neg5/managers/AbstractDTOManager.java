@@ -1,20 +1,27 @@
 package org.neg5.managers;
 
+import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
+import org.neg5.core.CurrentUserContext;
+import org.neg5.core.UserData;
 import org.neg5.daos.AbstractDAO;
 
 import org.neg5.data.AbstractDataObject;
+import org.neg5.data.Auditable;
 import org.neg5.data.CompositeIdObject;
 import org.neg5.data.IdDataObject;
 import org.neg5.mappers.AbstractObjectMapper;
 
 import javax.persistence.NoResultException;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
         & IdDataObject<IdType>, DTO, IdType extends Serializable> {
+
+    @Inject private CurrentUserContext userContext;
 
     protected abstract AbstractDAO<T, IdType> getRwDAO();
 
@@ -39,6 +46,11 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
         */
         if (!(entity instanceof CompositeIdObject)) {
             entity.setId(null);
+        }
+        if (entity instanceof Auditable) {
+            UserData userData = userContext.getUserData().get();
+            ((Auditable) entity).setAddedBy(userData.getUsername());
+            ((Auditable) entity).setAddedAt(Instant.now());
         }
         T createdEntity = getRwDAO().save(entity);
         getRwDAO().flush();

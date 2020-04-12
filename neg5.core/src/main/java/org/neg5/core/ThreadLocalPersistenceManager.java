@@ -3,6 +3,7 @@ package org.neg5.core;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+@Deprecated
 public class ThreadLocalPersistenceManager implements PersistenceManager {
 
     private final EntityManagerFactory readWriteEntityManagerFactory;

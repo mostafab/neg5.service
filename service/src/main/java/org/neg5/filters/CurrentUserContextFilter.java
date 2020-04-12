@@ -18,7 +18,9 @@ public class CurrentUserContextFilter implements RequestFilter {
     public void registerFilter() {
         before((request, response) -> {
             String token = request.cookie(TOKEN_COOKIE_NAME);
-            currentUserContext.set(userContextUtil.getUserData(token));
+            if (token != null) {
+                currentUserContext.set(userContextUtil.getUserData(token));
+            }
         });
 
         afterAfter((req, res) -> currentUserContext.clear());

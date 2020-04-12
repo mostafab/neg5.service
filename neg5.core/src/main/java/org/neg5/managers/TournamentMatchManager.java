@@ -42,6 +42,12 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
     }
 
     @Override
+    @Transactional
+    public TournamentMatchDTO create(TournamentMatchDTO match) {
+        return super.create(match);
+    }
+
+    @Override
     public List<TournamentMatchDTO> findAllByTournamentId(String tournamentId) {
         Map<Integer, TournamentTossupValueDTO> tossupValues = getTossupValueMap(tournamentId);
         return findByRawQuery(tournamentId).stream()

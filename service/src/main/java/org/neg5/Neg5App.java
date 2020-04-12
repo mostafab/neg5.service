@@ -2,21 +2,18 @@ package org.neg5;
 
 import com.google.inject.Inject;
 import org.neg5.core.PersistInitializer;
-import org.neg5.filters.RequestFilter;
 import org.neg5.module.Configuration;
-import org.neg5.controllers.BaseController;
+import org.neg5.util.FilterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.servlet.SparkApplication;
-
-import java.util.Set;
 
 import static spark.Spark.port;
 
 public class Neg5App implements SparkApplication {
 
-    @Inject private Set<BaseController> controllers;
-    @Inject private Set<RequestFilter> filters;
+    @Inject private ControllerRegistry controllerRegistry;
+    @Inject private FilterRegistry filterRegistry;
     @Inject private Configuration configuration;
 
     @Inject private PersistInitializer persistInitializer;
@@ -36,14 +33,11 @@ public class Neg5App implements SparkApplication {
     }
 
     private void initRoutes() {
-        controllers.forEach(BaseController::registerRoutes);
+        controllerRegistry.initControllers();
     }
 
     private void initFilters() {
-        filters.forEach(filter -> {
-            filter.registerFilter();
-            LOGGER.info("Registered filters in {}", filter.getClass());
-        });
+        filterRegistry.initFilters();
     }
 
     private Integer getPort() {

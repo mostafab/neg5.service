@@ -3,6 +3,7 @@ package org.neg5.core;
 import javax.persistence.EntityManager;
 import java.util.function.Supplier;
 
+@Deprecated
 public class EntityManagerSupplier implements Supplier<EntityManager> {
 
     private final PersistenceManager persistenceManager;

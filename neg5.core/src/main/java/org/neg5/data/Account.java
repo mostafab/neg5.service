@@ -16,6 +16,8 @@ public class Account extends AbstractDataObject<Account> implements IdDataObject
     private String name;
     private String email;
 
+    private String hashedPassword;
+
     @Override
     @Id
     @Column(name = "username")
@@ -44,5 +46,14 @@ public class Account extends AbstractDataObject<Account> implements IdDataObject
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Column(name = "hash", nullable = false)
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 }

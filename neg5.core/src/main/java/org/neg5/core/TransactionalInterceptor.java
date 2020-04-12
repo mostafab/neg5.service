@@ -7,6 +7,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+@Deprecated
 public class TransactionalInterceptor implements MethodInterceptor {
 
     @Inject private PersistenceManager persistenceManager;

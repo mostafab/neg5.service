@@ -63,6 +63,7 @@ public abstract class AbstractDAO<T extends AbstractDataObject<T> & IdDataObject
         return DEFAULT_TOURNAMENT_ATTRIBUTE_PATH;
     }
 
+    @Deprecated
     public void setEntityManagerSupplier(EntityManagerSupplier entityManagerSupplier) {
         this.entityManagerSupplier = entityManagerSupplier;
     }
