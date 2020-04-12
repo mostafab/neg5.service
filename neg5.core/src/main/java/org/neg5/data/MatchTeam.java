@@ -63,6 +63,9 @@ public class MatchTeam extends AbstractDataObject<MatchTeam> implements Composit
 
     @Transient
     public TournamentMatch getMatch() {
+        if (id == null) {
+            return null;
+        }
         return id.getMatch();
     }
 

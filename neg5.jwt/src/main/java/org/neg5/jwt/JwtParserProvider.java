@@ -22,4 +22,8 @@ public class JwtParserProvider implements Provider<JwtParser> {
         return Jwts.parser()
                 .setSigningKey(signingKey);
     }
+
+    public String getSigningKey() {
+        return signingKey;
+    }
 }

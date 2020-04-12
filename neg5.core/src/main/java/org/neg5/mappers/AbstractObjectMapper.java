@@ -108,19 +108,21 @@ public class AbstractObjectMapper<Entity, DTO> {
 
         if (source instanceof CompositeIdObject) {
             CompositeId compositeId = (CompositeId) ((CompositeIdObject) source).getId();
-            getCompositeIdDataObjectProperties(compositeId).stream()
-                    .filter(property -> PropertyUtils.isWriteable(target, getIdPropertyName(property)))
-                    .forEach(property -> {
-                        try {
-                            IdDataObject dataObject
-                                    = (IdDataObject) PropertyUtils.getSimpleProperty(compositeId, property.getName());
-                            if (dataObject != null) {
-                                BeanUtils.copyProperty(target, getIdPropertyName(property), dataObject.getId());
+            if (compositeId != null) {
+                getCompositeIdDataObjectProperties(compositeId).stream()
+                        .filter(property -> PropertyUtils.isWriteable(target, getIdPropertyName(property)))
+                        .forEach(property -> {
+                            try {
+                                IdDataObject dataObject
+                                        = (IdDataObject) PropertyUtils.getSimpleProperty(compositeId, property.getName());
+                                if (dataObject != null) {
+                                    BeanUtils.copyProperty(target, getIdPropertyName(property), dataObject.getId());
+                                }
+                            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                // Not worth logging an exception here, just move on
                             }
-                        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                            // Not worth logging an exception here, just move on
-                        }
-                    });
+                        });
+            }
         }
     }
 

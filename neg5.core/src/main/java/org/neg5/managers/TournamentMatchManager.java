@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, TournamentMatchDTO, String> {
 
     @Inject private TournamentManager tournamentManager;
+    @Inject private MatchTeamManager matchTeamManager;
 
     @Inject private TournamentMatchMapper tournamentMatchMapper;
     @Inject private MatchToMatchDTOMapper matchToMatchDTOMapper;
@@ -44,7 +45,16 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
     @Override
     @Transactional
     public TournamentMatchDTO create(TournamentMatchDTO match) {
-        return super.create(match);
+        TournamentMatchDTO createdMatch = super.create(match);
+        createdMatch.setTeams(match.getTeams().stream()
+                .map(matchTeam -> {
+                    matchTeam.setTournamentId(match.getTournamentId());
+                    matchTeam.setMatchId(createdMatch.getId());
+                    return matchTeamManager.create(matchTeam);
+                })
+                .collect(Collectors.toSet()));
+
+        return createdMatch;
     }
 
     @Override

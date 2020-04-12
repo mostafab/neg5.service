@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import org.neg5.MatchPlayerDTO;
 import org.neg5.data.MatchPlayer;
 
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -18,7 +19,7 @@ public class MatchPlayerMapper extends AbstractObjectMapper<MatchPlayer, MatchPl
 
     @Override
     protected void enrichDTO(MatchPlayerDTO matchPlayerDTO, MatchPlayer matchPlayer) {
-        matchPlayerDTO.setAnswers(matchPlayer.getAnswers().stream()
+        matchPlayerDTO.setAnswers(matchPlayer.getAnswers() == null ? new HashSet<>() : matchPlayer.getAnswers().stream()
                 .map(answer -> matchPlayerAnswerMapper.toDTO(answer)).collect(Collectors.toSet())
         );
     }
