@@ -25,7 +25,7 @@ public class PlayerController extends AbstractJsonController {
 
     private TournamentPlayerDTO createPlayer(Request request, Response response) {
         TournamentPlayerDTO playerDTO = requestHelper.readFromRequest(request, TournamentPlayerDTO.class);
-        tournamentAccessManager.requireAtLeastLevel(playerDTO.getTournamentId(), TournamentAccessLevel.ADMIN);
+        tournamentAccessManager.requireAccessLevel(playerDTO.getTournamentId(), TournamentAccessLevel.ADMIN);
         return tournamentPlayerManager.create(playerDTO);
     }
 }

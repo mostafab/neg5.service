@@ -9,12 +9,11 @@ import spark.Spark;
 public class TournamentTossupValueController extends AbstractJsonController {
 
     @Inject private GsonProvider gsonProvider;
-
     @Inject private TournamentTossupValueManager tournamentTossupValueManager;
 
     @Override
     public void registerRoutes() {
-        Spark.post("/neg5-api/tossupValues", (req, res) -> {
+        Spark.post("/neg5-api/tossup-values", (req, res) -> {
             TournamentTossupValueDTO dto = gsonProvider.get().fromJson(req.body(), TournamentTossupValueDTO.class);
             return tournamentTossupValueManager.create(dto);
         }, obj -> gsonProvider.get().toJson(obj));

@@ -25,7 +25,7 @@ public class MatchController extends AbstractJsonController {
 
     private TournamentMatchDTO createMatch(Request request, Response response) {
         TournamentMatchDTO tournamentMatchDTO = requestHelper.readFromRequest(request, TournamentMatchDTO.class);
-        tournamentAccessManager.requireAtLeastLevel(
+        tournamentAccessManager.requireAccessLevel(
                 tournamentMatchDTO.getTournamentId(),
                 TournamentAccessLevel.COLLABORATOR
         );

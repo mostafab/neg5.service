@@ -20,8 +20,8 @@ public class TournamentAccessManager {
     @Inject private TournamentCollaboratorManager collaboratorManager;
     @Inject private TournamentManager tournamentManager;
 
-    public void requireAtLeastLevel(@Nonnull String tournamentId,
-                                    @Nonnull TournamentAccessLevel requiredAccessLevel) {
+    public void requireAccessLevel(@Nonnull String tournamentId,
+                                   @Nonnull TournamentAccessLevel requiredAccessLevel) {
         TournamentAccessLevel currentLevel = getCurrentUserAccessLevel(tournamentId);
         if (currentLevel.getLevel() < requiredAccessLevel.getLevel()) {
             throw new TournamentAccessException(tournamentId,

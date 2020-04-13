@@ -25,7 +25,7 @@ public class TeamController extends AbstractJsonController {
 
     private Object createTeam(Request request, Response response) {
         TournamentTeamDTO team = requestHelper.readFromRequest(request, TournamentTeamDTO.class);
-        tournamentAccessManager.requireAtLeastLevel(team.getTournamentId(), TournamentAccessLevel.ADMIN);
+        tournamentAccessManager.requireAccessLevel(team.getTournamentId(), TournamentAccessLevel.ADMIN);
         return teamManager.create(team);
     }
 }
