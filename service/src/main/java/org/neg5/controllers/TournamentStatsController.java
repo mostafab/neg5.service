@@ -1,13 +1,11 @@
 package org.neg5.controllers;
 
 import com.google.inject.Inject;
-import org.neg5.annotations.Controller;
 import org.neg5.managers.stats.IndividualStandingsStatsManager;
 import org.neg5.managers.stats.RoundReportStatsManager;
 import org.neg5.managers.stats.StatsCacheManager;
 import org.neg5.managers.stats.TeamStandingsStatsManager;
 
-@Controller("/neg5-api/tournaments/:id/stats")
 public class TournamentStatsController extends AbstractJsonController {
 
     @Inject private TeamStandingsStatsManager teamStandingsStatsManager;
@@ -15,6 +13,11 @@ public class TournamentStatsController extends AbstractJsonController {
     @Inject private RoundReportStatsManager roundReportStatsManager;
 
     @Inject private StatsCacheManager statsCacheManager;
+
+    @Override
+    protected String getBasePath() {
+        return "/neg5-api/tournaments/:id/stats";
+    }
 
     @Override
     public void registerRoutes() {

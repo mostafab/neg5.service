@@ -12,15 +12,18 @@ public class LoginController extends AbstractController {
     @Inject private LoginAuthenticator loginAuthenticator;
 
     @Override
+    protected String getBasePath() {
+        return "/neg5-api/login";
+    }
+
+    @Override
     public void registerRoutes() {
-        path("/neg5-api/login", () -> {
-           Spark.post("", (req, res) -> {
-               if (loginAuthenticator.loginByRequest(req, res)) {
-                   return "OK";
-               }
-               res.status(HttpStatus.FORBIDDEN_403);
-               return "Invalid";
-           });
+        post("", (req, res) -> {
+            if (loginAuthenticator.loginByRequest(req, res)) {
+                return "OK";
+            }
+            res.status(HttpStatus.FORBIDDEN_403);
+            return "Invalid";
         });
     }
 }

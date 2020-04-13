@@ -1,7 +1,6 @@
 package org.neg5.controllers;
 
 import com.google.inject.Inject;
-import org.neg5.annotations.Controller;
 import org.neg5.core.QBJGsonProvider;
 import org.neg5.managers.TournamentManager;
 import org.neg5.managers.TournamentMatchManager;
@@ -11,7 +10,6 @@ import org.neg5.managers.TournamentTeamManager;
 import org.neg5.managers.TournamentTossupValueManager;
 import org.neg5.managers.stats.QBJManager;
 
-@Controller("/neg5-api/tournaments")
 public class TournamentController extends AbstractJsonController {
 
     @Inject private TournamentManager tournamentManager;
@@ -25,6 +23,11 @@ public class TournamentController extends AbstractJsonController {
     @Inject private QBJGsonProvider qbjGsonProvider;
 
     private static final String QBJ_CONTENT_TYPE = "application/vnd.quizbowl.qbj+json";
+
+    @Override
+    protected String getBasePath() {
+        return "/neg5-api/tournaments";
+    }
 
     @Override
     public void registerRoutes() {

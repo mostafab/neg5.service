@@ -3,7 +3,6 @@ package org.neg5.controllers;
 import com.google.inject.Inject;
 import org.eclipse.jetty.http.HttpStatus;
 import org.neg5.AccountDTO;
-import org.neg5.annotations.Controller;
 import org.neg5.auth.LoginAuthenticator;
 import org.neg5.auth.LoginCreds;
 import org.neg5.login.DuplicateLoginException;
@@ -13,12 +12,16 @@ import org.neg5.util.RequestHelper;
 import spark.Request;
 import spark.Response;
 
-@Controller("/neg5-api/accounts")
 public class AccountController extends AbstractJsonController {
 
     @Inject private AccountManager accountManager;
     @Inject private RequestHelper requestHelper;
     @Inject private LoginAuthenticator loginAuthenticator;
+
+    @Override
+    protected String getBasePath() {
+        return "/neg5-api/accounts";
+    }
 
     @Override
     public void registerRoutes() {

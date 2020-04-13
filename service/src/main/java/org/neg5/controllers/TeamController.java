@@ -4,18 +4,21 @@ import com.google.inject.Inject;
 import org.neg5.TournamentTeamDTO;
 import org.neg5.enums.TournamentAccessLevel;
 import org.neg5.managers.TournamentTeamManager;
-import org.neg5.annotations.Controller;
 import org.neg5.security.TournamentAccessManager;
 import org.neg5.util.RequestHelper;
 import spark.Request;
 import spark.Response;
 
-@Controller("/neg5-api/teams")
 public class TeamController extends AbstractJsonController {
 
     @Inject private TournamentTeamManager teamManager;
     @Inject private TournamentAccessManager tournamentAccessManager;
     @Inject private RequestHelper requestHelper;
+
+    @Override
+    protected String getBasePath() {
+        return "/neg5-api/teams";
+    }
 
     @Override
     public void registerRoutes() {
