@@ -3,9 +3,6 @@ package org.neg5.controllers;
 import com.google.inject.Inject;
 import org.eclipse.jetty.http.HttpStatus;
 import org.neg5.auth.LoginAuthenticator;
-import spark.Spark;
-
-import static spark.Spark.path;
 
 public class LoginController extends AbstractController {
 
