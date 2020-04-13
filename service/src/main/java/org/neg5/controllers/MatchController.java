@@ -15,18 +15,21 @@ public class MatchController extends AbstractJsonController {
 
     @Inject private TournamentMatchManager matchManager;
     @Inject private RequestHelper requestHelper;
-
     @Inject private TournamentAccessManager tournamentAccessManager;
 
     @Override
     public void registerRoutes() {
         get("/:id", this::getTournament);
+        post("", this::createMatch);
+    }
 
-        post("", (req, res) -> {
-            TournamentMatchDTO tournamentMatchDTO = requestHelper.readFromRequest(req, TournamentMatchDTO.class);
-            tournamentAccessManager.requireAtLeastLevel(tournamentMatchDTO.getTournamentId(), TournamentAccessLevel.COLLABORATOR);
-            return matchManager.create(tournamentMatchDTO);
-        });
+    private TournamentMatchDTO createMatch(Request request, Response response) {
+        TournamentMatchDTO tournamentMatchDTO = requestHelper.readFromRequest(request, TournamentMatchDTO.class);
+        tournamentAccessManager.requireAtLeastLevel(
+                tournamentMatchDTO.getTournamentId(),
+                TournamentAccessLevel.COLLABORATOR
+        );
+        return matchManager.create(tournamentMatchDTO);
     }
 
     private TournamentMatchDTO getTournament(Request request, Response response) {

@@ -25,7 +25,7 @@ public class TournamentAccessManager {
         TournamentAccessLevel currentLevel = getCurrentUserAccessLevel(tournamentId);
         if (currentLevel.getLevel() < requiredAccessLevel.getLevel()) {
             throw new TournamentAccessException(tournamentId,
-                    "User must have at least " + requiredAccessLevel + " rights to tournament " + tournamentId);
+                    "User must have at least " + requiredAccessLevel + " access to tournament " + tournamentId);
         }
     }
 

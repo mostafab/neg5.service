@@ -5,10 +5,10 @@ package org.neg5.enums;
  */
 public enum TournamentAccessLevel {
 
-    NONE(-999),
+    NONE(Integer.MIN_VALUE),
     COLLABORATOR(1),
     ADMIN(2),
-    OWNER(3);
+    OWNER(Integer.MAX_VALUE);
 
     private final int level;
 
