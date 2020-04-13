@@ -19,7 +19,7 @@ public class MatchController extends AbstractJsonController {
 
     @Override
     public void registerRoutes() {
-        get("/:id", this::getTournament);
+        get("/:id", this::getMatch);
         post("", this::createMatch);
     }
 
@@ -32,7 +32,7 @@ public class MatchController extends AbstractJsonController {
         return matchManager.create(tournamentMatchDTO);
     }
 
-    private TournamentMatchDTO getTournament(Request request, Response response) {
+    private TournamentMatchDTO getMatch(Request request, Response response) {
         return matchManager.get(request.params("id"));
     }
 }
