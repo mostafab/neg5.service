@@ -2,31 +2,32 @@ package org.neg5.jwt;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import org.neg5.jwt.module.JwtSigningModule;
 
+import java.util.Date;
 import java.util.HashMap;
 
 public class SigningKeyBackedJwtManagerImpl implements JwtManager {
 
-    private final String signingKey;
+    private final JwtParserProvider parserProvider;
     private final JwtParser jwtParser;
 
     @Inject
     protected SigningKeyBackedJwtManagerImpl(@Named(JwtSigningModule.JWT_SECRET_PROP_NAME) String signingKey) {
-        this.signingKey = signingKey;
-        jwtParser = new JwtParserProvider(signingKey).get();
+        this.parserProvider = new JwtParserProvider(signingKey);
+        jwtParser = this.parserProvider.get();
     }
 
     @Override
     public String buildJwt(JwtData data) {
-        JwtBuilder builder = Jwts.builder();
+        JwtBuilder builder = Jwts
+                .builder()
+                .setIssuedAt(new Date())
+                .setIssuer("Neg5.service")
+                .signWith(SignatureAlgorithm.HS256, parserProvider.getSigningKey());
         data.getClaims().forEach(builder::claim);
-        return null;
+        return builder.compact();
     }
 
     @Override

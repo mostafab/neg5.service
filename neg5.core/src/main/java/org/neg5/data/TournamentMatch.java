@@ -3,24 +3,16 @@ package org.neg5.data;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import java.util.Date;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.Instant;
 import java.util.Set;
 
 @Entity
 @Table(name = "tournament_match")
 @DynamicUpdate
 public class TournamentMatch extends AbstractDataObject<TournamentMatch>
-        implements SpecificTournamentEntity, IdDataObject<String> {
+        implements SpecificTournamentEntity, IdDataObject<String>, Auditable, Serializable {
 
     private String id;
     private Tournament tournament;
@@ -38,7 +30,10 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch>
     private Set<MatchTeam> teams;
     private Set<MatchPlayer> players;
 
-    private Set<TournamentPhase> phases;
+    private Set<TournamentMatchPhase> phases;
+
+    private String addedBy;
+    private Instant addedAt;
 
     @Id
     @Override
@@ -146,16 +141,37 @@ public class TournamentMatch extends AbstractDataObject<TournamentMatch>
     }
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "match_is_part_of_phase",
-            joinColumns = @JoinColumn(name = "match_id"),
-            inverseJoinColumns = @JoinColumn(name = "phase_id")
-    )
-    public Set<TournamentPhase> getPhases() {
+    @JoinColumns({
+            @JoinColumn(name = "match_id", referencedColumnName = "id", updatable = false, insertable = false),
+            @JoinColumn(name = "tournament_id", referencedColumnName = "tournament_id", updatable = false, insertable = false),
+    })
+    public Set<TournamentMatchPhase> getPhases() {
         return phases;
     }
 
-    public void setPhases(Set<TournamentPhase> phases) {
+    public void setPhases(Set<TournamentMatchPhase> phases) {
         this.phases = phases;
+    }
+
+    @Override
+    @Column(name = "added_by")
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    @Override
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
+
+    @Override
+    @Column(name = "added_at")
+    public Instant getAddedAt() {
+        return addedAt;
+    }
+
+    @Override
+    public void setAddedAt(Instant addedAt) {
+        this.addedAt = addedAt;
     }
 }

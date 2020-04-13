@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import org.neg5.TournamentMatchDTO;
+import org.neg5.TournamentMatchPhaseDTO;
 import org.neg5.TournamentTossupValueDTO;
 import org.neg5.daos.TournamentMatchDAO;
 import org.neg5.data.TournamentMatch;
@@ -11,8 +12,10 @@ import org.neg5.data.transformers.data.Match;
 import org.neg5.mappers.TournamentMatchMapper;
 import org.neg5.mappers.data.MatchToMatchDTOMapper;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -20,6 +23,8 @@ import java.util.stream.Collectors;
 public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, TournamentMatchDTO, String> {
 
     @Inject private TournamentManager tournamentManager;
+    @Inject private MatchTeamManager matchTeamManager;
+    @Inject private TournamentMatchPhaseManager matchPhaseManager;
 
     @Inject private TournamentMatchMapper tournamentMatchMapper;
     @Inject private MatchToMatchDTOMapper matchToMatchDTOMapper;
@@ -42,6 +47,27 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
     }
 
     @Override
+    @Transactional
+    public TournamentMatchDTO create(TournamentMatchDTO match) {
+        Set<String> phases = match.getPhases();
+        match.setPhases(null);
+        TournamentMatchDTO createdMatch = super.create(match);
+        createdMatch.setTeams(match.getTeams().stream()
+                .map(matchTeam -> {
+                    matchTeam.setTournamentId(match.getTournamentId());
+                    matchTeam.setMatchId(createdMatch.getId());
+                    return matchTeamManager.create(matchTeam);
+                })
+                .collect(Collectors.toSet()));
+        createdMatch.setPhases(phases == null
+            ? new HashSet<>()
+            : associateMatchWithPhases(createdMatch, phases)
+        );
+
+        return createdMatch;
+    }
+
+    @Override
     public List<TournamentMatchDTO> findAllByTournamentId(String tournamentId) {
         Map<Integer, TournamentTossupValueDTO> tossupValues = getTossupValueMap(tournamentId);
         return findByRawQuery(tournamentId).stream()
@@ -59,6 +85,13 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
     @Transactional
     protected List<Match> findByRawQuery(String tournamentId) {
         return getRwDAO().findMatchesByTournamentIdWithRawQuery(tournamentId);
+    }
+
+    private Set<String> associateMatchWithPhases(TournamentMatchDTO match, Set<String> phases) {
+        return matchPhaseManager.associateMatchWithPhases(phases, match.getId(), match.getTournamentId())
+                .stream()
+                .map(TournamentMatchPhaseDTO::getPhaseId)
+                .collect(Collectors.toSet());
     }
 
     private Map<Integer, TournamentTossupValueDTO> getTossupValueMap(String tournamentId) {

@@ -23,8 +23,12 @@ public class MatchPlayerAnswerMapper extends AbstractObjectMapper<MatchPlayerAns
 
     @Override
     protected void enrichDTO(MatchPlayerAnswerDTO matchPlayerAnswerDTO, MatchPlayerAnswer matchPlayerAnswer) {
-        matchPlayerAnswerDTO.setTossupValue(matchPlayerAnswer.getId().getTossupValue());
-        matchPlayerAnswerDTO.setAnswerType(matchPlayerAnswer.getTournamentTossupValue().getAnswerType());
+        if (matchPlayerAnswer.getId() != null) {
+            matchPlayerAnswerDTO.setTossupValue(matchPlayerAnswer.getId().getTossupValue());
+        }
+        if (matchPlayerAnswer.getTournamentTossupValue() != null) {
+            matchPlayerAnswerDTO.setAnswerType(matchPlayerAnswer.getTournamentTossupValue().getAnswerType());
+        }
     }
 
     @Override

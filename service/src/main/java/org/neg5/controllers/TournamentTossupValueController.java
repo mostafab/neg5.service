@@ -2,21 +2,28 @@ package org.neg5.controllers;
 
 import com.google.inject.Inject;
 import org.neg5.TournamentTossupValueDTO;
-import org.neg5.core.GsonProvider;
+import org.neg5.enums.TournamentAccessLevel;
 import org.neg5.managers.TournamentTossupValueManager;
-import spark.Spark;
+import org.neg5.security.TournamentAccessManager;
+import org.neg5.util.RequestHelper;
 
 public class TournamentTossupValueController extends AbstractJsonController {
 
-    @Inject private GsonProvider gsonProvider;
-
     @Inject private TournamentTossupValueManager tournamentTossupValueManager;
+    @Inject private TournamentAccessManager tournamentAccessManager;
+    @Inject private RequestHelper requestHelper;
+
+    @Override
+    protected String getBasePath() {
+        return "/neg5-api/tossup-values";
+    }
 
     @Override
     public void registerRoutes() {
-        Spark.post("/neg5-api/tossupValues", (req, res) -> {
-            TournamentTossupValueDTO dto = gsonProvider.get().fromJson(req.body(), TournamentTossupValueDTO.class);
+        post("", (req, res) -> {
+            TournamentTossupValueDTO dto = requestHelper.readFromRequest(req, TournamentTossupValueDTO.class);
+            tournamentAccessManager.requireAccessLevel(dto.getTournamentId(), TournamentAccessLevel.OWNER);
             return tournamentTossupValueManager.create(dto);
-        }, obj -> gsonProvider.get().toJson(obj));
+        });
     }
 }

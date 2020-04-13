@@ -6,6 +6,7 @@ public class MatchTeamDTO {
 
     private String matchId;
     private String teamId;
+    private String tournamentId;
 
     private Integer score;
     private Integer bouncebackPoints;
@@ -27,6 +28,14 @@ public class MatchTeamDTO {
 
     public void setTeamId(String teamId) {
         this.teamId = teamId;
+    }
+
+    public String getTournamentId() {
+        return tournamentId;
+    }
+
+    public void setTournamentId(String tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
     public Integer getScore() {

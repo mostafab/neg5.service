@@ -6,6 +6,7 @@ public class MatchPlayerDTO {
 
     private String playerId;
     private String matchId;
+    private String tournamentId;
 
     private Integer tossupsHeard;
 
@@ -25,6 +26,14 @@ public class MatchPlayerDTO {
 
     public void setMatchId(String matchId) {
         this.matchId = matchId;
+    }
+
+    public String getTournamentId() {
+        return tournamentId;
+    }
+
+    public void setTournamentId(String tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
     public Integer getTossupsHeard() {

@@ -35,7 +35,7 @@ public class TournamentAccessManagerTest {
     public void testAccessExceptionThrownIfNoUserContextAndRequireLevel() {
         when(currentUserContext.getUserData()).thenReturn(Optional.empty());
         assertThrows(TournamentAccessException.class, () -> {
-            tournamentAccessManager.requireAtLeastLevel(TOURNAMENT_ID, TournamentAccessLevel.COLLABORATOR);
+            tournamentAccessManager.requireAccessLevel(TOURNAMENT_ID, TournamentAccessLevel.COLLABORATOR);
         });
     }
 
@@ -48,7 +48,7 @@ public class TournamentAccessManagerTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(TournamentAccessException.class, () -> {
-            tournamentAccessManager.requireAtLeastLevel(TOURNAMENT_ID, TournamentAccessLevel.COLLABORATOR);
+            tournamentAccessManager.requireAccessLevel(TOURNAMENT_ID, TournamentAccessLevel.COLLABORATOR);
         });
     }
 
@@ -61,7 +61,7 @@ public class TournamentAccessManagerTest {
                 .thenReturn(Optional.of(buildCollaborator(false)));
 
         assertThrows(TournamentAccessException.class, () -> {
-            tournamentAccessManager.requireAtLeastLevel(TOURNAMENT_ID, TournamentAccessLevel.ADMIN);
+            tournamentAccessManager.requireAccessLevel(TOURNAMENT_ID, TournamentAccessLevel.ADMIN);
         });
     }
 
@@ -74,7 +74,7 @@ public class TournamentAccessManagerTest {
                 .thenReturn(Optional.of(buildCollaborator(true)));
 
         assertThrows(TournamentAccessException.class, () -> {
-            tournamentAccessManager.requireAtLeastLevel(TOURNAMENT_ID, TournamentAccessLevel.OWNER);
+            tournamentAccessManager.requireAccessLevel(TOURNAMENT_ID, TournamentAccessLevel.OWNER);
         });
     }
 
@@ -86,7 +86,7 @@ public class TournamentAccessManagerTest {
         when(collaboratorManager.getByTournamentAndUsername(any(), any()))
                 .thenReturn(Optional.of(buildCollaborator(true)));
 
-        tournamentAccessManager.requireAtLeastLevel(TOURNAMENT_ID, TournamentAccessLevel.COLLABORATOR);
+        tournamentAccessManager.requireAccessLevel(TOURNAMENT_ID, TournamentAccessLevel.COLLABORATOR);
     }
 
     private TournamentDTO buildTournament() {

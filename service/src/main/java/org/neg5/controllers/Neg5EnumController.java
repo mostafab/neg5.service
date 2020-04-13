@@ -1,12 +1,10 @@
 package org.neg5.controllers;
 
 import com.google.inject.Inject;
-import org.neg5.annotations.Controller;
 import org.neg5.core.EnumSerializer;
 import org.neg5.enums.MatchResult;
 import org.neg5.enums.TossupAnswerType;
 
-@Controller("/neg5-api")
 public class Neg5EnumController extends AbstractJsonController {
 
     private final EnumSerializer enumSerializer;
@@ -15,6 +13,11 @@ public class Neg5EnumController extends AbstractJsonController {
     public Neg5EnumController(EnumSerializer enumSerializer) {
         this.enumSerializer = enumSerializer;
         addEnums();
+    }
+
+    @Override
+    protected String getBasePath() {
+        return "/neg5-api";
     }
 
     @Override

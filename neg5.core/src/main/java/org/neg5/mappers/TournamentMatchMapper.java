@@ -1,12 +1,15 @@
 package org.neg5.mappers;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.data.TournamentMatch;
+import org.neg5.data.TournamentMatchPhase;
 import org.neg5.data.TournamentPhase;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -26,7 +29,12 @@ public class TournamentMatchMapper extends AbstractObjectMapper<TournamentMatch,
         );
         tournamentMatchDTO.setPhases(tournamentMatch.getPhases() == null
                 ? new HashSet<>()
-                : tournamentMatch.getPhases().stream().map(TournamentPhase::getId).collect(Collectors.toSet())
+                : tournamentMatch.getPhases().stream().map(phase -> phase.getId().getPhase().getId()).collect(Collectors.toSet())
         );
+    }
+
+    @Override
+    protected Set<String> getIgnoredEntityPropertyNames() {
+        return Sets.newHashSet("phases");
     }
 }

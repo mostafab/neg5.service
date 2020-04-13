@@ -10,6 +10,8 @@ public abstract class AbstractController implements BaseController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+    protected abstract String getBasePath();
+
     protected void get(String path, Route route) {
         get(path, route, getResponseTransformer());
     }
@@ -47,12 +49,6 @@ public abstract class AbstractController implements BaseController {
     }
 
     private String constructPath(String path) {
-        org.neg5.annotations.Controller annotation = this.getClass()
-                .getAnnotation(org.neg5.annotations.Controller.class);
-
-        if (annotation == null) {
-            return path;
-        }
-        return annotation.value() + path;
+        return getBasePath() + path;
     }
 }

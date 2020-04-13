@@ -20,7 +20,7 @@ public class TournamentAccessExceptionFilter implements RequestFilter {
         exception(TournamentAccessException.class, (ex, request, response) -> {
             response.status(403);
             ClientExceptionDTO clientException = new ClientExceptionDTO();
-            clientException.setMessage("Request to endpoint for tournament " + ex.getTournamentId() + " has insufficient privileges.");
+            clientException.setMessage(ex.getMessage());
 
             response.body(gsonProvider.get().toJson(clientException));
         });
