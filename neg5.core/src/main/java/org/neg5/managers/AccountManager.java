@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import org.mindrot.jbcrypt.BCrypt;
 
+import org.neg5.AccountCreationDTO;
 import org.neg5.AccountDTO;
 import org.neg5.daos.AccountDAO;
 import org.neg5.data.Account;

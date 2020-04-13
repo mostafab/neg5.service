@@ -7,7 +7,7 @@ import org.neg5.annotations.Controller;
 import org.neg5.auth.LoginAuthenticator;
 import org.neg5.auth.LoginCreds;
 import org.neg5.login.DuplicateLoginException;
-import org.neg5.managers.AccountCreationDTO;
+import org.neg5.AccountCreationDTO;
 import org.neg5.managers.AccountManager;
 import org.neg5.util.RequestHelper;
 import spark.Request;
@@ -18,7 +18,6 @@ public class AccountController extends AbstractJsonController {
 
     @Inject private AccountManager accountManager;
     @Inject private RequestHelper requestHelper;
-
     @Inject private LoginAuthenticator loginAuthenticator;
 
     @Override

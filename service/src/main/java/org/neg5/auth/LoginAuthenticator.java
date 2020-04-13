@@ -8,21 +8,24 @@ import org.neg5.managers.AccountManager;
 import spark.Request;
 import spark.Response;
 
+import java.time.Instant;
+
 public class LoginAuthenticator {
 
     private final AccountManager accountManager;
     private final GsonProvider gsonProvider;
     private final JwtManager jwtManager;
-
-    private static final String NF_TOKEN_COOKIE_NAME = "nfToken";
+    private final Neg5TokenCookieNameProvider cookieNameProvider;
 
     @Inject
     public LoginAuthenticator(AccountManager accountManager,
                               GsonProvider gsonProvider,
-                              JwtManager jwtManager) {
+                              JwtManager jwtManager,
+                              Neg5TokenCookieNameProvider cookieNameProvider) {
         this.accountManager = accountManager;
         this.gsonProvider = gsonProvider;
         this.jwtManager = jwtManager;
+        this.cookieNameProvider = cookieNameProvider;
     }
 
     public boolean loginByRequest(Request request, Response response) {
@@ -32,7 +35,7 @@ public class LoginAuthenticator {
 
     public boolean loginByCredentials(LoginCreds credentials, Response response) {
         if (accountManager.verifyPassword(credentials.getUsername(), credentials.getPassword())) {
-            response.cookie(NF_TOKEN_COOKIE_NAME, jwtManager.buildJwt(buildData(credentials)));
+            response.cookie(cookieNameProvider.get(), jwtManager.buildJwt(buildData(credentials)));
             return true;
         }
         return false;
@@ -40,6 +43,7 @@ public class LoginAuthenticator {
 
     private JwtData buildData(LoginCreds loginCreds) {
         return JwtData.newData()
-            .put("username", loginCreds.getUsername());
+            .put("username", loginCreds.getUsername())
+            .put("issuedAt", Instant.now().toEpochMilli());
     }
 }

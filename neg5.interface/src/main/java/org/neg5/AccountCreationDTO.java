@@ -1,4 +1,4 @@
-package org.neg5.managers;
+package org.neg5;
 
 public class AccountCreationDTO {
 
