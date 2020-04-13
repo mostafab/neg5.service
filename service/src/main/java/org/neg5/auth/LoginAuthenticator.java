@@ -27,6 +27,10 @@ public class LoginAuthenticator {
 
     public boolean loginByRequest(Request request, Response response) {
         LoginCreds credentials = gsonProvider.get().fromJson(request.body(), LoginCreds.class);
+        return loginByCredentials(credentials, response);
+    }
+
+    public boolean loginByCredentials(LoginCreds credentials, Response response) {
         if (accountManager.verifyPassword(credentials.getUsername(), credentials.getPassword())) {
             response.cookie(NF_TOKEN_COOKIE_NAME, jwtManager.buildJwt(buildData(credentials)));
             return true;
