@@ -11,7 +11,7 @@ public final class EnvironmentBackedConfig implements Configuration {
 
     private final Map<String, String> properties;
 
-    EnvironmentBackedConfig() {
+    public EnvironmentBackedConfig() {
         this.properties = Collections.unmodifiableMap(new HashMap<>(System.getenv()));
     }
 
