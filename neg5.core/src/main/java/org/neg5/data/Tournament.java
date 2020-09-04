@@ -43,6 +43,8 @@ public class Tournament extends AbstractDataObject<Tournament> implements IdData
     private Long bonusPointValue;
     private Long partsPerBonus;
 
+    private Integer maxActivePlayersPerTeam;
+
     @Id
     @Override
     @GeneratedValue(generator = "uuid_generator")
@@ -174,5 +176,14 @@ public class Tournament extends AbstractDataObject<Tournament> implements IdData
 
     public void setPartsPerBonus(Long partsPerBonus) {
         this.partsPerBonus = partsPerBonus;
+    }
+
+    @Column(name = "max_active_players_per_team")
+    public Integer getMaxActivePlayersPerTeam() {
+        return maxActivePlayersPerTeam;
+    }
+
+    public void setMaxActivePlayersPerTeam(Integer maxActivePlayersPerTeam) {
+        this.maxActivePlayersPerTeam = maxActivePlayersPerTeam;
     }
 }

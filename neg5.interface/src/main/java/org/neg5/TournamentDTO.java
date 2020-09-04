@@ -25,6 +25,8 @@ public class TournamentDTO {
     private Set<TournamentDivisionDTO> divisions;
     private Set<TournamentTossupValueDTO> tossupValues;
 
+    private Integer maxActivePlayersPerTeam;
+
     public String getId() {
         return id;
     }
@@ -135,5 +137,13 @@ public class TournamentDTO {
 
     public void setCurrentPhaseId(String currentPhaseId) {
         this.currentPhaseId = currentPhaseId;
+    }
+
+    public Integer getMaxActivePlayersPerTeam() {
+        return maxActivePlayersPerTeam;
+    }
+
+    public void setMaxActivePlayersPerTeam(Integer maxActivePlayersPerTeam) {
+        this.maxActivePlayersPerTeam = maxActivePlayersPerTeam;
     }
 }
