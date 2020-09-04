@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -28,7 +28,7 @@ public class Tournament extends AbstractDataObject<Tournament> implements IdData
     private Account director;
 
     private String name;
-    private Date tournamentDate;
+    private LocalDate tournamentDate;
     private String location;
     private String questionSet;
     private String comments;
@@ -76,11 +76,11 @@ public class Tournament extends AbstractDataObject<Tournament> implements IdData
     }
 
     @Column(name = "tournament_date")
-    public Date getTournamentDate() {
+    public LocalDate getTournamentDate() {
         return tournamentDate;
     }
 
-    public void setTournamentDate(Date tournamentDate) {
+    public void setTournamentDate(LocalDate tournamentDate) {
         this.tournamentDate = tournamentDate;
     }
 
