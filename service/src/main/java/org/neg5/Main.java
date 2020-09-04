@@ -2,6 +2,7 @@ package org.neg5;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import neg5.db.flyway.module.FlywayModule;
 import org.neg5.jwt.module.JwtSigningModule;
 import org.neg5.module.DataAccessModule;
 import org.neg5.module.StatsCacheModule;
@@ -13,6 +14,7 @@ public class Main {
         Injector injector = Guice.createInjector(
                 new SystemPropertiesModule(),
                 new DataAccessModule(),
+                new FlywayModule(),
                 new ControllersModule(),
                 new FilterModule(),
                 new JwtSigningModule("neg5.jwt"),

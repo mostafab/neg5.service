@@ -5,7 +5,6 @@ import com.google.inject.Singleton;
 import org.neg5.RoundStatDTO;
 import org.neg5.RoundsReportStatsDTO;
 import org.neg5.TournamentMatchDTO;
-import org.neg5.cache.TournamentStatsCache;
 import org.neg5.managers.TournamentMatchManager;
 import org.neg5.managers.stats.aggregators.RoundStatsAggregator;
 

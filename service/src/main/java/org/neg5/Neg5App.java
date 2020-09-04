@@ -1,6 +1,7 @@
 package org.neg5;
 
 import com.google.inject.Inject;
+import neg5.db.flyway.Neg5DatabaseMigrator;
 import org.neg5.core.PersistInitializer;
 import org.neg5.module.Configuration;
 import org.neg5.util.FilterRegistry;
@@ -15,6 +16,7 @@ public class Neg5App implements SparkApplication {
     @Inject private ControllerRegistry controllerRegistry;
     @Inject private FilterRegistry filterRegistry;
     @Inject private Configuration configuration;
+    @Inject private Neg5DatabaseMigrator databaseMigrator;
 
     @Inject private PersistInitializer persistInitializer;
 
@@ -30,6 +32,9 @@ public class Neg5App implements SparkApplication {
         port(getPort());
         initRoutes();
         initFilters();
+
+        // Migrate DB after server starts
+        databaseMigrator.migrateDatabase();
     }
 
     private void initRoutes() {
