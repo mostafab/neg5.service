@@ -1,6 +1,6 @@
 package org.neg5;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 public class TournamentDTO {
@@ -10,7 +10,7 @@ public class TournamentDTO {
     private String directorId;
 
     private String name;
-    private Date tournamentDate;
+    private LocalDate tournamentDate;
     private String location;
     private String questionSet;
     private String comments;
@@ -49,11 +49,11 @@ public class TournamentDTO {
         this.name = name;
     }
 
-    public Date getTournamentDate() {
+    public LocalDate getTournamentDate() {
         return tournamentDate;
     }
 
-    public void setTournamentDate(Date tournamentDate) {
+    public void setTournamentDate(LocalDate tournamentDate) {
         this.tournamentDate = tournamentDate;
     }
 
