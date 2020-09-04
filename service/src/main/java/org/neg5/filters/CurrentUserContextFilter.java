@@ -20,6 +20,8 @@ public class CurrentUserContextFilter implements RequestFilter {
             String token = request.cookie(cookieNameSupplier.get());
             if (token != null) {
                 currentUserContext.set(userContextUtil.getUserData(token));
+            } else {
+                currentUserContext.set(null);
             }
         });
 

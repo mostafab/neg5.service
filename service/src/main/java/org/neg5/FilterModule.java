@@ -14,5 +14,6 @@ public class FilterModule extends AbstractModule {
         multibinder.addBinding().to(NoResultHandlerFilter.class);
         multibinder.addBinding().to(CurrentUserContextFilter.class);
         multibinder.addBinding().to(TournamentAccessExceptionFilter.class);
+        multibinder.addBinding().to(ObjectValidationExceptionHandlerFilter.class);
     }
 }

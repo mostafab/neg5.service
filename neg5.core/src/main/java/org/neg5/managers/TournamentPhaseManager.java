@@ -1,17 +1,49 @@
 package org.neg5.managers;
 
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
+import org.neg5.FieldValidationErrors;
 import org.neg5.TournamentPhaseDTO;
 
 import org.neg5.daos.TournamentPhaseDAO;
 import org.neg5.data.TournamentPhase;
 import org.neg5.mappers.TournamentPhaseMapper;
+import org.neg5.validation.ObjectValidationException;
+
+import java.util.List;
 
 public class TournamentPhaseManager extends AbstractDTOManager<TournamentPhase, TournamentPhaseDTO, String> {
 
-    @Inject private TournamentPhaseDAO rwTournamentPhaseDAO;
+    private final TournamentPhaseDAO rwTournamentPhaseDAO;
+    private final TournamentPhaseMapper tournamentPhaseMapper;
 
-    @Inject private TournamentPhaseMapper tournamentPhaseMapper;
+    @Inject
+    public TournamentPhaseManager(TournamentPhaseDAO rwTournamentPhaseDAO,
+                                  TournamentPhaseMapper tournamentPhaseMapper) {
+        this.rwTournamentPhaseDAO = rwTournamentPhaseDAO;
+        this.tournamentPhaseMapper = tournamentPhaseMapper;
+    }
+
+    @Override
+    @Transactional
+    public TournamentPhaseDTO create(TournamentPhaseDTO tournamentPhaseDTO) {
+        ensureUniquePhaseName(tournamentPhaseDTO);
+        return super.create(tournamentPhaseDTO);
+    }
+
+    private void ensureUniquePhaseName(TournamentPhaseDTO tournamentPhase) {
+        List<TournamentPhaseDTO> existingPhases = findAllByTournamentId(tournamentPhase.getTournamentId());
+        String name = tournamentPhase.getName().toLowerCase().trim();
+        for (TournamentPhaseDTO phase : existingPhases) {
+            String phaseName = phase.getName().toLowerCase().trim();
+            if (name.equals(phaseName)) {
+                throw new ObjectValidationException(
+                        new FieldValidationErrors()
+                            .add("name", "Phase name must be unique within the tournament")
+                );
+            }
+        }
+    }
 
     @Override
     protected TournamentPhaseDAO getRwDAO() {
