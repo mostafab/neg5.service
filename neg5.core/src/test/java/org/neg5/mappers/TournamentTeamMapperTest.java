@@ -7,11 +7,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.neg5.TournamentDivisionDTO;
+import org.neg5.TournamentPoolDTO;
 import org.neg5.TournamentPlayerDTO;
 import org.neg5.TournamentTeamDTO;
 import org.neg5.data.Tournament;
-import org.neg5.data.TournamentDivision;
+import org.neg5.data.TournamentPool;
 import org.neg5.data.TournamentPlayer;
 import org.neg5.data.TournamentTeam;
 
@@ -58,10 +58,10 @@ public class TournamentTeamMapperTest {
         entity.getPlayers().add(new TournamentPlayer());
 
         entity.setDivisions(new HashSet<>());
-        entity.getDivisions().add(new TournamentDivision());
+        entity.getDivisions().add(new TournamentPool());
 
         when(divisionMapper.toDTO(any()))
-                .thenReturn(new TournamentDivisionDTO());
+                .thenReturn(new TournamentPoolDTO());
         when(playerMapper.toDTO(any()))
                 .thenReturn(new TournamentPlayerDTO());
 

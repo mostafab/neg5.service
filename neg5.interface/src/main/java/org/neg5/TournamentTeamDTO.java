@@ -8,7 +8,7 @@ public class TournamentTeamDTO {
     private String name;
     private String tournamentId;
 
-    private Set<TournamentDivisionDTO> divisions;
+    private Set<TournamentPoolDTO> divisions;
     private Set<TournamentPlayerDTO> players;
 
     public String getId() {
@@ -35,11 +35,11 @@ public class TournamentTeamDTO {
         this.tournamentId = tournamentId;
     }
 
-    public Set<TournamentDivisionDTO> getDivisions() {
+    public Set<TournamentPoolDTO> getDivisions() {
         return divisions;
     }
 
-    public void setDivisions(Set<TournamentDivisionDTO> divisions) {
+    public void setDivisions(Set<TournamentPoolDTO> divisions) {
         this.divisions = divisions;
     }
 
