@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import org.neg5.TournamentDTO;
 import org.neg5.TournamentPhaseDTO;
+import org.neg5.TournamentTossupValueDTO;
 import org.neg5.core.CurrentUserContext;
 import org.neg5.core.UserData;
 import org.neg5.daos.TournamentDAO;
@@ -24,16 +25,19 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
     private final CurrentUserContext currentUserContext;
 
     private final TournamentPhaseManager phaseManager;
+    private final TournamentTossupValueManager tossupValueManager;
 
     @Inject
     public TournamentManager(TournamentDAO rwTournamentDAO,
                              TournamentMapper tournamentMapper,
                              CurrentUserContext currentUserContext,
-                             TournamentPhaseManager phaseManager) {
+                             TournamentPhaseManager phaseManager,
+                             TournamentTossupValueManager tossupValueManager) {
         this.rwTournamentDAO = rwTournamentDAO;
         this.tournamentMapper = tournamentMapper;
         this.currentUserContext = currentUserContext;
         this.phaseManager = phaseManager;
+        this.tossupValueManager = tossupValueManager;
     }
 
     @Transactional
@@ -44,6 +48,7 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
 
         TournamentDTO createdTournament = super.create(tournament);
         createdTournament.setPhases(createPhases(createdTournament.getId(), tournament));
+        createdTournament.setTossupValues(createTossupValues(createdTournament.getId(), tournament));
 
         return createdTournament;
     }
@@ -61,6 +66,20 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
     @Override
     protected String getIdFromDTO(TournamentDTO tournamentDTO) {
         return tournamentDTO.getId();
+    }
+
+    private Set<TournamentTossupValueDTO> createTossupValues(String tournamentId,
+                                                             TournamentDTO tournament) {
+        Set<TournamentTossupValueDTO> tossupValues = tournament.getTossupValues() == null
+                ? tossupValueManager.getDefaultTournamentValues()
+                : tournament.getTossupValues();
+
+        return tossupValues.stream()
+                .map(tv -> {
+                    tv.setTournamentId(tournamentId);
+                    return tossupValueManager.create(tv);
+                })
+                .collect(Collectors.toSet());
     }
 
     private Set<TournamentPhaseDTO> createPhases(String tournamentId, TournamentDTO tournament) {

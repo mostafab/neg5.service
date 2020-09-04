@@ -26,7 +26,7 @@ public class TournamentTeam extends AbstractDataObject<TournamentTeam>
     private String name;
     private Tournament tournament;
 
-    private Set<TournamentDivision> divisions;
+    private Set<TournamentPool> divisions;
     private Set<TournamentPlayer> players;
 
     @Id
@@ -68,11 +68,11 @@ public class TournamentTeam extends AbstractDataObject<TournamentTeam>
             joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns = @JoinColumn(name = "division_id")
     )
-    public Set<TournamentDivision> getDivisions() {
+    public Set<TournamentPool> getDivisions() {
         return divisions;
     }
 
-    public void setDivisions(Set<TournamentDivision> divisions) {
+    public void setDivisions(Set<TournamentPool> divisions) {
         this.divisions = divisions;
     }
 

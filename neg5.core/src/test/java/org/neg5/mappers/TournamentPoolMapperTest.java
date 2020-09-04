@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.neg5.TournamentDivisionDTO;
+import org.neg5.TournamentPoolDTO;
 import org.neg5.data.Tournament;
-import org.neg5.data.TournamentDivision;
+import org.neg5.data.TournamentPool;
 import org.neg5.data.TournamentPhase;
 
 @ExtendWith(MockitoExtension.class)
-public class TournamentDivisionMapperTest {
+public class TournamentPoolMapperTest {
 
     @InjectMocks private TournamentDivisionMapper divisionMapper;
 
@@ -20,9 +20,9 @@ public class TournamentDivisionMapperTest {
 
     @Test
     public void testEntityToDTOMapping() {
-        TournamentDivision entity = buildEntity();
+        TournamentPool entity = buildEntity();
 
-        TournamentDivisionDTO dto = divisionMapper.toDTO(entity);
+        TournamentPoolDTO dto = divisionMapper.toDTO(entity);
 
         Assert.assertEquals(entity.getId(), dto.getId());
         Assert.assertEquals(entity.getName(), dto.getName());
@@ -33,11 +33,11 @@ public class TournamentDivisionMapperTest {
 
     @Test
     public void testEntityToDtoMappingNullTournamentAndPhase() {
-        TournamentDivision entity = buildEntity();
+        TournamentPool entity = buildEntity();
         entity.setPhase(null);
         entity.setTournament(null);
 
-        TournamentDivisionDTO dto = divisionMapper.toDTO(entity);
+        TournamentPoolDTO dto = divisionMapper.toDTO(entity);
 
         Assert.assertNull(dto.getPhaseId());
         Assert.assertNull(dto.getTournamentId());
@@ -45,9 +45,9 @@ public class TournamentDivisionMapperTest {
 
     @Test
     public void testDtoToEntityMapping() {
-        TournamentDivisionDTO dto = buildDTO();
+        TournamentPoolDTO dto = buildDTO();
 
-        TournamentDivision entity = divisionMapper.mergeToEntity(dto);
+        TournamentPool entity = divisionMapper.mergeToEntity(dto);
 
         Assert.assertEquals(dto.getId(), entity.getId());
         Assert.assertEquals(dto.getName(), entity.getName());
@@ -61,18 +61,18 @@ public class TournamentDivisionMapperTest {
 
     @Test
     public void testDtoToEntityMappingNoTournamentOrPhaseId() {
-        TournamentDivisionDTO dto = buildDTO();
+        TournamentPoolDTO dto = buildDTO();
         dto.setPhaseId(null);
         dto.setTournamentId(null);
 
-        TournamentDivision entity = divisionMapper.mergeToEntity(dto);
+        TournamentPool entity = divisionMapper.mergeToEntity(dto);
 
         Assert.assertNull(entity.getPhase());
         Assert.assertNull(entity.getTournament());
     }
 
-    private TournamentDivision buildEntity() {
-        TournamentDivision division = new TournamentDivision();
+    private TournamentPool buildEntity() {
+        TournamentPool division = new TournamentPool();
 
         division.setId("TEST_ID_DIV");
         division.setName("PHASE");
@@ -86,8 +86,8 @@ public class TournamentDivisionMapperTest {
         return division;
     }
 
-    private TournamentDivisionDTO buildDTO() {
-        TournamentDivisionDTO division = new TournamentDivisionDTO();
+    private TournamentPoolDTO buildDTO() {
+        TournamentPoolDTO division = new TournamentPoolDTO();
 
         division.setId("TEST_ID_DIV");
         division.setName("PHASE");

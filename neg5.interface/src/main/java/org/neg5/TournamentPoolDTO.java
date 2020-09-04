@@ -1,6 +1,6 @@
 package org.neg5;
 
-public class TournamentDivisionDTO {
+public class TournamentPoolDTO {
 
     private String id;
 
