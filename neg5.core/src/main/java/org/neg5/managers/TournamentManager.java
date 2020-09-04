@@ -4,12 +4,17 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import org.neg5.TournamentDTO;
+import org.neg5.TournamentPhaseDTO;
 import org.neg5.core.CurrentUserContext;
 import org.neg5.core.UserData;
 import org.neg5.daos.TournamentDAO;
 import org.neg5.data.Tournament;
 
 import org.neg5.mappers.TournamentMapper;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Singleton
 public class TournamentManager extends AbstractDTOManager<Tournament, TournamentDTO, String> {
@@ -18,13 +23,17 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
     private final TournamentMapper tournamentMapper;
     private final CurrentUserContext currentUserContext;
 
+    private final TournamentPhaseManager phaseManager;
+
     @Inject
     public TournamentManager(TournamentDAO rwTournamentDAO,
                              TournamentMapper tournamentMapper,
-                             CurrentUserContext currentUserContext) {
+                             CurrentUserContext currentUserContext,
+                             TournamentPhaseManager phaseManager) {
         this.rwTournamentDAO = rwTournamentDAO;
         this.tournamentMapper = tournamentMapper;
         this.currentUserContext = currentUserContext;
+        this.phaseManager = phaseManager;
     }
 
     @Transactional
@@ -32,7 +41,9 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
     public TournamentDTO create(TournamentDTO tournament) {
         UserData currentUser = currentUserContext.getUserDataOrThrow();
         tournament.setDirectorId(currentUser.getUsername());
+
         TournamentDTO createdTournament = super.create(tournament);
+        createdTournament.setPhases(createPhases(createdTournament.getId(), tournament));
 
         return createdTournament;
     }
@@ -50,5 +61,17 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
     @Override
     protected String getIdFromDTO(TournamentDTO tournamentDTO) {
         return tournamentDTO.getId();
+    }
+
+    private Set<TournamentPhaseDTO> createPhases(String tournamentId, TournamentDTO tournament) {
+        if (tournament.getPhases() == null) {
+            return new HashSet<>();
+        }
+        return tournament.getPhases().stream()
+                .map(phase -> {
+                    phase.setTournamentId(tournamentId);
+                    return phaseManager.create(phase);
+                })
+                .collect(Collectors.toSet());
     }
 }
