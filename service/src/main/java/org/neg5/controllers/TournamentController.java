@@ -1,6 +1,7 @@
 package org.neg5.controllers;
 
 import com.google.inject.Inject;
+import org.neg5.TournamentDTO;
 import org.neg5.core.QBJGsonProvider;
 import org.neg5.managers.TournamentManager;
 import org.neg5.managers.TournamentMatchManager;
@@ -9,6 +10,7 @@ import org.neg5.managers.TournamentPlayerManager;
 import org.neg5.managers.TournamentTeamManager;
 import org.neg5.managers.TournamentTossupValueManager;
 import org.neg5.managers.stats.QBJManager;
+import org.neg5.util.RequestHelper;
 
 public class TournamentController extends AbstractJsonController {
 
@@ -20,6 +22,7 @@ public class TournamentController extends AbstractJsonController {
     @Inject private TournamentTossupValueManager tournamentTossupValueManager;
 
     @Inject private QBJManager qbjManager;
+    @Inject private RequestHelper requestHelper;
     @Inject private QBJGsonProvider qbjGsonProvider;
 
     private static final String QBJ_CONTENT_TYPE = "application/vnd.quizbowl.qbj+json";
@@ -48,5 +51,10 @@ public class TournamentController extends AbstractJsonController {
             return qbjManager.getQbj(request.params("id"));
             }, obj -> qbjGsonProvider.get().toJson(obj)
         );
+
+        post("", (request, response) -> {
+            TournamentDTO tournament = requestHelper.readFromRequest(request, TournamentDTO.class);
+            return tournamentManager.create(tournament);
+        });
     }
 }

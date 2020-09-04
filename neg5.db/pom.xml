@@ -24,6 +24,8 @@
                     <locations>
                         <location>classpath:migrations</location>
                     </locations>
+                    <baselineOnMigrate>true</baselineOnMigrate>
+                    <baselineVersion>1599198344</baselineVersion>
                 </configuration>
             </plugin>
         </plugins>

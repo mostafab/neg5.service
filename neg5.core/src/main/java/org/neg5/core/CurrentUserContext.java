@@ -17,6 +17,10 @@ public class CurrentUserContext {
         return currentUser.get();
     }
 
+    public UserData getUserDataOrThrow() {
+        return getUserData().orElseThrow(() -> new IllegalStateException("No user for the current thread"));
+    }
+
     public void clear() {
         currentUser.remove();
     }
