@@ -17,7 +17,7 @@ public class Main {
                 new FlywayModule(),
                 new ControllersModule(),
                 new FilterModule(),
-                new JwtSigningModule("neg5.jwt"),
+                new JwtSigningModule("NEG5_JWT"),
                 new StatsCacheModule()
         );
         Neg5App app = injector.getInstance(Neg5App.class);
