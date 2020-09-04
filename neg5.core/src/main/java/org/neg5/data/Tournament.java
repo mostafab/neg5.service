@@ -34,7 +34,7 @@ public class Tournament extends AbstractDataObject<Tournament> implements IdData
     private String comments;
 
     private Set<TournamentPhase> phases;
-    private Set<TournamentDivision> divisions;
+    private Set<TournamentPool> divisions;
     private Set<TournamentTossupValue> tossupValues;
 
     private TournamentPhase currentPhase;
@@ -123,11 +123,11 @@ public class Tournament extends AbstractDataObject<Tournament> implements IdData
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tournament")
-    public Set<TournamentDivision> getDivisions() {
+    public Set<TournamentPool> getDivisions() {
         return divisions;
     }
 
-    public void setDivisions(Set<TournamentDivision> divisions) {
+    public void setDivisions(Set<TournamentPool> divisions) {
         this.divisions = divisions;
     }
 
