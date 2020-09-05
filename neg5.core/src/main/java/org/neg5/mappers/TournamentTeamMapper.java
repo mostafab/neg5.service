@@ -29,4 +29,12 @@ public class TournamentTeamMapper extends AbstractObjectMapper<TournamentTeam, T
                     .collect(Collectors.toSet())
         );
     }
+
+    @Override
+    protected void addMappings() {
+        getDtoToEntityTypeMap().addMappings(mp -> {
+            mp.skip(TournamentTeam::setDivisions);
+            mp.skip(TournamentTeam::setPlayers);
+        });
+    }
 }

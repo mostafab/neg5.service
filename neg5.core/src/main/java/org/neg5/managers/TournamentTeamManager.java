@@ -47,6 +47,13 @@ public class TournamentTeamManager extends AbstractDTOManager<TournamentTeam, To
     }
 
     @Override
+    public TournamentTeamDTO update(TournamentTeamDTO tournamentTeamDTO) {
+        TournamentTeamDTO original = get(tournamentTeamDTO.getId());
+        tournamentTeamDTO.setTournamentId(original.getTournamentId());
+        return super.update(tournamentTeamDTO);
+    }
+
+    @Override
     protected TournamentTeamDAO getRwDAO() {
         return rwTournamentTeamDAO;
     }
