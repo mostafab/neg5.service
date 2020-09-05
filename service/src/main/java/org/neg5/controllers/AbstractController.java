@@ -40,6 +40,20 @@ public abstract class AbstractController implements BaseController {
         LOGGER.info("Mapped POST route {}", fullPath);
     }
 
+    protected void put(String path, Route route) {
+        put(path, route, getResponseTransformer());
+    }
+
+    protected void put(String path, Route route, ResponseTransformer responseTransformer) {
+        String fullPath = constructPath(path);
+        if (responseTransformer == null) {
+            Spark.put(fullPath, enrichRoute(route));
+        } else {
+            Spark.put(fullPath, enrichRoute(route), responseTransformer);
+        }
+        LOGGER.info("Mapped PUT route {}", fullPath);
+    }
+
     protected Route enrichRoute(Route route) {
         return route;
     }

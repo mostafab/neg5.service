@@ -29,23 +29,28 @@ public class TournamentAccessManager {
         }
     }
 
+    public TournamentAccessLevel getUserAccessLevelToTournament(String tournamentId,
+                                                                String userId) {
+        if (userIsDirector(userId, tournamentId)) {
+            return TournamentAccessLevel.OWNER;
+        }
+        return collaboratorManager
+                .getByTournamentAndUsername(tournamentId, userId)
+                .map(collaborator ->
+                        Boolean.TRUE.equals(collaborator.getIsAdmin())
+                                ? TournamentAccessLevel.ADMIN
+                                : TournamentAccessLevel.COLLABORATOR
+                )
+                .orElse(TournamentAccessLevel.NONE);
+    }
+
     private TournamentAccessLevel getCurrentUserAccessLevel(String tournamentId) {
         Optional<UserData> userData = currentUserContext.getUserData();
         if (!userData.isPresent()) {
             return TournamentAccessLevel.NONE;
         }
         String username = userData.get().getUsername();
-        if (userIsDirector(username, tournamentId)) {
-            return TournamentAccessLevel.OWNER;
-        }
-        return collaboratorManager
-            .getByTournamentAndUsername(tournamentId, username)
-            .map(collaborator ->
-                Boolean.TRUE.equals(collaborator.getIsAdmin())
-                    ? TournamentAccessLevel.ADMIN
-                    : TournamentAccessLevel.COLLABORATOR
-            )
-            .orElse(TournamentAccessLevel.NONE);
+        return getUserAccessLevelToTournament(tournamentId, username);
     }
 
     private boolean userIsDirector(String username, String tournamentId) {

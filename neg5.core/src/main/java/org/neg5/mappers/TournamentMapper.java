@@ -36,4 +36,13 @@ public class TournamentMapper extends AbstractObjectMapper<Tournament, Tournamen
             tournamentDTO.setCurrentPhaseId(tournament.getCurrentPhase().getId());
         }
     }
+
+    @Override
+    protected void addMappings() {
+        getDtoToEntityTypeMap().addMappings(mp -> {
+           mp.skip(Tournament::setPhases);
+           mp.skip(Tournament::setTossupValues);
+           mp.skip(Tournament::setDivisions);
+        });
+    }
 }
