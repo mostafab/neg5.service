@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import org.neg5.TournamentDTO;
 import org.neg5.TournamentTossupValueDTO;
 import org.neg5.core.QBJGsonProvider;
+import org.neg5.enums.TournamentAccessLevel;
 import org.neg5.managers.TournamentManager;
 import org.neg5.managers.TournamentMatchManager;
 import org.neg5.managers.TournamentPhaseManager;
@@ -12,6 +13,7 @@ import org.neg5.managers.TournamentPlayerManager;
 import org.neg5.managers.TournamentTeamManager;
 import org.neg5.managers.TournamentTossupValueManager;
 import org.neg5.managers.stats.QBJManager;
+import org.neg5.security.TournamentAccessManager;
 import org.neg5.util.RequestHelper;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class TournamentController extends AbstractJsonController {
     @Inject private TournamentMatchManager tournamentMatchManager;
     @Inject private TournamentPhaseManager tournamentPhaseManager;
     @Inject private TournamentTossupValueManager tournamentTossupValueManager;
+    @Inject private TournamentAccessManager accessManager;
 
     @Inject private QBJManager qbjManager;
     @Inject private RequestHelper requestHelper;
@@ -60,7 +63,12 @@ public class TournamentController extends AbstractJsonController {
             TournamentDTO tournament = requestHelper.readFromRequest(request, TournamentDTO.class);
             return tournamentManager.create(tournament);
         });
+
         post("/:id/tossupValues", (request, response) -> {
+            accessManager.requireAccessLevel(
+                    request.params("id"),
+                    TournamentAccessLevel.OWNER
+            );
             List<TournamentTossupValueDTO> values = requestHelper.readFromRequest(
                     request,
                     new TypeToken<List<TournamentTossupValueDTO>>(){}.getType()
