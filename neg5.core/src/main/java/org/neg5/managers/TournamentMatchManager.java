@@ -70,6 +70,7 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
     @Override
     @Transactional
     public TournamentMatchDTO update(TournamentMatchDTO tournamentMatchDTO) {
+        // TODO This creates a new match with a new ID. Come back and preserve the ID
         TournamentMatchDTO original = get(tournamentMatchDTO.getId());
         tournamentMatchDTO.setTournamentId(original.getTournamentId());
         delete(tournamentMatchDTO.getId());
