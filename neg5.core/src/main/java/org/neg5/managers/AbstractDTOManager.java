@@ -59,9 +59,8 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
 
     @Transactional
     public DTO update(DTO dto) {
-        T originalEntity = getRwDAO().get(getIdFromDTO(dto));
-        T updated = getMapper().mergeToEntity(dto, originalEntity);
-        return getMapper().toDTO(getRwDAO().save(updated).copyOf());
+        updateInternal(dto);
+        return get(getIdFromDTO(dto));
     }
 
     @Transactional
@@ -75,6 +74,12 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
                 .stream()
                 .map(entity -> getMapper().toDTO(entity))
                 .collect(Collectors.toList());
+    }
+
+    protected void updateInternal(DTO dto) {
+        T originalEntity = getRwDAO().get(getIdFromDTO(dto));
+        T updated = getMapper().mergeToEntity(dto, originalEntity);
+        getMapper().toDTO(getRwDAO().save(updated).copyOf());
     }
 
     protected IdType getIdFromDTO(DTO dto) {
