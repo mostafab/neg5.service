@@ -42,6 +42,15 @@ public class TournamentPlayerManager extends AbstractDTOManager<TournamentPlayer
         return tournamentPlayerDTO.getId();
     }
 
+    @Override
+    public TournamentPlayerDTO update(TournamentPlayerDTO tournamentPlayerDTO) {
+        TournamentPlayerDTO original = get(tournamentPlayerDTO.getId());
+        tournamentPlayerDTO.setTournamentId(original.getTournamentId());
+        tournamentPlayerDTO.setTeamId(original.getTeamId());
+
+        return super.update(tournamentPlayerDTO);
+    }
+
     /**
      * Group matches by players, where the key is the player's id and the value is the list of matches the player is part of
      * @param tournamentId tournamentId
