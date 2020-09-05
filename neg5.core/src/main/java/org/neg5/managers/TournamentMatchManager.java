@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, TournamentMatchDTO, String> {
 
-    @Inject private TournamentManager tournamentManager;
+    @Inject private TournamentTossupValueManager tournamentTossupValueManager;
     @Inject private MatchTeamManager matchTeamManager;
     @Inject private TournamentMatchPhaseManager matchPhaseManager;
 
@@ -76,6 +76,11 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
     }
 
     @Transactional
+    public Set<String> getMatchIdsByTournament(String tournamentId) {
+        return new HashSet<>(rwTournamentMatchDAO.findMatchIdsByTournament(tournamentId));
+    }
+
+    @Transactional
     public List<TournamentMatchDTO> findAllByTournamentAndPhase(String tournamentId, String phaseId) {
         return findAllByTournamentId(tournamentId).stream()
                 .filter(match -> phaseId == null || match.getPhases().contains(phaseId))
@@ -95,7 +100,7 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
     }
 
     private Map<Integer, TournamentTossupValueDTO> getTossupValueMap(String tournamentId) {
-        return tournamentManager.get(tournamentId).getTossupValues().stream()
+        return tournamentTossupValueManager.findAllByTournamentId(tournamentId).stream()
                 .collect(Collectors.toMap(TournamentTossupValueDTO::getValue, Function.identity()));
     }
 }

@@ -1,7 +1,9 @@
 package org.neg5.controllers;
 
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import org.neg5.TournamentDTO;
+import org.neg5.TournamentTossupValueDTO;
 import org.neg5.core.QBJGsonProvider;
 import org.neg5.managers.TournamentManager;
 import org.neg5.managers.TournamentMatchManager;
@@ -11,6 +13,8 @@ import org.neg5.managers.TournamentTeamManager;
 import org.neg5.managers.TournamentTossupValueManager;
 import org.neg5.managers.stats.QBJManager;
 import org.neg5.util.RequestHelper;
+
+import java.util.List;
 
 public class TournamentController extends AbstractJsonController {
 
@@ -55,6 +59,16 @@ public class TournamentController extends AbstractJsonController {
         post("", (request, response) -> {
             TournamentDTO tournament = requestHelper.readFromRequest(request, TournamentDTO.class);
             return tournamentManager.create(tournament);
+        });
+        post("/:id/tossupValues", (request, response) -> {
+            List<TournamentTossupValueDTO> values = requestHelper.readFromRequest(
+                    request,
+                    new TypeToken<List<TournamentTossupValueDTO>>(){}.getType()
+            );
+            return tournamentManager.updateTournamentTossupValues(
+                    request.params("id"),
+                    values
+            );
         });
     }
 }

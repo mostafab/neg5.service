@@ -3,6 +3,7 @@ package org.neg5.managers;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+import org.neg5.FieldValidationErrors;
 import org.neg5.TournamentDTO;
 import org.neg5.TournamentPhaseDTO;
 import org.neg5.TournamentTossupValueDTO;
@@ -12,8 +13,10 @@ import org.neg5.daos.TournamentDAO;
 import org.neg5.data.Tournament;
 
 import org.neg5.mappers.TournamentMapper;
+import org.neg5.validation.ObjectValidationException;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,18 +29,21 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
 
     private final TournamentPhaseManager phaseManager;
     private final TournamentTossupValueManager tossupValueManager;
+    private final TournamentMatchManager matchManager;
 
     @Inject
     public TournamentManager(TournamentDAO rwTournamentDAO,
                              TournamentMapper tournamentMapper,
                              CurrentUserContext currentUserContext,
                              TournamentPhaseManager phaseManager,
-                             TournamentTossupValueManager tossupValueManager) {
+                             TournamentTossupValueManager tossupValueManager,
+                             TournamentMatchManager matchManager) {
         this.rwTournamentDAO = rwTournamentDAO;
         this.tournamentMapper = tournamentMapper;
         this.currentUserContext = currentUserContext;
         this.phaseManager = phaseManager;
         this.tossupValueManager = tossupValueManager;
+        this.matchManager = matchManager;
     }
 
     @Transactional
@@ -53,6 +59,20 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
         return createdTournament;
     }
 
+    @Transactional
+    public List<TournamentTossupValueDTO> updateTournamentTossupValues(String tournamentId,
+                                                                       List<TournamentTossupValueDTO> tossupValues) {
+        throwIfAnyMatchesExist(tournamentId);
+        validateAllUniqueValues(tossupValues);
+        tossupValueManager.deleteAllFromTournament(tournamentId);
+        return tossupValues.stream()
+                .map(tv -> {
+                    tv.setTournamentId(tournamentId);
+                    return tossupValueManager.create(tv);
+                })
+                .collect(Collectors.toList());
+    }
+
     @Override
     protected TournamentDAO getRwDAO() {
         return rwTournamentDAO;
@@ -66,6 +86,34 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
     @Override
     protected String getIdFromDTO(TournamentDTO tournamentDTO) {
         return tournamentDTO.getId();
+    }
+
+    private void validateAllUniqueValues(List<TournamentTossupValueDTO> tossupValues) {
+        Set<Integer> values = tossupValues.stream()
+                .map(TournamentTossupValueDTO::getValue)
+                .collect(Collectors.toSet());
+
+        if (values.size() < tossupValues.size()) {
+            throw new ObjectValidationException(
+                    new FieldValidationErrors()
+                            .add(
+                                    "value",
+                                    "All unique tossup values required. ")
+            );
+        }
+    }
+
+    private void throwIfAnyMatchesExist(String tournamentId) {
+        Set<String> matchIds = matchManager.getMatchIdsByTournament(tournamentId);
+        if (!matchIds.isEmpty()) {
+            throw new ObjectValidationException(
+                    new FieldValidationErrors()
+                            .add(
+                                    "matches",
+                                    "Cannot update tossup values for tournament that has existing matches"
+                            )
+            );
+        }
     }
 
     private Set<TournamentTossupValueDTO> createTossupValues(String tournamentId,
