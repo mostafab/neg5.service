@@ -4,8 +4,10 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import org.neg5.TournamentDTO;
 import org.neg5.TournamentTossupValueDTO;
+import org.neg5.UpdateTournamentRequestDTO;
 import org.neg5.core.QBJGsonProvider;
 import org.neg5.enums.TournamentAccessLevel;
+import org.neg5.managers.TournamentCollaboratorManager;
 import org.neg5.managers.TournamentManager;
 import org.neg5.managers.TournamentMatchManager;
 import org.neg5.managers.TournamentPhaseManager;
@@ -26,6 +28,7 @@ public class TournamentController extends AbstractJsonController {
     @Inject private TournamentMatchManager tournamentMatchManager;
     @Inject private TournamentPhaseManager tournamentPhaseManager;
     @Inject private TournamentTossupValueManager tournamentTossupValueManager;
+    @Inject private TournamentCollaboratorManager tournamentCollaboratorManager;
     @Inject private TournamentAccessManager accessManager;
 
     @Inject private QBJManager qbjManager;
@@ -43,6 +46,12 @@ public class TournamentController extends AbstractJsonController {
     public void registerRoutes() {
         get("/:id", (request, response)
                 -> tournamentManager.get(request.params("id")));
+        put("/:id", (request, response) -> {
+            UpdateTournamentRequestDTO updateRequest = requestHelper
+                    .readFromRequest(request, UpdateTournamentRequestDTO.class);
+            return tournamentManager.update(request.params("id"), updateRequest);
+        });
+
         get("/:id/teams", (request, response)
                 -> tournamentTeamManager.findAllByTournamentId(request.params("id")));
         get("/:id/players", (request, response)
@@ -53,6 +62,8 @@ public class TournamentController extends AbstractJsonController {
                 -> tournamentPhaseManager.findAllByTournamentId(request.params("id")));
         get("/:id/tossupValues", (request, response)
                 -> tournamentTossupValueManager.findAllByTournamentId(request.params("id")));
+        get("/:id/collaborators", (request, response)
+                -> tournamentCollaboratorManager.findAllByTournamentId(request.params("id")));
         get("/:id/qbj", (request, response) -> {
             response.type(QBJ_CONTENT_TYPE);
             return qbjManager.getQbj(request.params("id"));

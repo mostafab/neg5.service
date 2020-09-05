@@ -7,12 +7,14 @@ import org.neg5.FieldValidationErrors;
 import org.neg5.TournamentDTO;
 import org.neg5.TournamentPhaseDTO;
 import org.neg5.TournamentTossupValueDTO;
+import org.neg5.UpdateTournamentRequestDTO;
 import org.neg5.core.CurrentUserContext;
 import org.neg5.core.UserData;
 import org.neg5.daos.TournamentDAO;
 import org.neg5.data.Tournament;
 
 import org.neg5.mappers.TournamentMapper;
+import org.neg5.mappers.UpdateTournamentRequestMapper;
 import org.neg5.validation.ObjectValidationException;
 
 import java.util.HashSet;
@@ -30,6 +32,7 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
     private final TournamentPhaseManager phaseManager;
     private final TournamentTossupValueManager tossupValueManager;
     private final TournamentMatchManager matchManager;
+    private final UpdateTournamentRequestMapper updateTournamentRequestMapper;
 
     @Inject
     public TournamentManager(TournamentDAO rwTournamentDAO,
@@ -37,13 +40,15 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
                              CurrentUserContext currentUserContext,
                              TournamentPhaseManager phaseManager,
                              TournamentTossupValueManager tossupValueManager,
-                             TournamentMatchManager matchManager) {
+                             TournamentMatchManager matchManager,
+                             UpdateTournamentRequestMapper updateTournamentRequestMapper) {
         this.rwTournamentDAO = rwTournamentDAO;
         this.tournamentMapper = tournamentMapper;
         this.currentUserContext = currentUserContext;
         this.phaseManager = phaseManager;
         this.tossupValueManager = tossupValueManager;
         this.matchManager = matchManager;
+        this.updateTournamentRequestMapper = updateTournamentRequestMapper;
     }
 
     @Transactional
@@ -57,6 +62,14 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
         createdTournament.setTossupValues(createTossupValues(createdTournament.getId(), tournament));
 
         return createdTournament;
+    }
+
+    @Transactional
+    public TournamentDTO update(String tournamentId,
+                                UpdateTournamentRequestDTO updateTournamentRequest) {
+        TournamentDTO dto = updateTournamentRequestMapper
+                .mergeToEntity(updateTournamentRequest, get(tournamentId));
+        return update(dto);
     }
 
     @Transactional
@@ -110,7 +123,7 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
                     new FieldValidationErrors()
                             .add(
                                     "matches",
-                                    "Cannot update tossup values for tournament that has existing matches"
+                                    "Cannot update tossup values for tournament that has existing matches."
                             )
             );
         }
