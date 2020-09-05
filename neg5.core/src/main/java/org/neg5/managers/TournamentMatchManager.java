@@ -68,6 +68,16 @@ public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, 
     }
 
     @Override
+    @Transactional
+    public TournamentMatchDTO update(TournamentMatchDTO tournamentMatchDTO) {
+        // TODO This creates a new match with a new ID. Come back and preserve the ID
+        TournamentMatchDTO original = get(tournamentMatchDTO.getId());
+        tournamentMatchDTO.setTournamentId(original.getTournamentId());
+        delete(tournamentMatchDTO.getId());
+        return create(tournamentMatchDTO);
+    }
+
+    @Override
     public List<TournamentMatchDTO> findAllByTournamentId(String tournamentId) {
         Map<Integer, TournamentTossupValueDTO> tossupValues = getTossupValueMap(tournamentId);
         return findByRawQuery(tournamentId).stream()

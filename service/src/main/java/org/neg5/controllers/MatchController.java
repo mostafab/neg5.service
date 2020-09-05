@@ -23,6 +23,17 @@ public class MatchController extends AbstractJsonController {
     @Override
     public void registerRoutes() {
         get("/:id", this::getMatch);
+        put("/:id", (request, response) -> {
+            TournamentMatchDTO original = matchManager.get(request.params("id"));
+            tournamentAccessManager.requireAccessLevel(
+                    original.getTournamentId(),
+                    TournamentAccessLevel.ADMIN
+            );
+            TournamentMatchDTO match = requestHelper.readFromRequest(request, TournamentMatchDTO.class);
+            match.setId(request.params("id"));
+            return matchManager.update(match);
+        });
+
         post("", this::createMatch);
     }
 
