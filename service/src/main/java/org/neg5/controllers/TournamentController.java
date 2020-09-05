@@ -47,6 +47,10 @@ public class TournamentController extends AbstractJsonController {
         get("/:id", (request, response)
                 -> tournamentManager.get(request.params("id")));
         put("/:id", (request, response) -> {
+            accessManager.requireAccessLevel(
+                    request.params("id"),
+                    TournamentAccessLevel.OWNER
+            );
             UpdateTournamentRequestDTO updateRequest = requestHelper
                     .readFromRequest(request, UpdateTournamentRequestDTO.class);
             return tournamentManager.update(request.params("id"), updateRequest);
