@@ -34,8 +34,7 @@ public class TournamentAccessManager {
         if (userIsDirector(userId, tournamentId)) {
             return TournamentAccessLevel.OWNER;
         }
-        return collaboratorManager
-                .getByTournamentAndUsername(tournamentId, userId)
+        return collaboratorManager.getByTournamentAndUsername(tournamentId, userId)
                 .map(collaborator ->
                         Boolean.TRUE.equals(collaborator.getIsAdmin())
                                 ? TournamentAccessLevel.ADMIN
