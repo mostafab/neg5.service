@@ -1,6 +1,7 @@
 package org.neg5.controllers;
 
 import com.google.inject.Inject;
+import org.eclipse.jetty.http.HttpStatus;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.enums.TournamentAccessLevel;
 import org.neg5.managers.TournamentMatchManager;
@@ -24,17 +25,27 @@ public class MatchController extends AbstractJsonController {
     public void registerRoutes() {
         get("/:id", this::getMatch);
         put("/:id", (request, response) -> {
-            TournamentMatchDTO original = matchManager.get(request.params("id"));
-            tournamentAccessManager.requireAccessLevel(
-                    original.getTournamentId(),
-                    TournamentAccessLevel.ADMIN
-            );
+            verifyAccessToEditMatch(request);
             TournamentMatchDTO match = requestHelper.readFromRequest(request, TournamentMatchDTO.class);
             match.setId(request.params("id"));
             return matchManager.update(match);
         });
+        delete("/:id", (request, response) -> {
+            verifyAccessToEditMatch(request);
+            matchManager.delete(request.params("id"));
+            response.status(HttpStatus.NO_CONTENT_204);
+            return "";
+        });
 
         post("", this::createMatch);
+    }
+
+    private void verifyAccessToEditMatch(Request request) {
+        TournamentMatchDTO original = matchManager.get(request.params("id"));
+        tournamentAccessManager.requireAccessLevel(
+                original.getTournamentId(),
+                TournamentAccessLevel.ADMIN
+        );
     }
 
     private TournamentMatchDTO createMatch(Request request, Response response) {
