@@ -31,6 +31,7 @@ public class TournamentTeamPoolManager
     public List<TournamentTeamPoolDTO> associateTeamWithPools(Set<String> divisionIds,
                                                               String teamId,
                                                               String tournamentId) {
+        deleteExistingAssociations(teamId);
         return divisionIds.stream()
                 .map(divisionId -> {
                     TournamentTeamPoolDTO dto = new TournamentTeamPoolDTO();
@@ -40,6 +41,10 @@ public class TournamentTeamPoolManager
                     return create(dto);
                 })
                 .collect(Collectors.toList());
+    }
+
+    private void deleteExistingAssociations(String teamId) {
+        getRwDAO().findByTeamId(teamId).forEach(entity -> delete(entity.getId()));
     }
 
     @Override
