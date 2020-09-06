@@ -11,18 +11,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.Instant;
 
 @Entity
 @Table(name = "tournament_division")
 @DynamicUpdate
 public class TournamentPool extends AbstractDataObject<TournamentPool>
-        implements SpecificTournamentEntity, IdDataObject<String> {
+        implements SpecificTournamentEntity, IdDataObject<String>, Auditable {
 
     private String id;
     private String name;
 
     private Tournament tournament;
     private TournamentPhase phase;
+
+    private Instant addedAt;
+    private String addedBy;
 
     @Override
     @Id
@@ -65,5 +69,27 @@ public class TournamentPool extends AbstractDataObject<TournamentPool>
 
     public void setPhase(TournamentPhase phase) {
         this.phase = phase;
+    }
+
+    @Override
+    @Column(name = "added_by")
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    @Override
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
+
+    @Override
+    @Column(name = "created_at")
+    public Instant getAddedAt() {
+        return addedAt;
+    }
+
+    @Override
+    public void setAddedAt(Instant addedAt) {
+        this.addedAt = addedAt;
     }
 }

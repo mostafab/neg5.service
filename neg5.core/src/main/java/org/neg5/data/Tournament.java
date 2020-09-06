@@ -15,13 +15,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
 @Table(name = "tournament")
 @DynamicUpdate
-public class Tournament extends AbstractDataObject<Tournament> implements IdDataObject<String> {
+public class Tournament extends AbstractDataObject<Tournament>
+        implements IdDataObject<String>, Auditable {
 
     private String id;
 
@@ -44,6 +46,9 @@ public class Tournament extends AbstractDataObject<Tournament> implements IdData
     private Long partsPerBonus;
 
     private Integer maxActivePlayersPerTeam;
+
+    private Instant addedAt;
+    private String addedBy;
 
     @Id
     @Override
@@ -185,5 +190,27 @@ public class Tournament extends AbstractDataObject<Tournament> implements IdData
 
     public void setMaxActivePlayersPerTeam(Integer maxActivePlayersPerTeam) {
         this.maxActivePlayersPerTeam = maxActivePlayersPerTeam;
+    }
+
+    @Override
+    @Column(name = "added_by")
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    @Override
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
+
+    @Override
+    @Column(name = "created_at")
+    public Instant getAddedAt() {
+        return addedAt;
+    }
+
+    @Override
+    public void setAddedAt(Instant addedAt) {
+        this.addedAt = addedAt;
     }
 }
