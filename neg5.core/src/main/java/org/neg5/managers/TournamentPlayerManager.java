@@ -3,6 +3,8 @@ package org.neg5.managers;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+import org.neg5.FieldValidationErrors;
 import org.neg5.MatchPlayerDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentPlayerDTO;
@@ -10,6 +12,7 @@ import org.neg5.TournamentPlayerDTO;
 import org.neg5.daos.TournamentPlayerDAO;
 import org.neg5.data.TournamentPlayer;
 import org.neg5.mappers.TournamentPlayerMapper;
+import org.neg5.validation.ObjectValidationException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +59,21 @@ public class TournamentPlayerManager extends AbstractDTOManager<TournamentPlayer
         tournamentPlayerDTO.setTeamId(original.getTeamId());
 
         return super.update(tournamentPlayerDTO);
+    }
+
+    @Override
+    @Transactional
+    public void delete(String id) {
+        TournamentPlayerDTO playerDTO = get(id);
+        List<TournamentMatchDTO> playerMatches = groupMatchesByPlayers(playerDTO.getTournamentId(), null)
+                .getOrDefault(id, new ArrayList<>());
+        if (!playerMatches.isEmpty()) {
+            throw new ObjectValidationException(
+                    new FieldValidationErrors()
+                            .add("matches", "Cannot delete a player with existing matches.")
+            );
+        }
+        super.delete(id);
     }
 
     /**

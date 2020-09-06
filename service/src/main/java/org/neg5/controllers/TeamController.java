@@ -1,6 +1,7 @@
 package org.neg5.controllers;
 
 import com.google.inject.Inject;
+import org.eclipse.jetty.http.HttpStatus;
 import org.neg5.TournamentTeamDTO;
 import org.neg5.enums.TournamentAccessLevel;
 import org.neg5.managers.TournamentTeamManager;
@@ -32,7 +33,8 @@ public class TeamController extends AbstractJsonController {
         delete("/:id", (request, response) -> {
             validateHasAccessToEditTeam(request);
             teamManager.delete(request.params("id"));
-            return null;
+            response.status(HttpStatus.NO_CONTENT_204);
+            return "";
         });
 
         post("", this::createTeam);
