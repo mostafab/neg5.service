@@ -1,10 +1,10 @@
 package org.neg5;
 
-public class TournamentTeamDivisionDTO {
+public class TournamentTeamPoolDTO {
 
     private String tournamentId;
     private String teamId;
-    private String divisionId;
+    private String poolId;
 
     public String getTournamentId() {
         return tournamentId;
@@ -22,11 +22,11 @@ public class TournamentTeamDivisionDTO {
         this.teamId = teamId;
     }
 
-    public String getDivisionId() {
-        return divisionId;
+    public String getPoolId() {
+        return poolId;
     }
 
-    public void setDivisionId(String divisionId) {
-        this.divisionId = divisionId;
+    public void setPoolId(String poolId) {
+        this.poolId = poolId;
     }
 }

@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Embeddable
-public class TournamentTeamDivisionId implements Serializable, CompositeId {
+public class TournamentTeamPoolId implements Serializable, CompositeId {
 
     private Tournament tournament;
     private TournamentTeam team;
