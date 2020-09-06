@@ -28,6 +28,16 @@ public class TournamentCollaboratorManager
         return tournamentCollaboratorMapper;
     }
 
+    public TournamentCollaboratorDTO addOrUpdateCollaborator(TournamentCollaboratorDTO collaborator) {
+        Optional<TournamentCollaboratorDTO> existing =
+                getByTournamentAndUsername(collaborator.getTournamentId(),collaborator.getUserId());
+
+        if (existing.isPresent()) {
+            return update(collaborator);
+        }
+        return create(collaborator);
+    }
+
     public Optional<TournamentCollaboratorDTO> getByTournamentAndUsername(String tournamentId,
                                                                           String username) {
         try {
