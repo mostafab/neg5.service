@@ -17,6 +17,7 @@ public class TournamentCollaboratorManager
 
     @Inject private TournamentCollaboratorMapper tournamentCollaboratorMapper;
     @Inject private TournamentCollaboratorDAO tournamentCollaboratorDAO;
+    @Inject private TournamentManager tournamentManager;
 
     @Override
     protected TournamentCollaboratorDAO getRwDAO() {
@@ -26,6 +27,21 @@ public class TournamentCollaboratorManager
     @Override
     protected TournamentCollaboratorMapper getMapper() {
         return tournamentCollaboratorMapper;
+    }
+
+    public TournamentCollaboratorDTO addOrUpdateCollaborator(TournamentCollaboratorDTO collaborator) {
+        if (tournamentManager.get(collaborator.getTournamentId()).getDirectorId()
+                .equals(collaborator.getUserId())) {
+            throw new IllegalArgumentException(
+                    "Attempting to add tournament director as collaborator to " + collaborator.getTournamentId()
+            );
+        }
+        Optional<TournamentCollaboratorDTO> existing =
+                getByTournamentAndUsername(collaborator.getTournamentId(), collaborator.getUserId());
+        if (existing.isPresent()) {
+            return update(collaborator);
+        }
+        return create(collaborator);
     }
 
     public Optional<TournamentCollaboratorDTO> getByTournamentAndUsername(String tournamentId,

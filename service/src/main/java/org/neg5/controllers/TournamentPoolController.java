@@ -29,6 +29,17 @@ public class TournamentPoolController extends AbstractJsonController {
             accessManager.requireAccessLevel(pool.getTournamentId(), TournamentAccessLevel.OWNER);
             return poolManager.create(pool);
         });
+
+        put("/:id", (request, response) -> {
+            TournamentPoolDTO original = poolManager.get(request.params("id"));
+            accessManager.requireAccessLevel(
+                    original.getTournamentId(),
+                    TournamentAccessLevel.OWNER
+            );
+            TournamentPoolDTO pool = requestHelper.readFromRequest(request, TournamentPoolDTO.class);
+            pool.setId(request.params("id"));
+            return poolManager.update(pool);
+        });
     }
 
     @Override
