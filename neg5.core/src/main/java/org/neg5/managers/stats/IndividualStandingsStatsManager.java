@@ -36,7 +36,7 @@ public class IndividualStandingsStatsManager {
         stats.setPhaseId(phaseId);
 
         Map<String, List<TournamentMatchDTO>> matchesByPlayers = tournamentPlayerManager
-                .groupPlayersByMatches(tournamentId, phaseId);
+                .groupMatchesByPlayers(tournamentId, phaseId);
 
         stats.setPlayerStandings(
                 matchesByPlayers.entrySet().stream()
@@ -60,7 +60,7 @@ public class IndividualStandingsStatsManager {
         stats.setPhaseId(phaseId);
 
         Map<String, List<TournamentMatchDTO>> matchesByPlayers = tournamentPlayerManager
-                .groupPlayersByMatches(tournamentId, phaseId);
+                .groupMatchesByPlayers(tournamentId, phaseId);
 
         stats.setPlayers(matchesByPlayers.entrySet().stream()
             .map(entry -> computeSinglePlayerFullResults(entry.getKey(), entry.getValue()))

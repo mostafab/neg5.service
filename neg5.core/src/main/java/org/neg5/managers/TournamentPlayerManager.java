@@ -21,11 +21,18 @@ import java.util.stream.Collectors;
 @Singleton
 public class TournamentPlayerManager extends AbstractDTOManager<TournamentPlayer, TournamentPlayerDTO, String> {
 
-    @Inject private TournamentPlayerMapper tournamentPlayerMapper;
+    private final TournamentPlayerMapper tournamentPlayerMapper;
+    private final TournamentPlayerDAO rwTournamentPlayerDAO;
+    private final TournamentMatchManager tournamentMatchManager;
 
-    @Inject private TournamentPlayerDAO rwTournamentPlayerDAO;
-
-    @Inject private TournamentMatchManager tournamentMatchManager;
+    @Inject
+    public TournamentPlayerManager(TournamentPlayerMapper tournamentPlayerMapper,
+                                   TournamentPlayerDAO rwTournamentPlayerDAO,
+                                   TournamentMatchManager tournamentMatchManager) {
+        this.tournamentPlayerMapper = tournamentPlayerMapper;
+        this.rwTournamentPlayerDAO = rwTournamentPlayerDAO;
+        this.tournamentMatchManager = tournamentMatchManager;
+    }
 
     @Override
     protected TournamentPlayerMapper getMapper() {
@@ -57,7 +64,7 @@ public class TournamentPlayerManager extends AbstractDTOManager<TournamentPlayer
      * @param phaseId phaseId
      * @return mapping between player -> matches
      */
-    public Map<String, List<TournamentMatchDTO>> groupPlayersByMatches(String tournamentId, String phaseId) {
+    public Map<String, List<TournamentMatchDTO>> groupMatchesByPlayers(String tournamentId, String phaseId) {
         List<TournamentMatchDTO> matches = tournamentMatchManager.findAllByTournamentAndPhase(tournamentId, phaseId);
         Map<String, List<TournamentMatchDTO>> matchesByPlayerId = new HashMap<>();
         matches.forEach(match -> {

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+import org.neg5.FieldValidationErrors;
 import org.neg5.MatchTeamDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentTeamDTO;
@@ -12,6 +13,7 @@ import org.neg5.daos.TournamentTeamDAO;
 import org.neg5.data.TournamentTeam;
 
 import org.neg5.mappers.TournamentTeamMapper;
+import org.neg5.validation.ObjectValidationException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,6 +87,21 @@ public class TournamentTeamManager extends AbstractDTOManager<TournamentTeam, To
     }
 
     @Override
+    @Transactional
+    public void delete(String id) {
+        TournamentTeamDTO team = get(id);
+        List<TournamentMatchDTO> teamMatches = groupMatchesByTeams(team.getTournamentId(), null)
+                .getOrDefault(id, new ArrayList<>());
+        if (!teamMatches.isEmpty()) {
+            throw new ObjectValidationException(
+                    new FieldValidationErrors()
+                        .add("matches", "Cannot delete a team with existing matches")
+            );
+        }
+        super.delete(id);
+    }
+
+    @Override
     protected TournamentTeamDAO getRwDAO() {
         return rwTournamentTeamDAO;
     }
@@ -103,9 +120,9 @@ public class TournamentTeamManager extends AbstractDTOManager<TournamentTeam, To
      * Group matches by teams, where the key is the team's id and the value is the list of matches the team is part of
      * @param tournamentId tournamentId
      * @param phaseId phaseId
-     * @return mapping between tean -> matches
+     * @return mapping between team -> matches
      */
-    public Map<String, List<TournamentMatchDTO>> groupTeamsByMatches(String tournamentId,
+    public Map<String, List<TournamentMatchDTO>> groupMatchesByTeams(String tournamentId,
                                                                      String phaseId) {
         List<TournamentMatchDTO> matches = tournamentMatchManager.findAllByTournamentAndPhase(tournamentId, phaseId);
         Map<String, List<TournamentMatchDTO>> matchesByTeamId = new HashMap<>();

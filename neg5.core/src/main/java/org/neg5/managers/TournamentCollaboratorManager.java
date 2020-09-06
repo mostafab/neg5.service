@@ -15,9 +15,18 @@ import java.util.Optional;
 public class TournamentCollaboratorManager
         extends AbstractDTOManager<TournamentCollaborator, TournamentCollaboratorDTO, TournamentCollaboratorId> {
 
-    @Inject private TournamentCollaboratorMapper tournamentCollaboratorMapper;
-    @Inject private TournamentCollaboratorDAO tournamentCollaboratorDAO;
-    @Inject private TournamentManager tournamentManager;
+    private final TournamentCollaboratorMapper tournamentCollaboratorMapper;
+    private final TournamentCollaboratorDAO tournamentCollaboratorDAO;
+    private final TournamentManager tournamentManager;
+
+    @Inject
+    public TournamentCollaboratorManager(TournamentCollaboratorMapper tournamentCollaboratorMapper,
+                                         TournamentCollaboratorDAO tournamentCollaboratorDAO,
+                                         TournamentManager tournamentManager) {
+        this.tournamentCollaboratorMapper = tournamentCollaboratorMapper;
+        this.tournamentCollaboratorDAO = tournamentCollaboratorDAO;
+        this.tournamentManager = tournamentManager;
+    }
 
     @Override
     protected TournamentCollaboratorDAO getRwDAO() {

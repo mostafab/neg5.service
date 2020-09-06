@@ -22,14 +22,28 @@ import java.util.stream.Collectors;
 @Singleton
 public class TournamentMatchManager extends AbstractDTOManager<TournamentMatch, TournamentMatchDTO, String> {
 
-    @Inject private TournamentTossupValueManager tournamentTossupValueManager;
-    @Inject private MatchTeamManager matchTeamManager;
-    @Inject private TournamentMatchPhaseManager matchPhaseManager;
+    private final TournamentTossupValueManager tournamentTossupValueManager;
+    private final MatchTeamManager matchTeamManager;
+    private final TournamentMatchPhaseManager matchPhaseManager;
 
-    @Inject private TournamentMatchMapper tournamentMatchMapper;
-    @Inject private MatchToMatchDTOMapper matchToMatchDTOMapper;
+    private final TournamentMatchMapper tournamentMatchMapper;
+    private final MatchToMatchDTOMapper matchToMatchDTOMapper;
+    private final TournamentMatchDAO rwTournamentMatchDAO;
 
-    @Inject private TournamentMatchDAO rwTournamentMatchDAO;
+    @Inject
+    public TournamentMatchManager(TournamentTossupValueManager tournamentTossupValueManager,
+                                  MatchTeamManager matchTeamManager,
+                                  TournamentMatchPhaseManager matchPhaseManager,
+                                  TournamentMatchMapper tournamentMatchMapper,
+                                  MatchToMatchDTOMapper matchToMatchDTOMapper,
+                                  TournamentMatchDAO rwTournamentMatchDAO) {
+        this.tournamentTossupValueManager = tournamentTossupValueManager;
+        this.matchTeamManager = matchTeamManager;
+        this.matchPhaseManager = matchPhaseManager;
+        this.tournamentMatchMapper = tournamentMatchMapper;
+        this.matchToMatchDTOMapper = matchToMatchDTOMapper;
+        this.rwTournamentMatchDAO = rwTournamentMatchDAO;
+    }
 
     @Override
     protected TournamentMatchMapper getMapper() {

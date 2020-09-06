@@ -21,9 +21,15 @@ import java.util.stream.Collectors;
 @Singleton
 public class QBJManager {
 
-    @Inject private TournamentManager tournamentManager;
-    @Inject private TournamentMatchManager tournamentMatchManager;
-    @Inject private TournamentTeamManager teamManager;
+    private final TournamentManager tournamentManager;
+    private final TournamentTeamManager teamManager;
+
+    @Inject
+    public QBJManager(TournamentManager tournamentManager,
+                      TournamentTeamManager teamManager) {
+        this.tournamentManager = tournamentManager;
+        this.teamManager = teamManager;
+    }
 
     public TournamentQbjDTO getQbj(String tournamentId) {
         TournamentDTO tournament = tournamentManager.get(tournamentId);
