@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class TournamentTeamMapper extends AbstractObjectMapper<TournamentTeam, TournamentTeamDTO> {
 
-    @Inject private TournamentDivisionMapper divisionMapper;
+    @Inject private TournamentPoolMapper divisionMapper;
     @Inject private TournamentPlayerMapper playerMapper;
 
     protected TournamentTeamMapper() {

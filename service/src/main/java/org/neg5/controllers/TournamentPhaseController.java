@@ -29,6 +29,17 @@ public class TournamentPhaseController extends AbstractJsonController {
             accessManager.requireAccessLevel(phase.getTournamentId(), TournamentAccessLevel.OWNER);
             return phaseManager.create(phase);
         });
+
+        put("/:id", (request, response) -> {
+            TournamentPhaseDTO original = phaseManager.get(request.params("id"));
+            accessManager.requireAccessLevel(
+                    original.getTournamentId(),
+                    TournamentAccessLevel.OWNER
+            );
+            TournamentPhaseDTO phase = requestHelper.readFromRequest(request, TournamentPhaseDTO.class);
+            phase.setId(request.params("id"));
+            return phaseManager.update(phase);
+        });
     }
 
     @Override

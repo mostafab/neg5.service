@@ -7,6 +7,7 @@ import com.google.inject.persist.Transactional;
 import org.neg5.MatchTeamDTO;
 import org.neg5.TournamentMatchDTO;
 import org.neg5.TournamentTeamDTO;
+import org.neg5.TournamentTeamPoolDTO;
 import org.neg5.daos.TournamentTeamDAO;
 import org.neg5.data.TournamentTeam;
 
@@ -22,12 +23,29 @@ import java.util.stream.Collectors;
 @Singleton
 public class TournamentTeamManager extends AbstractDTOManager<TournamentTeam, TournamentTeamDTO, String> {
 
-    @Inject private TournamentTeamDAO rwTournamentTeamDAO;
+    private final TournamentTeamDAO rwTournamentTeamDAO;
+    private final TournamentTeamMapper tournamentTeamMapper;
 
-    @Inject private TournamentTeamMapper tournamentTeamMapper;
+    private final TournamentMatchManager tournamentMatchManager;
+    private final TournamentPlayerManager playerManager;
+    private final TournamentTeamPoolManager teamDivisionManager;
+    private final TournamentPoolManager poolManager;
 
-    @Inject private TournamentMatchManager tournamentMatchManager;
-    @Inject private TournamentPlayerManager playerManager;
+    @Inject
+    public TournamentTeamManager(TournamentTeamDAO rwTournamentTeamDAO,
+                                 TournamentTeamMapper tournamentTeamMapper,
+                                 TournamentMatchManager tournamentMatchManager,
+                                 TournamentPlayerManager playerManager,
+                                 TournamentTeamPoolManager teamDivisionManager,
+                                 TournamentPoolManager poolManager
+    ) {
+        this.rwTournamentTeamDAO = rwTournamentTeamDAO;
+        this.tournamentTeamMapper = tournamentTeamMapper;
+        this.tournamentMatchManager = tournamentMatchManager;
+        this.playerManager = playerManager;
+        this.teamDivisionManager = teamDivisionManager;
+        this.poolManager = poolManager;
+    }
 
     @Override
     @Transactional
@@ -41,6 +59,19 @@ public class TournamentTeamManager extends AbstractDTOManager<TournamentTeam, To
                         return playerManager.create(player);
                     })
                     .collect(Collectors.toSet())
+            );
+        }
+        if (tournamentTeamDTO.getDivisions() != null) {
+            Set<String> divisionIds = tournamentTeamDTO.getDivisions().stream()
+                    .map(d -> d.getId())
+                    .collect(Collectors.toSet());
+            List<TournamentTeamPoolDTO> teamPools = teamDivisionManager.associateTeamWithPools(
+                    divisionIds,
+                    created.getId(),
+                    created.getTournamentId()
+            );
+            created.setDivisions(
+                teamPools.stream().map(pool -> poolManager.get(pool.getPoolId())).collect(Collectors.toSet())
             );
         }
         return created;

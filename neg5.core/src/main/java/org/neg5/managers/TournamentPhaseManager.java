@@ -31,6 +31,14 @@ public class TournamentPhaseManager extends AbstractDTOManager<TournamentPhase, 
         return super.create(tournamentPhaseDTO);
     }
 
+    @Override
+    @Transactional
+    public TournamentPhaseDTO update(TournamentPhaseDTO tournamentPhaseDTO) {
+        TournamentPhaseDTO original = get(tournamentPhaseDTO.getId());
+        tournamentPhaseDTO.setTournamentId(original.getTournamentId());
+        return super.update(tournamentPhaseDTO);
+    }
+
     private void ensureUniquePhaseName(TournamentPhaseDTO tournamentPhase) {
         List<TournamentPhaseDTO> existingPhases = findAllByTournamentId(tournamentPhase.getTournamentId());
         String name = tournamentPhase.getName().toLowerCase().trim();

@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 public class TournamentMapperTest {
 
     @Mock private TournamentPhaseMapper phaseMapper;
-    @Mock private TournamentDivisionMapper divisionMapper;
+    @Mock private TournamentPoolMapper divisionMapper;
     @Mock private TournamentTossupValueMapper tournamentTossupValueMapper;
 
     @InjectMocks private TournamentMapper tournamentMapper;

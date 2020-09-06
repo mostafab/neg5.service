@@ -5,9 +5,9 @@ import org.neg5.TournamentPoolDTO;
 import org.neg5.data.TournamentPool;
 
 @Singleton
-public class TournamentDivisionMapper extends AbstractObjectMapper<TournamentPool, TournamentPoolDTO> {
+public class TournamentPoolMapper extends AbstractObjectMapper<TournamentPool, TournamentPoolDTO> {
 
-    protected TournamentDivisionMapper() {
+    protected TournamentPoolMapper() {
         super(TournamentPool.class, TournamentPoolDTO.class);
     }
 }

@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class TournamentTeamMapperTest {
 
-    @Mock private TournamentDivisionMapper divisionMapper;
+    @Mock private TournamentPoolMapper divisionMapper;
     @Mock private TournamentPlayerMapper playerMapper;
 
     @InjectMocks private TournamentTeamMapper teamMapper;
