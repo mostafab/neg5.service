@@ -21,11 +21,18 @@ import java.util.stream.Collectors;
 @Singleton
 public class TournamentPlayerManager extends AbstractDTOManager<TournamentPlayer, TournamentPlayerDTO, String> {
 
-    @Inject private TournamentPlayerMapper tournamentPlayerMapper;
+    private final TournamentPlayerMapper tournamentPlayerMapper;
+    private final TournamentPlayerDAO rwTournamentPlayerDAO;
+    private final TournamentMatchManager tournamentMatchManager;
 
-    @Inject private TournamentPlayerDAO rwTournamentPlayerDAO;
-
-    @Inject private TournamentMatchManager tournamentMatchManager;
+    @Inject
+    public TournamentPlayerManager(TournamentPlayerMapper tournamentPlayerMapper,
+                                   TournamentPlayerDAO rwTournamentPlayerDAO,
+                                   TournamentMatchManager tournamentMatchManager) {
+        this.tournamentPlayerMapper = tournamentPlayerMapper;
+        this.rwTournamentPlayerDAO = rwTournamentPlayerDAO;
+        this.tournamentMatchManager = tournamentMatchManager;
+    }
 
     @Override
     protected TournamentPlayerMapper getMapper() {

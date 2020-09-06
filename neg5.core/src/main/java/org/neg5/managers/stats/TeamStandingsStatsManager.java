@@ -19,8 +19,15 @@ import java.util.stream.Collectors;
 @Singleton
 public class TeamStandingsStatsManager {
 
-    @Inject private TournamentTeamManager tournamentTeamManager;
-    @Inject private StatsCacheManager statsCacheManager;
+    private final TournamentTeamManager tournamentTeamManager;
+    private final StatsCacheManager statsCacheManager;
+
+    @Inject
+    public TeamStandingsStatsManager(TournamentTeamManager tournamentTeamManager,
+                                     StatsCacheManager statsCacheManager) {
+        this.tournamentTeamManager = tournamentTeamManager;
+        this.statsCacheManager = statsCacheManager;
+    }
 
     public TeamStandingsStatsDTO getCachedTeamStandings(String tournamentId, String phaseId) {
         return statsCacheManager.getCache(TeamStandingsStatsDTO.class).getOrAdd(tournamentId, phaseId, () -> calculateTeamStandings(tournamentId, phaseId))
