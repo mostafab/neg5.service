@@ -64,7 +64,7 @@ public class TournamentPlayerManager extends AbstractDTOManager<TournamentPlayer
      * @param phaseId phaseId
      * @return mapping between player -> matches
      */
-    public Map<String, List<TournamentMatchDTO>> groupPlayersByMatches(String tournamentId, String phaseId) {
+    public Map<String, List<TournamentMatchDTO>> groupMatchesByPlayers(String tournamentId, String phaseId) {
         List<TournamentMatchDTO> matches = tournamentMatchManager.findAllByTournamentAndPhase(tournamentId, phaseId);
         Map<String, List<TournamentMatchDTO>> matchesByPlayerId = new HashMap<>();
         matches.forEach(match -> {

@@ -54,6 +54,12 @@ public abstract class AbstractController implements BaseController {
         LOGGER.info("Mapped PUT route {}", fullPath);
     }
 
+    protected void delete(String path, Route route) {
+        String fullPath = constructPath(path);
+        Spark.delete(fullPath, enrichRoute(route));
+        LOGGER.info("Mapped DELETE route {}", fullPath);
+    }
+
     protected Route enrichRoute(Route route) {
         return route;
     }

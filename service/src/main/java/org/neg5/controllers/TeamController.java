@@ -24,17 +24,26 @@ public class TeamController extends AbstractJsonController {
     public void registerRoutes() {
         get("/:id", (request, response) -> teamManager.get(request.params("id")));
         put("/:id", (request, response) -> {
-            TournamentTeamDTO original = teamManager.get(request.params("id"));
-            tournamentAccessManager.requireAccessLevel(
-                    original.getTournamentId(),
-                    TournamentAccessLevel.ADMIN
-            );
+            validateHasAccessToEditTeam(request);
             TournamentTeamDTO team = requestHelper.readFromRequest(request, TournamentTeamDTO.class);
             team.setId(request.params("id"));
             return teamManager.update(team);
         });
+        delete("/:id", (request, response) -> {
+            validateHasAccessToEditTeam(request);
+            teamManager.delete(request.params("id"));
+            return null;
+        });
 
         post("", this::createTeam);
+    }
+
+    private void validateHasAccessToEditTeam(Request request) {
+        TournamentTeamDTO original = teamManager.get(request.params("id"));
+        tournamentAccessManager.requireAccessLevel(
+                original.getTournamentId(),
+                TournamentAccessLevel.ADMIN
+        );
     }
 
     private Object createTeam(Request request, Response response) {

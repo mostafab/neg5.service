@@ -40,7 +40,7 @@ public class TeamStandingsStatsManager {
         stats.setPhaseId(phaseId);
 
         Map<String, List<TournamentMatchDTO>> teamsByMatches = tournamentTeamManager
-                .groupTeamsByMatches(tournamentId, phaseId);
+                .groupMatchesByTeams(tournamentId, phaseId);
         stats.setTeamStandings(
             teamsByMatches.entrySet().stream()
                 .map(entry -> computeStandingsForTeam(entry.getKey(), entry.getValue()))
@@ -61,7 +61,7 @@ public class TeamStandingsStatsManager {
         stats.setPhaseId(phaseId);
 
         Map<String, List<TournamentMatchDTO>> teamsByMatches = tournamentTeamManager
-                .groupTeamsByMatches(tournamentId, phaseId);
+                .groupMatchesByTeams(tournamentId, phaseId);
         stats.setTeams(
                 teamsByMatches.entrySet().stream()
                     .map(entry -> getFullStandingsForTeam(entry.getKey(), entry.getValue()))
