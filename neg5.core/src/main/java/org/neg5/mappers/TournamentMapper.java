@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class TournamentMapper extends AbstractObjectMapper<Tournament, TournamentDTO> {
 
     @Inject private TournamentPhaseMapper tournamentPhaseMapper;
-    @Inject private TournamentDivisionMapper tournamentDivisionMapper;
+    @Inject private TournamentPoolMapper tournamentPoolMapper;
     @Inject private TournamentTossupValueMapper tournamentTossupValueMapper;
 
     protected TournamentMapper() {
@@ -26,7 +26,7 @@ public class TournamentMapper extends AbstractObjectMapper<Tournament, Tournamen
         }
         if (tournament.getDivisions() != null) {
             tournamentDTO.setDivisions(tournament.getDivisions().stream()
-                    .map(tournamentDivisionMapper::toDTO).collect(Collectors.toSet()));
+                    .map(tournamentPoolMapper::toDTO).collect(Collectors.toSet()));
         }
         if (tournamentDTO.getTossupValues() != null) {
             tournamentDTO.setTossupValues(tournament.getTossupValues().stream()

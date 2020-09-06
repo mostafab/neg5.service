@@ -4,23 +4,23 @@ import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import org.neg5.TournamentPhaseDTO;
 import org.neg5.TournamentPoolDTO;
-import org.neg5.daos.TournamentDivisionDAO;
+import org.neg5.daos.TournamentPoolDAO;
 import org.neg5.data.TournamentPool;
-import org.neg5.mappers.TournamentDivisionMapper;
+import org.neg5.mappers.TournamentPoolMapper;
 
 import java.util.Objects;
 
 public class TournamentPoolManager
         extends AbstractDTOManager<TournamentPool, TournamentPoolDTO, String> {
 
-    private final TournamentDivisionMapper mapper;
-    private final TournamentDivisionDAO divisionDAO;
+    private final TournamentPoolMapper mapper;
+    private final TournamentPoolDAO divisionDAO;
 
     private final TournamentPhaseManager phaseManager;
 
     @Inject
-    public TournamentPoolManager(TournamentDivisionMapper mapper,
-                                 TournamentDivisionDAO divisionDAO,
+    public TournamentPoolManager(TournamentPoolMapper mapper,
+                                 TournamentPoolDAO divisionDAO,
                                  TournamentPhaseManager phaseManager) {
         this.mapper = mapper;
         this.divisionDAO = divisionDAO;
@@ -35,12 +35,12 @@ public class TournamentPoolManager
     }
 
     @Override
-    protected TournamentDivisionDAO getRwDAO() {
+    protected TournamentPoolDAO getRwDAO() {
         return divisionDAO;
     }
 
     @Override
-    protected TournamentDivisionMapper getMapper() {
+    protected TournamentPoolMapper getMapper() {
         return mapper;
     }
 

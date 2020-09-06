@@ -13,7 +13,7 @@ import org.neg5.data.TournamentPhase;
 @ExtendWith(MockitoExtension.class)
 public class TournamentPoolMapperTest {
 
-    @InjectMocks private TournamentDivisionMapper divisionMapper;
+    @InjectMocks private TournamentPoolMapper divisionMapper;
 
     private static final String TOURNAMENT_ID = "TEST_ID";
     private static final String PHASE_ID = "PHASE_ID";
