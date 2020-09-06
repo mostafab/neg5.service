@@ -35,6 +35,15 @@ public class TournamentPoolManager
     }
 
     @Override
+    @Transactional
+    public TournamentPoolDTO update(TournamentPoolDTO tournamentPoolDTO) {
+        TournamentPoolDTO original = get(tournamentPoolDTO.getId());
+        tournamentPoolDTO.setTournamentId(original.getTournamentId());
+        tournamentPoolDTO.setPhaseId(original.getPhaseId());
+        return super.update(tournamentPoolDTO);
+    }
+
+    @Override
     protected TournamentPoolDAO getRwDAO() {
         return divisionDAO;
     }
