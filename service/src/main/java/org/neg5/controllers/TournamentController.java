@@ -12,6 +12,7 @@ import org.neg5.managers.TournamentManager;
 import org.neg5.managers.TournamentMatchManager;
 import org.neg5.managers.TournamentPhaseManager;
 import org.neg5.managers.TournamentPlayerManager;
+import org.neg5.managers.TournamentRulesManager;
 import org.neg5.managers.TournamentTeamManager;
 import org.neg5.managers.TournamentTossupValueManager;
 import org.neg5.managers.stats.QBJManager;
@@ -29,6 +30,8 @@ public class TournamentController extends AbstractJsonController {
     @Inject private TournamentPhaseManager tournamentPhaseManager;
     @Inject private TournamentTossupValueManager tournamentTossupValueManager;
     @Inject private TournamentCollaboratorManager tournamentCollaboratorManager;
+    @Inject private TournamentRulesManager tournamentRulesManager;
+
     @Inject private TournamentAccessManager accessManager;
 
     @Inject private QBJManager qbjManager;
@@ -68,6 +71,7 @@ public class TournamentController extends AbstractJsonController {
                 -> tournamentTossupValueManager.findAllByTournamentId(request.params("id")));
         get("/:id/collaborators", (request, response)
                 -> tournamentCollaboratorManager.findAllByTournamentId(request.params("id")));
+        get("/:id/rules", (request, response) -> tournamentRulesManager.get(request.params("id")));
         get("/:id/qbj", (request, response) -> {
             response.type(QBJ_CONTENT_TYPE);
             return qbjManager.getQbj(request.params("id"));

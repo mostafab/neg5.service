@@ -50,7 +50,10 @@ public class PlayerController extends AbstractJsonController {
 
     private TournamentPlayerDTO createPlayer(Request request, Response response) {
         TournamentPlayerDTO playerDTO = requestHelper.readFromRequest(request, TournamentPlayerDTO.class);
-        tournamentAccessManager.requireAccessLevel(playerDTO.getTournamentId(), TournamentAccessLevel.ADMIN);
+        tournamentAccessManager.requireAccessLevel(
+                playerDTO.getTournamentId(),
+                TournamentAccessLevel.COLLABORATOR
+        );
         return tournamentPlayerManager.create(playerDTO);
     }
 }
