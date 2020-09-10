@@ -16,6 +16,7 @@ import javax.persistence.NoResultException;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
@@ -35,6 +36,10 @@ public abstract class AbstractDTOManager<T extends AbstractDataObject<T>
             throw new NoResultException("No result found for " + clazzName + " with id " + id);
         }
         return getMapper().toDTO(entity.copyOf());
+    }
+
+    public List<DTO> get(Set<IdType> ids) {
+        return ids.stream().map(id -> get(id)).collect(Collectors.toList());
     }
 
     @Transactional

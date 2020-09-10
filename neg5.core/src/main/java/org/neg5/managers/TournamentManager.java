@@ -73,6 +73,13 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
     }
 
     @Transactional
+    public List<TournamentDTO> getTournamentsOwnedByUser(String userId) {
+        return getRwDAO().getTournamentsOwnedByUser(userId).stream()
+                .map(tournamentMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
     public List<TournamentTossupValueDTO> updateTournamentTossupValues(String tournamentId,
                                                                        List<TournamentTossupValueDTO> tossupValues) {
         throwIfAnyMatchesExist(tournamentId);

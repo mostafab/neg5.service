@@ -2,14 +2,18 @@ package org.neg5.managers;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
 import org.neg5.TournamentCollaboratorDTO;
+import org.neg5.UserTournamentsDTO;
 import org.neg5.daos.TournamentCollaboratorDAO;
 import org.neg5.data.TournamentCollaborator;
 import org.neg5.data.embeddables.TournamentCollaboratorId;
 import org.neg5.mappers.TournamentCollaboratorMapper;
 
 import javax.persistence.NoResultException;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Singleton
 public class TournamentCollaboratorManager
@@ -51,6 +55,22 @@ public class TournamentCollaboratorManager
             return update(collaborator);
         }
         return create(collaborator);
+    }
+
+    @Transactional
+    public UserTournamentsDTO getUserTournaments(String userId) {
+        UserTournamentsDTO userTournaments = new UserTournamentsDTO();
+        userTournaments.setUserOwnedTournaments(tournamentManager.getTournamentsOwnedByUser(userId));
+
+        Set<String> tournamentIds = getTournamentIdsThatUserCollaboratesOn(userId);
+        userTournaments.setCollaboratingTournaments(tournamentManager.get(tournamentIds));
+
+        return userTournaments;
+    }
+
+    @Transactional
+    public Set<String> getTournamentIdsThatUserCollaboratesOn(String userId) {
+        return new HashSet<>(getRwDAO().getTournamentIdsThatUserCollaboratesOn(userId));
     }
 
     public Optional<TournamentCollaboratorDTO> getByTournamentAndUsername(String tournamentId,

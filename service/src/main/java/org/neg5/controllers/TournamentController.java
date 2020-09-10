@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import org.neg5.TournamentDTO;
 import org.neg5.TournamentTossupValueDTO;
 import org.neg5.UpdateTournamentRequestDTO;
+import org.neg5.core.CurrentUserContext;
 import org.neg5.core.QBJGsonProvider;
 import org.neg5.enums.TournamentAccessLevel;
 import org.neg5.managers.TournamentCollaboratorManager;
@@ -32,6 +33,7 @@ public class TournamentController extends AbstractJsonController {
     @Inject private TournamentCollaboratorManager tournamentCollaboratorManager;
     @Inject private TournamentRulesManager tournamentRulesManager;
 
+    @Inject private CurrentUserContext currentUserContext;
     @Inject private TournamentAccessManager accessManager;
 
     @Inject private QBJManager qbjManager;
@@ -47,6 +49,11 @@ public class TournamentController extends AbstractJsonController {
 
     @Override
     public void registerRoutes() {
+        get("", (request, response) -> {
+           String userId = currentUserContext.getUserDataOrThrow().getUsername();
+           return tournamentCollaboratorManager.getUserTournaments(userId);
+        });
+
         get("/:id", (request, response)
                 -> tournamentManager.get(request.params("id")));
         put("/:id", (request, response) -> {
