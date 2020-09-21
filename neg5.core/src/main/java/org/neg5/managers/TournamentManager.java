@@ -3,6 +3,7 @@ package org.neg5.managers;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+import org.apache.commons.collections.CollectionUtils;
 import org.neg5.FieldValidationErrors;
 import org.neg5.TournamentDTO;
 import org.neg5.TournamentPhaseDTO;
@@ -138,7 +139,7 @@ public class TournamentManager extends AbstractDTOManager<Tournament, Tournament
 
     private Set<TournamentTossupValueDTO> createTossupValues(String tournamentId,
                                                              TournamentDTO tournament) {
-        Set<TournamentTossupValueDTO> tossupValues = tournament.getTossupValues() == null
+        Set<TournamentTossupValueDTO> tossupValues = CollectionUtils.isEmpty(tournament.getTossupValues())
                 ? tossupValueManager.getDefaultTournamentValues()
                 : tournament.getTossupValues();
 

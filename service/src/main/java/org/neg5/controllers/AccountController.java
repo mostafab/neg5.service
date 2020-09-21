@@ -5,6 +5,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.neg5.AccountDTO;
 import org.neg5.auth.LoginAuthenticator;
 import org.neg5.auth.LoginCreds;
+import org.neg5.core.CurrentUserContext;
 import org.neg5.login.DuplicateLoginException;
 import org.neg5.AccountCreationDTO;
 import org.neg5.managers.AccountManager;
@@ -16,6 +17,7 @@ public class AccountController extends AbstractJsonController {
 
     @Inject private AccountManager accountManager;
     @Inject private RequestHelper requestHelper;
+    @Inject private CurrentUserContext currentUserContext;
     @Inject private LoginAuthenticator loginAuthenticator;
 
     @Override
@@ -26,6 +28,7 @@ public class AccountController extends AbstractJsonController {
     @Override
     public void registerRoutes() {
         post("", this::createAccountAndLogin);
+        get("/me", (request, response) -> currentUserContext.getUserData().orElse(null));
     }
 
     private Object createAccountAndLogin(Request request, Response response) {

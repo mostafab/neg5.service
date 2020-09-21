@@ -15,6 +15,7 @@ import org.neg5.data.TournamentTeam;
 import org.neg5.mappers.TournamentTeamMapper;
 import org.neg5.validation.ObjectValidationException;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +85,20 @@ public class TournamentTeamManager extends AbstractDTOManager<TournamentTeam, To
         TournamentTeamDTO original = get(tournamentTeamDTO.getId());
         tournamentTeamDTO.setTournamentId(original.getTournamentId());
         return super.update(tournamentTeamDTO);
+    }
+
+    @Transactional
+    public TournamentTeamDTO updateTeamPools(@Nonnull String teamId, @Nonnull Set<String> poolIds) {
+        TournamentTeamDTO team = get(teamId);
+        List<TournamentTeamPoolDTO> teamPools = teamDivisionManager.associateTeamWithPools(
+                poolIds,
+                team.getId(),
+                team.getTournamentId()
+        );
+        team.setDivisions(
+                teamPools.stream().map(pool -> poolManager.get(pool.getPoolId())).collect(Collectors.toSet())
+        );
+        return team;
     }
 
     @Override

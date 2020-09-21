@@ -10,6 +10,8 @@ import org.neg5.util.RequestHelper;
 import spark.Request;
 import spark.Response;
 
+import java.util.Set;
+
 public class TeamController extends AbstractJsonController {
 
     @Inject private TournamentTeamManager teamManager;
@@ -30,6 +32,18 @@ public class TeamController extends AbstractJsonController {
             team.setId(request.params("id"));
             return teamManager.update(team);
         });
+        put("/:id/pools", (request, response) -> {
+           validateHasAccessToEditTeam(request);
+           TeamPools poolIds = requestHelper.readFromRequest(
+                   request,
+                   TeamPools.class
+            );
+           return teamManager.updateTeamPools(
+                   request.params("id"),
+                   poolIds.getPoolIds()
+           );
+        });
+
         delete("/:id", (request, response) -> {
             validateHasAccessToEditTeam(request);
             teamManager.delete(request.params("id"));
@@ -52,5 +66,17 @@ public class TeamController extends AbstractJsonController {
         TournamentTeamDTO team = requestHelper.readFromRequest(request, TournamentTeamDTO.class);
         tournamentAccessManager.requireAccessLevel(team.getTournamentId(), TournamentAccessLevel.ADMIN);
         return teamManager.create(team);
+    }
+
+    static class TeamPools {
+        private Set<String> poolIds;
+
+        Set<String> getPoolIds() {
+            return poolIds;
+        }
+
+        void setPoolIds(Set<String> poolIds) {
+            this.poolIds = poolIds;
+        }
     }
 }
